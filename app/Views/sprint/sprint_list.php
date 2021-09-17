@@ -11,6 +11,7 @@
   		  integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
   		  crossorigin="anonymous" />
 	<script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" data-auto-replace-svg="nest"></script>
+
     <?php echo view("/layout/header"); ?>
 </head>
 
@@ -71,6 +72,17 @@
 		<script src="/assets/app/js/dashboard.js" type="text/javascript"></script>
 
 		<!--end::Page Scripts -->
+
+        <script>
+            //Sprint Meeting 메뉴 활성화
+            elements = document.getElementsByClassName('m-menu__item--active');
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].classList.remove('m-menu__item--active');
+            }
+
+            document.getElementById('sprint_left_menu').classList.add('m-menu__item--active');
+            
+        </script>
 
 
 

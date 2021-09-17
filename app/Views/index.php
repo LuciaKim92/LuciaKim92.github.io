@@ -2932,6 +2932,16 @@ License: You must have a valid license purchased only from themeforest(the above
 			}
 			
 
+            //대시보드 메뉴 활성화
+            elements = document.getElementsByClassName('m-menu__item--active');
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].classList.remove('m-menu__item--active');
+            }
+
+            document.getElementById('dashboard_left_menu').classList.add('m-menu__item--active');
+            
+
+
 		
 			/*
 			if(code.equals('comp')){

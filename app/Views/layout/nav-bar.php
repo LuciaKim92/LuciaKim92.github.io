@@ -7,9 +7,9 @@
 						<div class="m-stack__item m-brand">
 							<div class="m-stack m-stack--ver m-stack--general">
 								<div class="m-stack__item m-stack__item--middle m-brand__logo" style = "width : 140px; height : 100px; word-break:break-all;">
-									<a href="index.html" class="m-brand__logo-wrapper">
-									</a>
-									<div class="text-light"><span id = "loginID">OOO</span>님 안녕하세요 ! </div>
+									<div onclick ="goHome();" class="m-brand__logo-wrapper" style = "cursor : pointer">
+										<div class="text-light"><span id = "loginID">OOO</span>님 안녕하세요 ! </div>
+									</div>
 								</div>		
 		 						
 		  						<!--
@@ -299,6 +299,10 @@
 			</header>
 			<script>
 				document.getElementById('loginID').innerText = "<?=$_SESSION['admin_names']?>";
+				//홈으로가기
+				function goHome(){
+					document.location = '/home/dashboard';
+				}
 			</script>
 
 			<!-- END: Header -->
