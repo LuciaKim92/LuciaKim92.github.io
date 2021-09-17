@@ -2,6 +2,8 @@
     border-radius : 10px;
     height:85px;
     word-break:break-all;
+    margin-left : 5px;
+    margin-right : 5px;
 }
 
 .keyresult-bar{
@@ -10,6 +12,8 @@
     background-color:#c2cde1; 
     height : 25px;
     cursor: pointer;
+    margin-left : 5px;
+    margin-right : 5px;
     }
 
 .okr-hr{
@@ -40,4 +44,15 @@
 
 .keyresult-content-span{
     margin-top : 5px;
+}
+
+.funnel{
+    cursor : pointer;
+}
+
+.add-menu{
+    margin : 3px;
+    height : 30px; 
+    border-radius : 5px; 
+    width : 194px
 }

@@ -58,7 +58,7 @@
 							<button class="m-aside-header-menu-mobile-close  m-aside-header-menu-mobile-close--skin-dark " id="m_aside_header_menu_mobile_close_btn"><i class="la la-close"></i></button>
 							<div id="m_header_menu" class="m-header-menu m-aside-header-menu-mobile m-aside-header-menu-mobile--offcanvas  m-header-menu--skin-dark m-header-menu--submenu-skin-light m-aside-header-menu-mobile--skin-dark m-aside-header-menu-mobile--submenu-skin-dark ">
 								<ul class="m-menu__nav ">
-									<!-- 상단바 왼쪽 메뉴 1[북마크] : BEGIN -->
+									<!-- 상단바 왼쪽 메뉴 1[북마크] : BEGIN 
 									<li class="m-menu__item  m-menu__item--submenu m-menu__item--rel" m-menu-submenu-toggle="click" m-menu-link-redirect="1" aria-haspopup="true"><a href="javascript:;" class="m-menu__link m-menu__toggle" title="Non functional dummy link"><span class="m-menu__link-text"><img src="/assets/icon/star_icon.png" height="15" width="15">&nbsp;&nbsp;북마크</span><i class="m-menu__hor-arrow la la-angle-down"></i><i class="m-menu__ver-arrow la la-angle-right"></i></a>
 										<div class="m-menu__submenu m-menu__submenu--classic m-menu__submenu--left">
 											<ul class="m-menu__subnav">
@@ -94,7 +94,7 @@
 											</ul>
 										</div>
 									</li>
-									<!-- 상단바 왼쪽 메뉴1[북마크] : END-->
+									<!- 상단바 왼쪽 메뉴1[북마크] : END-->
 
 									<!-- 상단바 왼쪽 메뉴2[Reports] : BEGIN-->
 									<li class="m-menu__item  m-menu__item--submenu m-menu__item--rel" m-menu-submenu-toggle="click" m-menu-link-redirect="1" aria-haspopup="true"><a href="javascript:;" class="m-menu__link m-menu__toggle" title="Non functional dummy link"><span class="m-menu__link-text"><img src="/assets/icon/reports_icon.png" height="15" width="15">&nbsp;&nbsp;Reports</span><i class="m-menu__hor-arrow la la-angle-down"></i><i class="m-menu__ver-arrow la la-angle-right"></i></a>
@@ -270,7 +270,7 @@
 										</li>
 		  								<!-- 상단바 오른쪽 메뉴 3[알림] : END -->
 
-		  								<!-- 상단바 오른쪽 메뉴 4[별] : BEGIN -->
+		  								<!-- 상단바 오른쪽 메뉴 4[별] : BEGIN --
 										  <li class="m-nav__item m-topbar__notifications m-dropdown m-dropdown--large m-dropdown--arrow m-dropdown--align-center 	m-dropdown--mobile-full-width" m-dropdown-toggle="click" m-dropdown-persistent="1">
 											<a href="#" class="m-nav__link m-dropdown__toggle" id="m_topbar_notification_icon" onclick="goDeptPage();">
 												<span class="m-nav__link-icon">
@@ -278,7 +278,7 @@
 												</span>
 											</a>	
 										</li>
-										<!-- 상단바 오른쪽 메뉴 4[별] : END-->
+										<!- 상단바 오른쪽 메뉴 4[별] : END-->
 										<!-- 상단바 오른쪽 메뉴 5[EXIT] : BEGIN -->
 										<li class="m-nav__item m-topbar__notifications m-dropdown m-dropdown--large m-dropdown--arrow m-dropdown--align-center 	m-dropdown--mobile-full-width" m-dropdown-toggle="click" m-dropdown-persistent="1">
 											<a href="#" class="m-nav__link m-dropdown__toggle" id="m_topbar_notification_icon" onclick="logout();">

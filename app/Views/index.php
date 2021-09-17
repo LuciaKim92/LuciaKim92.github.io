@@ -482,7 +482,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
 						<!--End::Section-->
 
-		  				<!-- 테스트부분 [제목 + 상세 넣은거 : Title, contents 구분하는 바가 없음, 각 okr별 구분위해 존재하는 바 없앨 수 있음] -->
+		  				<!-- 테스트부분 [제목 + 상세 넣은거 : Title, contents 구분하는 바가 없음, 각 okr별 구분위해 존재하는 바 없앨 수 있음] 
 						<div class="m-portlet  m-portlet--unair">
 							<div class="m-widget24">
 								<div class="m-widget24__item">
@@ -494,8 +494,25 @@ License: You must have a valid license purchased only from themeforest(the above
 									</span>
 								</div>
 							</div>
+						-->
+							<div class="m-portlet  m-portlet--unair">
+							<div class="m-portlet__head">
+								
+								<div class="m-portlet__head-caption">
+									<div class="m-portlet__head-title">
+										<h3 class="m-portlet__head-text">
+											OKR<br>
+										</h3>
+										<!--
+										<p>
+		  									OKR 현황을 나타냅니다.
+										</p>
+										-->
+									</div>
+								</div>
+							</div>
 							<div class="m-portlet__body  m-portlet__body--no-padding">
-								<div class="row m-row--no-padding">
+								<div class="row m-row--no-padding m-row--col-separator-xl">
 									<div class="col-xl-4">
 										<div class="m-widget24">
 											<div class="m-widget24__item">
@@ -531,7 +548,7 @@ License: You must have a valid license purchased only from themeforest(the above
 															<span class="okr-badge m-badge m-badge--success">2</span>완료
 														</span>
 														<span class="m-widget24__change">
-															<span onclick = "goInitiativeTool();"><span class="okr-badge m-badge m-badge--warning"> 2</span>펀넬</span>
+															<span class = "funnel" onclick = "goInitiativeTool();"><span class="okr-badge m-badge m-badge--warning"> 2</span>펀넬</span>
 														</span>
 													</div>
 												</div>
@@ -546,7 +563,7 @@ License: You must have a valid license purchased only from themeforest(the above
 												</h4><br>
 												<br>
 												<div style="width:100%">
-													<div class = "text-light objective-div" style = "background-color:#31859c; margin-right : 5px;">
+													<div class = "text-light objective-div" style = "background-color:#31859c; margin-right : 5px; margin-left : 5px">
 		  												<span class="font-weight-bold" style="margin-left : 5px">
 															ObJective
 														</span>
@@ -555,7 +572,7 @@ License: You must have a valid license purchased only from themeforest(the above
 															"Infra"확충을 통한 一流 대원 만들기
 														</span>
 													</div>
-													<div class = "keyresult-bar" style = "margin-right : 5px" onclick = "openDeptKR();">
+													<div class = "keyresult-bar" style = "margin-right : 5px; margin-left : 5px" onclick = "openDeptKR();">
 														<p class = "text-center text-dark">
 															Key Results
 														</p>
@@ -573,7 +590,7 @@ License: You must have a valid license purchased only from themeforest(the above
 															<span class="okr-badge m-badge m-badge--success">2</span>완료
 														</span>
 														<span class="m-widget24__change">
-															<span onclick = "goInitiativeTool();"><span class="okr-badge m-badge m-badge--warning"> 2</span>펀넬</span>
+															<span class = "funnel" onclick = "goInitiativeTool();"><span class="okr-badge m-badge m-badge--warning"> 2</span>펀넬</span>
 														</span>
 													</div>
 												</div>
@@ -588,7 +605,7 @@ License: You must have a valid license purchased only from themeforest(the above
 												</h4><br>
 												<br>
 												<div style="width:100%">
-													<div class = "text-light objective-div" style="background-color:#558ed5; margin-right : 5px">
+													<div class = "text-light objective-div" style="background-color:#558ed5; margin-left : 5px; margin-right : 5px">
 		  												<span class="font-weight-bold" style="margin-left : 5px">
 															ObJective
 														</span>
@@ -597,7 +614,7 @@ License: You must have a valid license purchased only from themeforest(the above
 															OKR 축적문화 조성을 통한 1조기업의 인프라를 구축한다.
 														</span>
 													</div>
-													<div class ="keyresult-bar" style = "margin-right : 5px" onclick = "openTeamKR();">
+													<div class ="keyresult-bar" style = "margin-right : 5px; margin-left : 5px" onclick = "openTeamKR();">
 														<p class = "text-center text-dark">
 															Key Results
 														</p>
@@ -615,7 +632,7 @@ License: You must have a valid license purchased only from themeforest(the above
 															<span class="okr-badge m-badge m-badge--success">2</span>완료
 														</span>
 														<span class="m-widget24__change">
-															<span onclick = "goInitiativeTool();"><span class="okr-badge m-badge m-badge--warning"> 2</span>펀넬</span>
+															<span class = "funnel" onclick = "goInitiativeTool();"><span class="okr-badge m-badge m-badge--warning"> 2</span>펀넬</span>
 														</span>
 													</div>
 												</div>
@@ -2818,11 +2835,11 @@ License: You must have a valid license purchased only from themeforest(the above
 		
 		<!--Float Button 누를 시 활성화 되는 창-->
 		<div id ="newCFRMenu" class="fixed-bottom bg-dark text-center" style="display : none; position: fixed; bottom: 80px; right: 75px; left : auto; width : 200px">
-			<div class = "text-light"style="margin : 3px; background-color : #7957ad; height : 30px; border-radius : 5px; width : 194px" onclick = "newInitiative();">
+			<div class = "text-light add-menu" style="background-color : #7957ad" onclick = "newInitiative();">
 		  		Initiatives 등록
 			</div>
 
-			<div class = "text-light" style="margin : 3px; background-color : #31859c; height : 30px; border-radius : 5px; width : 194px" onclick = "newCFR();">
+			<div class = "text-light add-menu" style="background-color : #31859c" onclick = "newCFR();">
 		  		CFR Meeting 요청
 			</div>
 		</div>

@@ -8,9 +8,7 @@ class Home extends BaseController
 	{
 		return view('comment.php');
 	}
-
-	public function dashboard()
-	{
+	public function session_setting(){
 		$this->response = \Config\Services::response();
 		$this->session = \Config\Services::session();
 		$user_data = array(
@@ -20,18 +18,27 @@ class Home extends BaseController
 			"logged_in" => TRUE
 		);
 		$this->session->set($user_data);
+	}
+
+	public function dashboard()
+	{
+		$this->session_setting();
 		$data = $_SESSION;
 		return view("index.php",$data);
 	}
 
 	public function sprint_list()
 	{
-		return view("/sprint/sprint_list.php");
+		$this->session_setting();
+		$data = $_SESSION;
+		return view("/sprint/sprint_list.php",$data);
 	}
 
 	public function sprint()
 	{
-		return view('/sprint/sprint123.php');
+		$this->session_setting();
+		$data = $_SESSION;
+		return view('/sprint/sprint123.php',$data);
 	}
 
 
