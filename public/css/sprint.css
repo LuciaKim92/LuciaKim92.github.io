@@ -1,0 +1,131 @@
+/* The sidepanel menu */
+.sidepanel {
+    height: 100%; /* Specify a height */
+    width: 100%; /* 0 width - change this with JavaScript */
+    display: none;
+    position: relative;
+    z-index: 1; /* Stay on top */
+    top: 0;
+    left: 0;
+    background-color: none;
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 8px; /* Place content 60px from the top */
+  }
+  
+  /* The sidepanel links */
+  .sidepanel a, .sidepanel li{
+    text-decoration: none;
+    font-size: auto;
+    color: black;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+
+  .sidepanel a {
+    padding: 8px 8px 8px 8px;
+    display: block;
+  }
+  
+  /* When you mouse over the navigation links, change their color */
+  .sidepanel a:hover {
+    color: #f1f1f1;
+  }
+
+  .sidepanel ol{
+    border-radius: 30px;
+    background-color: #fde0b8;
+
+  }
+
+  .sidepanel h3 {
+    border-radius: 5px;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    background-color: chocolate;
+  }
+
+
+  
+  /* Style the button that is used to open the sidepanel */
+  .openbtn {
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    color: black;
+    padding: 10px 15px;
+    border: none;
+    display: block;
+    background:linear-gradient(-45deg, transparent 15px, #ffca80 0);
+  }
+  
+  .openbtn:hover {
+    background:linear-gradient(-45deg, transparent 15px, #ffb44c 0);
+  }
+
+  /* 스프린트미팅 작성폼 테이블 */
+
+  #sprint-table th, #sprint-content th{
+      vertical-align: middle;
+      text-align: center;
+      font-weight: bold;
+  }
+
+  #sprint-table td, #sprint-content td {
+    vertical-align: middle;
+  }
+
+
+  /* 스틱키 네비 메뉴 버튼 */
+  #sprint-sticky-button{padding:0; background-color: rgba(0, 0, 0, 0); border:0; outline:0}
+
+
+
+
+/* 부문(본부)/팀 */
+#sprint-group{display:table; height: 45px; border: 2px solid gray; background-color:white; text-align:center;}
+#sprint-group span{display:table-cell; vertical-align: middle;}
+
+/* OKR 부분 */
+
+#sprint-okr{
+    height:45px; display:table; text-align:center;
+}
+
+#sprint-okr span{display:table-cell; vertical-align: middle; font: normal bold 16px 고딕}
+
+
+/* 각각 색있는 부분 (날짜, 피드백, 아이디어...) */
+#sprint-header{display:table; height:30px; text-align:center;}
+#sprint-header span{display:table-cell; vertical-align: middle; font: normal bold 16px 고딕}
+
+/* sprint-content (피드백 밑 내용) */
+#table-head{width:10%}
+
+
+@media (max-width: 767.98px) {
+
+    #sprint-content-container{
+        padding: 0px;
+    }
+
+    #sprint-content table, #sprint-content thead, #sprint-content tbody, #sprint-content th, #sprint-content td, #sprint-content tr{
+      text-align: center;
+      display: block;
+      width:100%;
+      height:auto;
+    }
+
+    .disable{
+        display:none!important
+    }
+
+    .KR{
+        background-color: grey;
+        color: white;
+    }
+
+    .separator{
+        border-top:2px solid grey;
+    }
+  }

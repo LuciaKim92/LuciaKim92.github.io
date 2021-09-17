@@ -1,0 +1,43 @@
+.objective-div{
+    border-radius : 10px;
+    height:85px;
+    word-break:break-all;
+}
+
+.keyresult-bar{
+    margin-top : 2px;
+    border-radius : 5px;
+    background-color:#c2cde1; 
+    height : 25px;
+    cursor: pointer;
+    }
+
+.okr-hr{
+    width : 40%; 
+    height : 3px;
+    background-color : white; 
+    margin-left : 0px;
+}
+
+.okr-badge{
+    margin-right : 3px;
+}
+
+.okr-badge-div{
+    margin-top : 5px;
+}
+
+.keyresult-content-div{
+    border-radius : 10px;
+    margin : 5px; 
+    margin-left : 0px; 
+    border : solid 0.2em; 
+    margin-right : 5px;
+    height : 100px;
+    display : none;
+    font-size : 18px;
+}
+
+.keyresult-content-span{
+    margin-top : 5px;
+}

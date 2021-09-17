@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&display=swap');
+
+* {
+    box-sizing: border-box;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+button.accordion-button {
+    display: inline-block;
+    font-weight: 400;
+}
+
+.accordion-button:focus {
+    border-color: transparent !important;
+    box-shadow: 0 0 0 0 rgb(13 110 253 / 0%) !important;
+}
+
+button.accordion-button::after {
+    position: absolute;
+    right: 1em;
+}
+
+.update-date {
+    font-size: 0.9rem;
+    float: right;
+    margin-right: 2em;
+}
+
+.accordion-body {
+    font-weight: 300;
+    padding: 0 1.25rem !important;
+}
+
+.meeting {
+    display: block;
+    width: 100%;
+    height: 3rem;
+    line-height: 3rem;
+    color: black;
+    text-decoration: none;
+}
+
+    .meeting .update-date {
+        font-size: 0.85rem;
+        color: gray;
+    }
+
+    .meeting:not(:last-child) {
+        border-bottom: 1px solid rgba(170, 159, 159, 0.2);
+    }
+
+    .meeting:hover {
+        color: gray;
+    }
+
+.fa-book {
+    margin-right: 10px;
+}
