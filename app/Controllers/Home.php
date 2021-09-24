@@ -38,9 +38,62 @@ class Home extends BaseController
 
 	public function sprint()
 	{
+		//1. 저번주에 회의록에 작성한 다음주 할 일 부분 (피드백 부분에서 불러올거임)
+		$last_week_plan1 = array("kr" => "1", "담당자" => "고지훈", "할일" => "개발하기1");
+		$last_week_plan2 = array("kr" => "1", "담당자" => "이유진", "할일" => "개발하기2");
+		$last_week_plan3 = array("kr" => "2", "담당자" => "김경민", "할일" => "개발하기3");
+		$last_week_plan4 = array("kr" => "2", "담당자" => "고지훈", "할일" => "개발하기4");
+		$last_week_plan5 = array("kr" => "3", "담당자" => "이유진", "할일" => "개발하기5");
+		$last_week_plan6 = array("kr" => "3", "담당자" => "김경민", "할일" => "개발하기6");
+		$last_week_plan7 = array("kr" => "4", "담당자" => "고지훈", "할일" => "개발하기7");
+		$last_week_plan8 = array("kr" => "4", "담당자" => "이유진", "할일" => "개발하기8");
+		$last_week_plan9 = array("kr" => "5", "담당자" => "김경민", "할일" => "개발하기9");
+		$last_week_plan10 = array("kr" => "5", "담당자" => "고지훈", "할일" => "개발하기10");
+		
+		//2. KR에 따른 데이터 모음집 (피드백 부분)
+		$kr1_last_week_plan = array("1"=>$last_week_plan1, "2"=>$last_week_plan2);
+		$kr2_last_week_plan = array("1"=>$last_week_plan3, "2"=>$last_week_plan4);
+		$kr3_last_week_plan = array("1"=>$last_week_plan5, "2"=>$last_week_plan6);
+		$kr4_last_week_plan = array("1"=>$last_week_plan7, "2"=>$last_week_plan8);
+		$kr5_last_week_plan = array("1"=>$last_week_plan9, "2"=>$last_week_plan10);
+
+		//3. 피드백 부분 데이터
+		$feedback = array(
+			"1"=> $kr1_last_week_plan,
+			"2"=> $kr2_last_week_plan,
+			"3"=> $kr3_last_week_plan,
+			// "4"=> $kr4_last_week_plan,
+			// "5"=> $kr5_last_week_plan,
+		);
+
+		
+		// KEY RESULT 배열
+		$kr = array(
+			"1" => "나는 kr 1 입니다",
+			"2" => "나는 kr 2 입니다",
+			"3" => "나는 kr 3 입니다",
+			// "4" => "나는 kr 4 입니다",
+			// "5" => "나는 kr 5 입니다",
+		);
+
+
+
+		//담당자 배열
+		$manager = array(
+			["이름" => "고지훈", "사원번호" => "111"],
+			["이름" => "이유진", "사원번호" => "222"],
+			["이름" => "김경민", "사원번호" => "333"],
+		);
+
+
+		$mydata['myarray'] = $kr;
+		$mydata['feedback'] = $feedback;
+		$mydata['manager'] = $manager;
+
 		$this->session_setting();
 		$data = $_SESSION;
-		return view('/sprint/sprint123.php',$data);
+		return view('sprint.php', $mydata);
+
 	}
 
 	public function getDashBoardData(){
