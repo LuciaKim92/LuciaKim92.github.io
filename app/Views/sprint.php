@@ -360,7 +360,7 @@
         switch(b.split('-')[0])
         {
             case 'feedback':
-                var html = "<tr class='separator'><td rowspan='2'>" + manager + "</td><td rowspan='2'>" + task +
+                var html = "<tr class='separator'><td rowspan='2' style='text-align:center'>" + manager + "</td><td rowspan='2'>" + task +
                 "</td><td><textarea rows='3' col='30' style='width:100%;' placeholder='high)'></textarea></td></tr>" +  
                 "<tr><td><textarea rows='3' col='30' style='width:100%' placeholder='low)'></textarea></td></tr>";
                 break;
