@@ -526,7 +526,7 @@ License: You must have a valid license purchased only from themeforest(the above
 															ObJective
 														</span>
 														<br><hr class ="okr-hr">
-														<span style="margin-left : 20px">
+														<span id = "compObj" style="margin-left : 20px">
 															지속 가능한 1조 기업 기반 완성 "축적을 통한 Scale-Up"
 														</span>
 													</div>
@@ -536,9 +536,9 @@ License: You must have a valid license purchased only from themeforest(the above
 														</p>
 													</div>
 													<div id = "company-kr-div" class ="keyresult-content-div" style = "border-color : #7957ad; margin-left : 5px">
-														&nbsp;1.<span class = "keyresult-content-span">_______________<br></span>
-														&nbsp;2.<span class = "keyresult-content-span">_______________<br></span>
-														&nbsp;3.<span class = "keyresult-content-span">_______________<br></span>
+														&nbsp;1.<span id = "" class = "keyresult-content-span">_______________<br></span>
+														&nbsp;2.<span id = "" class = "keyresult-content-span">_______________<br></span>
+														&nbsp;3.<span id = "" class = "keyresult-content-span">_______________<br></span>
 													</div>
 													<div class = "text-center okr-badge-div">
 														<span class="m-widget24__change">
@@ -2941,6 +2941,9 @@ License: You must have a valid license purchased only from themeforest(the above
             document.getElementById('dashboard_left_menu').classList.add('m-menu__item--active');
             
 
+			//Objective 불러와서 내용 바꾸기
+			document.getElementById('compObj').innerText = "<?=$_SESSION['admin_names']?>";
+			document.getElementById('company-kr-div').innerHTML = "asdasd<br>adsasdasd <?=$_SESSION['admin_names']?><br>aaaaaaaaaaaaaaaaaaaaaaaaa<br>asdasd";
 
 		
 			/*

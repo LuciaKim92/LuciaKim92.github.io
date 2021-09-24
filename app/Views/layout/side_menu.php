@@ -22,10 +22,10 @@
 										 class="m-menu__link-wrap"> <span class="m-menu__link-text"><img src="/assets/icon/cfr_meeting_icon.png" height="15" width="15">&nbsp;&nbsp;CFR Meeting</span> <span class="m-menu__link-badge"><span class="m-badge m-badge--danger">2</span></span> </span></span></a></li>
 							
 							<!--Sprint Meeting 메뉴 [sprint_left_menu] -->
-							<li id = "sprint_left_menu" class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover"><a href="javascript:;" class="m-menu__link m-menu__toggle"><span class="m-menu__item-here"></span><span
+							<li id = "sprint_left_menu" class="m-menu__item menu-sub-accordion" aria-haspopup="true" m-menu-submenu-toggle="hover"><a href="javascript:;" class="m-menu__link m-menu__toggle"><span class="m-menu__item-here"></span><span
 							class="m-menu__link-text"><img src="/assets/icon/reports_icon.png" height="15" width="15">&nbsp;&nbsp;Sprint Meeting</span></a>
 								<div class="m-menu__submenu "><span class="m-menu__arrow"></span>
-									<ul class="m-menu__subnav">
+									<ul class="m-menu__subnav active open">
 										<li class="m-menu__item  m-menu__item--parent" aria-haspopup="true"><span class="m-menu__link"><span class="m-menu__item-here"></span><span class="m-menu__link-text">Applications</span></span></li>
 										<li class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1"><a href="/home/sprint_list" class="m-menu__link "><i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i><span class="m-menu__link-text">Sprint Meeting 목록</span></a></li>
 										<li class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1"><a href="/home/sprint" class="m-menu__link "><i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i><span class="m-menu__link-text">Sprint Meeting 등록</span></a></li>

@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Controllers;
+use App\Models\DashBoardModel;
+use App\Models\LayoutModel;
 
 class Home extends BaseController
 {
@@ -39,6 +41,18 @@ class Home extends BaseController
 		$this->session_setting();
 		$data = $_SESSION;
 		return view('/sprint/sprint123.php',$data);
+	}
+
+	public function getDashBoardData(){
+		$this->dashBoardModel=new DashBoardModel();
+		//dashBoardModel->GetDashBoardData($_SESSION['admin_id']);
+		$kr = array();     // 배열 생성
+		$kr[0] = "apple";  // 배열 요소 추가
+		$kr[1] = "banana";
+		$kr[2] = "orange";
+		$data = array(
+			
+		);
 	}
 
 
