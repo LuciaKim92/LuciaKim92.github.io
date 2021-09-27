@@ -2942,8 +2942,8 @@ License: You must have a valid license purchased only from themeforest(the above
             
 
 			//Objective 불러와서 내용 바꾸기
-			document.getElementById('compObj').innerText = "<?=$_SESSION['admin_names']?>";
-			document.getElementById('company-kr-div').innerHTML = "asdasd<br>adsasdasd <?=$_SESSION['admin_names']?><br>aaaaaaaaaaaaaaaaaaaaaaaaa<br>asdasd";
+			//document.getElementById('compObj').innerText = "<?=$_SESSION['admin_names']?>";
+			//document.getElementById('company-kr-div').innerHTML = "asdasd<br>adsasdasd <?=$_SESSION['admin_names']?><br>aaaaaaaaaaaaaaaaaaaaaaaaa<br>asdasd";
 
 		
 			/*

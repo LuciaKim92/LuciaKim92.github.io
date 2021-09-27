@@ -25,15 +25,60 @@ class Home extends BaseController
 	public function dashboard()
 	{
 		$this->session_setting();
-		$data = $_SESSION;
-		return view("index.php",$data);
+		//$data = getDashBoardData();
+		$krList = array();     // 배열 생성
+		$krList[0] = "첫 번째 KR입니다. 첫 번째 KR입니다. 첫 번째 KR입니다.";  // 배열 요소 추가
+		$krList[1] = "두 번째 KR입니다. 두 번째 KR입니다. 두 번째 KR입니다.";
+		$krList[2] = "세 번째 KR입니다. 세 번째 KR입니다. 세 번째 KR입니다.";
+		$krList[3] = "네 번째 KR입니다. 네 번째 KR입니다. 네 번째 KR입니다.";
+
+		$compObj = '지속 가능한 1조 기업 기반 완성 "축적을 통한 Scale-Up"';
+		$deptObj = '"Infra"확충을 통한 一流 대원 만들기';
+		$teamObj = 'OKR 축적문화 조성을 통한 1조기업의 인프라를 구축한다.';
+
+		$comp = array(
+			"code" => "1",
+			"krList" => $krList,
+			"obj" => $compObj
+		);
+
+		$dept = array(
+			"code" => "2",
+			"krList" => $krList,
+			"obj" => $deptObj
+		);
+
+		$team = array(
+			"code" => "3",
+			"krList" => $krList,
+			"obj" => $teamObj
+		);
+
+		//DB에서 받아온 팀코드? 구분코드? 구분짓기?
+		/*
+		for(int i = 0; i < 3; i++){
+			switch($getData['dbCode']??){
+				case ___ : dbCode = 1; //comp
+				case ___ : dbCode = 2; //dept
+				case ___ : dbCode = 3; //team
+				default : dbcode = 0; //이상한거 넣어져있을 때
+			}
+		}
+		*/
+
+		$dashBoardData = array(
+			"comp" => $comp,
+			"dept" => $dept,
+			"team" => $team
+		);
+
+		return view("index.php",$dashBoardData);
 	}
 
 	public function sprint_list()
 	{
 		$this->session_setting();
-		$data = $_SESSION;
-		return view("/sprint/sprint_list.php",$data);
+		return view("/sprint/sprint_list.php");
 	}
 
 	// sprint meeting 회의록 작성
@@ -92,11 +137,11 @@ class Home extends BaseController
 		$mydata['manager'] = $manager;
 
 		$this->session_setting();
-		$data = $_SESSION;
-		return view('sprint.php', $mydata);
+		return view('sprint/sprint.php', $mydata);
 
 	}
 
+<<<<<<< Updated upstream
 	// sprint meeting 회의록 보여주는거
 	public function sprint2(){
 
@@ -168,14 +213,58 @@ class Home extends BaseController
 
 	public function getDashBoardData(){
 		$this->dashBoardModel=new DashBoardModel();
+=======
+	public function getDashBoardData($a){
+		//$this->dashBoardModel=new DashBoardModel();
+>>>>>>> Stashed changes
 		//dashBoardModel->GetDashBoardData($_SESSION['admin_id']);
-		$kr = array();     // 배열 생성
-		$kr[0] = "apple";  // 배열 요소 추가
-		$kr[1] = "banana";
-		$kr[2] = "orange";
-		$data = array(
-			
+		$krList = array();     // 배열 생성
+		$krList[0] = "첫 번째 KR입니다. 첫 번째 KR입니다. 첫 번째 KR입니다.";  // 배열 요소 추가
+		$krList[1] = "두 번째 KR입니다. 두 번째 KR입니다. 두 번째 KR입니다.";
+		$krList[2] = "세 번째 KR입니다. 세 번째 KR입니다. 세 번째 KR입니다.";
+		$krList[3] = "네 번째 KR입니다. 네 번째 KR입니다. 네 번째 KR입니다.";
+
+		$compObj = '지속 가능한 1조 기업 기반 완성 "축적을 통한 Scale-Up"';
+		$deptObj = '"Infra"확충을 통한 一流 대원 만들기';
+		$teamObj = 'OKR 축적문화 조성을 통한 1조기업의 인프라를 구축한다.';
+
+		$comp = array(
+			"code" => "1",
+			"krList" => $krList,
+			"obj" => $compObj
 		);
+
+		$dept = array(
+			"code" => "2",
+			"krList" => $krList,
+			"obj" => $deptObj
+		);
+
+		$team = array(
+			"code" => "3",
+			"krList" => $krList,
+			"obj" => $teamObj
+		);
+
+		//DB에서 받아온 팀코드? 구분코드? 구분짓기?
+		/*
+		for(int i = 0; i < 3; i++){
+			switch($getData['dbCode']??){
+				case ___ : dbCode = 1; //comp
+				case ___ : dbCode = 2; //dept
+				case ___ : dbCode = 3; //team
+				default : dbcode = 0; //이상한거 넣어져있을 때
+			}
+		}
+		*/
+
+		$dashBoardData = array(
+			"comp" => $comp,
+			"dept" => $dept,
+			"team" => $team
+		);
+		
+		return $dashBoardData;
 	}
 
 
