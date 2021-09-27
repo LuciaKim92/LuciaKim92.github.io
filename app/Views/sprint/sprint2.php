@@ -386,6 +386,14 @@
 		$('#' + b).append(html);
 	}
 
+     //Sprint Meeting 메뉴 활성화
+     elements = document.getElementsByClassName('m-menu__item--active');
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].classList.remove('m-menu__item--active');
+        }
+
+        document.getElementById('sprint_left_menu').classList.add('m-menu__item--active');
+
 
 </script>
 
