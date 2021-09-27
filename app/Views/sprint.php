@@ -97,7 +97,7 @@
                             <a href="https://keenthemes.com/metronic/documentation.html" target="_blank"><i class="la la-save"></i></a>
                         </li>
                         <li class="m-nav-sticky__item" data-toggle="m-tooltip" title="" data-placement="left" data-original-title="목록으로">
-                            <a href="https://keenthemes.com/forums/forum/support/metronic5/" target="_blank"><i class="la la-list"></i></a>
+                            <a href="/home/sprint_list" ><i class="la la-list"></i></a>
                         </li>
                     </ul>
 

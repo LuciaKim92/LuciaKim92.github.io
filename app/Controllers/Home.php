@@ -36,6 +36,7 @@ class Home extends BaseController
 		return view("/sprint/sprint_list.php",$data);
 	}
 
+	// sprint meeting 회의록 작성
 	public function sprint()
 	{
 		//1. 저번주에 회의록에 작성한 다음주 할 일 부분 (피드백 부분에서 불러올거임)
@@ -94,6 +95,75 @@ class Home extends BaseController
 		$data = $_SESSION;
 		return view('sprint.php', $mydata);
 
+	}
+
+	// sprint meeting 회의록 보여주는거
+	public function sprint2(){
+
+		//feedback 데이터
+		$feedback_list_1 = array(
+			["담당자" => "고지훈", "한일" => "스프린트 회의록 양식 개발", "high" => "조금 손보면 될것 같네!", "low" => "잘했네"],
+			["담당자" => "이유진", "한일" => "데쉬보드 UI 개발", "high" => "이 부분 조금만 수정하게!", "low" => "잘했어"],
+			["담당자" => "김경민", "한일" => "스프린트 회의록 목록 개발", "high" => "좀더 해보게!", "low" => "잘했어 잘했어"],
+		);
+
+		$feedback_list_2 = array(
+			["담당자" => "고지훈2", "한일" => "스프린트 회의록 양식 개발2", "high" => "조금 손보면 될것 같네!", "low" => "잘했네"],
+			["담당자" => "이유진2", "한일" => "데쉬보드 UI 개발2", "high" => "이 부분 조금만 수정하게!", "low" => "잘했어"],
+		);
+
+		$feedback_list_3 = array(
+			["담당자" => "김경민3", "한일" => "스프린트 회의록 목록 개발3", "high" => "좀더 해보게!", "low" => "잘했어 잘했어"],
+		);
+
+		//idea 데이터
+		$idea_list_1 = array(
+			["담당자" => "고지훈", "전략" => "밤 세워서 개발하기!", "아이디어" => "카페인을 섭취하기"],
+		);
+
+		$idea_list_2 = array(
+			["담당자" => "고지훈", "전략" => "오류없는 개발하기!", "아이디어" => "인터넷 찾아보기"],
+			["담당자" => "이유진", "전략" => "즐겁게 개발하기!", "아이디어" => "충분한 휴식시간 갖기"],
+		);
+
+		$idea_list_3 = array(
+			["담당자" => "고지훈", "전략" => "밤 세워서 개발하기!", "아이디어" => "카페인을 섭취하기"],
+			["담당자" => "이유진", "전략" => "밤 세워서 개발하기!", "아이디어" => "카페인을 섭취하기"],
+			["담당자" => "김경민", "전략" => "밤 세워서 개발하기!", "아이디어" => "카페인을 섭취하기"],
+		);
+
+		//plan 데이터
+		$plan_list_1 = array(
+			["담당자" => "고지훈", "할일" => "스프린트 미팅 회의록 화면 구현하기"],
+			["담당자" => "이유진", "할일" => "데쉬보드 화면 구현하기"],
+			["담당자" => "김경민", "할일" => "스프린트 미팅 목록 구현하기"],
+		);
+
+		$plan_list_2 = array(
+			["담당자" => "고지훈2", "할일" => "스프린트 미팅 회의록 화면 구현하기2"],
+			["담당자" => "이유진2", "할일" => "데쉬보드 화면 구현하기2"],
+			["담당자" => "김경민2", "할일" => "스프린트 미팅 목록 구현하기2"],
+		);
+
+		$plan_list_3 = array(
+			["담당자" => "고지훈3", "할일" => "스프린트 미팅 회의록 화면 구현하기3"],
+			["담당자" => "이유진3", "할일" => "데쉬보드 화면 구현하기3"],
+			["담당자" => "김경민3", "할일" => "스프린트 미팅 목록 구현하기3"],
+		);
+
+		//KEY RESULT 배열 3개만 있다고 가정
+		$kr_list = array(
+			["index" => "1", "content" => "kr1 입니다.", "feedback" => $feedback_list_1, "idea" => $idea_list_1, "plan" => $plan_list_1],
+			["index" => "2", "content" => "kr2 입니다.", "feedback" => $feedback_list_2, "idea" => $idea_list_2, "plan" => $plan_list_2],
+			["index" => "3", "content" => "kr3 입니다.", "feedback" => $feedback_list_3, "idea" => $idea_list_3, "plan" => $plan_list_3]
+		);
+
+		$mydata['myarray'] = $kr_list;
+
+		$this->session_setting();
+		$data = $_SESSION;
+
+		return view('sprint2.php', $mydata);
 	}
 
 	public function getDashBoardData(){
