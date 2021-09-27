@@ -141,7 +141,6 @@ class Home extends BaseController
 
 	}
 
-<<<<<<< Updated upstream
 	// sprint meeting 회의록 보여주는거
 	public function sprint2(){
 
@@ -208,15 +207,11 @@ class Home extends BaseController
 		$this->session_setting();
 		$data = $_SESSION;
 
-		return view('sprint2.php', $mydata);
+		return view('/sprint/sprint2.php', $mydata);
 	}
 
 	public function getDashBoardData(){
 		$this->dashBoardModel=new DashBoardModel();
-=======
-	public function getDashBoardData($a){
-		//$this->dashBoardModel=new DashBoardModel();
->>>>>>> Stashed changes
 		//dashBoardModel->GetDashBoardData($_SESSION['admin_id']);
 		$krList = array();     // 배열 생성
 		$krList[0] = "첫 번째 KR입니다. 첫 번째 KR입니다. 첫 번째 KR입니다.";  // 배열 요소 추가
