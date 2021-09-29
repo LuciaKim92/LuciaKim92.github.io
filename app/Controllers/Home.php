@@ -84,7 +84,9 @@ class Home extends BaseController
 			"max" => $max
 		);
 
-		return view("index.php",$dashBoardData);
+		$mydata['dashBoardData'] = $dashBoardData;
+
+		return view("index.php", $mydata);
 	}
 
 	public function sprint_list()

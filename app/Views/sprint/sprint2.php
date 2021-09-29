@@ -93,9 +93,14 @@
                             <a onclick="test()" style="cursor:pointer"><i class="la la-bookmark"><button id="sprint-sticky-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter"></button></i></a>
                         </li>
 
-                        <li class="m-nav-sticky__item" data-toggle="m-tooltip" title="" data-placement="left" data-original-title="저장하기">
-                            <a href="https://keenthemes.com/metronic/documentation.html" target="_blank"><i class="la la-save"></i></a>
+                        <li class="m-nav-sticky__item" data-toggle="m-tooltip" title="" data-placement="left" data-original-title="작성하기">
+                            <a href="/home/sprint"><i class="la la-plus-circle"></i></a>
                         </li>
+
+                        <li class="m-nav-sticky__item" data-toggle="m-tooltip" title="" data-placement="left" data-original-title="수정하기">
+                            <a href="/home/sprint"><i class="la la-pencil-square"></i></a>
+                        </li>
+
                         <li class="m-nav-sticky__item" data-toggle="m-tooltip" title="" data-placement="left" data-original-title="목록으로">
                             <a href="/home/sprint_list"><i class="la la-list"></i></a>
                         </li>
