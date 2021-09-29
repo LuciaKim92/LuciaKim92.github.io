@@ -536,9 +536,25 @@ License: You must have a valid license purchased only from themeforest(the above
 														</p>
 													</div>
 													<div id = "company-kr-div" class ="keyresult-content-div" style = "border-color : #7957ad; margin-left : 5px">
+														<?php
+														/*
+															$i = 0;
+															foreach($comp as $key => $bean){
+																foreach($bean["krList"] as $key2 => $krList){
+																	echo("&nbsp;");
+																	echo($i+1);
+																	echo(".<span id='' class = 'keyresult-content-span'>");
+																	echo($krList[$i]);
+																	echo("<br></span>");
+																}
+															}
+															*/
+														?>
+														<!--
 														&nbsp;1.<span id = "" class = "keyresult-content-span">_______________<br></span>
 														&nbsp;2.<span id = "" class = "keyresult-content-span">_______________<br></span>
 														&nbsp;3.<span id = "" class = "keyresult-content-span">_______________<br></span>
+														-->
 													</div>
 													<div class = "text-center okr-badge-div">
 														<span class="m-widget24__change">
@@ -2939,11 +2955,12 @@ License: You must have a valid license purchased only from themeforest(the above
             }
 
             document.getElementById('dashboard_left_menu').classList.add('m-menu__item--active');
+			document.getElementById('loginID').innerText = "<?=$max?>";
+
             
 
 			//Objective 불러와서 내용 바꾸기
-			//document.getElementById('compObj').innerText = "<?=$_SESSION['admin_names']?>";
-			//document.getElementById('company-kr-div').innerHTML = "asdasd<br>adsasdasd <?=$_SESSION['admin_names']?><br>aaaaaaaaaaaaaaaaaaaaaaaaa<br>asdasd";
+
 
 		
 			/*

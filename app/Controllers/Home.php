@@ -36,6 +36,8 @@ class Home extends BaseController
 		$deptObj = '"Infra"확충을 통한 一流 대원 만들기';
 		$teamObj = 'OKR 축적문화 조성을 통한 1조기업의 인프라를 구축한다.';
 
+		$max = 0;
+
 		$comp = array(
 			"code" => "1",
 			"krList" => $krList,
@@ -54,6 +56,15 @@ class Home extends BaseController
 			"obj" => $teamObj
 		);
 
+		$cnt = array(
+			count($comp['krList']), count($dept['krList'], count($team['krList']))
+		);
+
+		foreach ($cnt as $value){
+			if($max < $value)
+				$max = $value;
+		}
+
 		//DB에서 받아온 팀코드? 구분코드? 구분짓기?
 		/*
 		for(int i = 0; i < 3; i++){
@@ -69,7 +80,8 @@ class Home extends BaseController
 		$dashBoardData = array(
 			"comp" => $comp,
 			"dept" => $dept,
-			"team" => $team
+			"team" => $team,
+			"max" => $max
 		);
 
 		return view("index.php",$dashBoardData);
@@ -222,6 +234,8 @@ class Home extends BaseController
 		$compObj = '지속 가능한 1조 기업 기반 완성 "축적을 통한 Scale-Up"';
 		$deptObj = '"Infra"확충을 통한 一流 대원 만들기';
 		$teamObj = 'OKR 축적문화 조성을 통한 1조기업의 인프라를 구축한다.';
+
+		
 
 		$comp = array(
 			"code" => "1",
