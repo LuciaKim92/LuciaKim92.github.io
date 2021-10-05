@@ -117,7 +117,7 @@
                                                     <th style="width:50%">부분(본부)/팀</th>
 
 													<!-- 팀 정보 받아와야함 -->
-                                                    <th>경영기획부분/IT혁신팀</th>
+                                                    <th><?=$myarr['DEPT_UP_NM']?>/<?=$myarr['DEPT_NM']?></th>
                                                 </tr>
                                             </tbody>
                                         </table>                                                
@@ -130,7 +130,7 @@
                             <div class="col-xl-12">
                                 <div class="row">
 									<!-- 윗 부분 Objective -->
-                                    <div class="col-xl-4">
+                                    <div class="col-xl-6">
                                         <div class="m-portlet m-portlet--full-height  m-portlet--unair">
                                             <div class="m-portlet__head" style="background-color:#cbcefb; display:table; width:100%">
                                                 <div class="m-portlet__head-title" style="display:table-cell; vertical-align:middle; text-align:center">
@@ -139,14 +139,14 @@
                                             </div>
 
                                             <div class="m-portlet__body" style="display:table; text-align:center; width:100%">
-                                                <h1 style="display:table-cell; vertical-align:middle;">Objective Contents</h1>
+                                                <h1 style="display:table-cell; vertical-align:middle;">"<?=$myarr['OBJECTIVE']?>"</h1>
                                             </div>
 
                                         </div>
                                     </div>
 
 									<!-- 윗 부분 Key result  -->
-                                    <div class="col-xl-8">
+                                    <div class="col-xl-6">
                                         <div class="m-portlet m-portlet--full-height  m-portlet--unair">
 
                                             <div class="m-portlet__head" style="background-color:#cbcefb; display:table; width:100%">
@@ -156,19 +156,19 @@
                                             </div>
 
                                             <div class="m-portlet__body" style="padding:0px">
-                                                <table class="table table-bordered" id="sprint-table" style="height:150px">
+                                                <table class="table table-bordered" id="sprint-table" style="height:100%; margin:0px">
                                                     <tbody>
                                                         <?php
-                                                            if(sizeof($myarray)){
-                                                                foreach($myarray as $key=>$bean){
-                                                                    ?>
-                                                                    <tr>
-                                                                        <th scope="row" style="width:10%"><?=$bean['index']?></th>
-                                                                        <td><?=$bean['content']?></td>
-                                                                    </tr>
-                                                                    <?php
-                                                                }
-                                                            }
+
+                                                        foreach($myarr['KR'] as $key=>$bean){
+                                                            ?>
+                                                            <tr>
+                                                                <th scope="row" style="width:10%"><?=$key+1?></th>
+                                                                <td><?=$bean['CONTENT']?></td>
+                                                            </tr>
+                                                            <?php
+                                                        }
+
                                                         ?>
                                                     </tbody>
                                                 </table>
@@ -190,7 +190,9 @@
 
                                                         <!--달력부분 차후 날짜변경시 그 날짜의 회의록 불러오도록 함수 추가해야함-->
                                                         <tr style="background-color:#fffc9e">
-                                                            <td colspan="4" style="text-align:center"><input type="date" class="form-control" style="display:inline-block; width:150px; text-align:center;" placeholder="date input" value="2019-09-09"></td>
+                                                            <td colspan="4" style="text-align:center">
+                                                                <input type="date" id="date" class="form-control" style="display:inline-block; width:150px; text-align:center;" placeholder="date input" value="<?=$myarr['MEET_DT']?>">
+                                                            </td>
                                                         </tr>
 
 														<!-- 피드백부분 -->
@@ -202,30 +204,31 @@
                                                         </tr>
 
                                                         <?php
-                                                            foreach($myarray as $key=>$bean){
+                                                            foreach($myarr['FEED'] as $key=>$bean){
                                                                 ?>
                                                                 
-                                                                <tbody id="feedback-kr-<?=$bean['index']?>">
+                                                                <tbody id="feedback-kr-<?=$key+1?>">
                                                                     <tr>
-                                                                        <th class="KR" id="feedback-kr-<?=$bean['index']?>-head" rowspan="6">
-                                                                            Key Result <?=$bean['index']?>
+                                                                        <th class="KR" id="feedback-kr-<?=$key+1?>-head" rowspan="6">
+                                                                            Key Result <?=$key+1?>
                                                                         </th>   
                                                                     </tr>
 
 																	<?php
-																		foreach($bean['feedback'] as $key2 => $bean2){
+																		foreach($bean as $key2 => $bean2){
 																			?>
 																			<script>
-																			$(document).ready(function(){
-																				add_feedback_column('feedback-kr-<?=$bean["index"]?>', '<?=$bean2["담당자"]?>', '<?=$bean2["한일"]?>',  '<?=$bean2["high"]?>', '<?=$bean2["low"]?>');
-																			});
+                                                                                $(document).ready(function(){
+                                                                                    add_feedback_column('feedback-kr-<?=$key+1?>', '<?=$bean2["EMP_NM"]?>', '<?=$bean2["CONTENT"]?>',  '<?=$bean2["HIGHLIGHT"]?>', '<?=$bean2["LOWLIGHT"]?>');
+                                                                                });
 																			</script>
 
 																			<?php
 																		}
-																		?>
-                                                                																															
+																	?>
+
                                                                 </tbody>
+
                                                                 <?php
                                                             }
                                                         ?>
@@ -241,22 +244,22 @@
                                                         </tr>
 														
                                                         <?php
-                                                            foreach($myarray as $key=>$bean){
+                                                            foreach($myarr['IDEA'] as $key=>$bean){
                                                                 ?>
                                                                 
-                                                                <tbody id="idea-kr-<?=$bean['index']?>">
+                                                                <tbody id="idea-kr-<?=$key+1?>">
                                                                     <tr>
-                                                                        <th class="KR" id="idea-kr-<?=$bean['index']?>-head" rowspan="6">
-                                                                            Key Result <?=$bean['index']?>
+                                                                        <th class="KR" id="idea-kr-<?=$key+1?>-head" rowspan="6">
+                                                                            Key Result <?=$key+1?>
                                                                         </th>   
                                                                     </tr>
 
 																	<?php
-																		foreach($bean['idea'] as $key2 => $bean2){
+																		foreach($bean as $key2 => $bean2){
 																			?>
 																			<script>
 																			$(document).ready(function(){
-																				add_idea_column('idea-kr-<?=$bean["index"]?>', '<?=$bean2["담당자"]?>', '<?=$bean2["전략"]?>',  '<?=$bean2["아이디어"]?>');
+																				add_idea_column('idea-kr-<?=$key+1?>', '<?=$bean2["EMP_NM"]?>', '<?=$bean2["TO_DO_CONTENT"]?>',  '<?=$bean2["IDEA_CONTENT"]?>');
 																			});
 																			</script>
 
@@ -280,22 +283,22 @@
                                                         </tr>
 
                                                         <?php
-                                                            foreach($myarray as $key=>$bean){
+                                                            foreach($myarr['PLAN'] as $key=>$bean){
                                                                 ?>
                                                                 
-                                                                <tbody id="plan-kr-<?=$bean['index']?>">
+                                                                <tbody id="plan-kr-<?=$key+1?>">
                                                                     <tr>
-                                                                        <th class="KR" id="plan-kr-<?=$bean['index']?>-head" rowspan="6">
-                                                                            Key Result <?=$bean['index']?>
+                                                                        <th class="KR" id="plan-kr-<?=$key+1?>-head" rowspan="6">
+                                                                            Key Result <?=$key+1?>
                                                                         </th>   
                                                                     </tr>
 
 																	<?php
-																		foreach($bean['plan'] as $key2 => $bean2){
+																		foreach($bean as $key2 => $bean2){
 																			?>
 																			<script>
 																			$(document).ready(function(){
-																				add_plan_column('plan-kr-<?=$bean["index"]?>', '<?=$bean2["담당자"]?>', '<?=$bean2["할일"]?>');
+																				add_plan_column('plan-kr-<?=$key+1?>', '<?=$bean2["EMP_NM"]?>', '<?=$bean2["CONTENT"]?>');
 																			});
 																			</script>
 
@@ -349,6 +352,45 @@
     function test(){
         document.getElementById('sprint-sticky-button').click();
     }
+
+    $('#date').change(mytest123=function(){
+        
+        var temp = document.getElementById('date').value
+
+        $.ajax({
+            type : 'POST',
+            url : '/Sprint_Meet_Controller/spr_main_date',
+            cache : false,
+            data : {"DATE": temp},
+            success : function( data ){
+                console.log( data );
+
+                if(data == '회의록 없음'){
+
+                    if(confirm("회의록이 없어요! 작성하시겠어요?")){
+                        location.href="/Sprint_Meet_Controller/spr_create";
+                    }
+
+                    else{
+                        // 일시적으로 change 이벤트 삭제
+                        $("#date").unbind();
+                        document.getElementById('date').value = "<?=$myarr['MEET_DT']?>";
+                        $("#date").change(mytest123);
+                    }
+                }
+
+                else{
+                    location.href="/Sprint_Meet_Controller/spr_main_id/"+data;
+                }
+            },
+            error : function( jqxhr , status , error ){
+                // console.log( jqxhr , status , error );
+            }
+        });
+
+    });
+
+
 
     function add_feedback_column(b, manager, task, high, low){
 		var a = $('#' + b + '-head').attr('rowspan');

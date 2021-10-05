@@ -54,10 +54,10 @@ class Database extends Config
 	 /*
 	public $default = [
 		'DSN'      => '',
-		'hostname' => 'localhost',
-		'username' => '',
-		'password' => '',
-		'database' => '',
+		'hostname' => '211.233.21.82',
+		'username' => 'dwokr',
+		'password' => 'dwokr@)@!21',
+		'database' => 'dwokr',
 		'DBDriver' => 'MySQLi',
 		'DBPrefix' => '',
 		'pConnect' => false,

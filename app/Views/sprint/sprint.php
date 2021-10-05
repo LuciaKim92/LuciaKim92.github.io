@@ -110,7 +110,7 @@
                                             <tbody>
                                                 <tr>
                                                     <th style="width:50%">부분(본부)/팀</th>
-                                                    <th>경영기획부분/IT혁신팀</th>
+                                                    <th>안녕</th>
                                                 </tr>
                                             </tbody>
                                         </table>                                                
@@ -131,7 +131,7 @@
                                             </div>
 
                                             <div class="m-portlet__body" style="display:table; text-align:center; width:100%">
-                                                <h1 style="display:table-cell; vertical-align:middle;">Objective Contents</h1>
+                                                <h1 style="display:table-cell; vertical-align:middle;">안녕하세요</h1>
                                             </div>
 
                                         </div>
@@ -150,17 +150,7 @@
                                                 <table class="table table-bordered" id="sprint-table" style="height:150px">
                                                     <tbody>
                                                         <?php
-                                                            if(sizeof($myarray)){
-                                                                foreach($myarray as $key=>$bean){
-
-                                                                    ?>
-                                                                    <tr>
-                                                                        <th scope="row" style="width:10%"><?=$key?></th>
-                                                                        <td><?=$bean?></td>
-                                                                    </tr>
-                                                                    <?php
-                                                                }
-                                                            }
+ 
                                                         ?>
                                                     </tbody>
                                                 </table>
@@ -183,7 +173,7 @@
 
                                                         <!--달력부분 차후 날짜변경시 그 날짜의 회의록 불러오도록 함수 추가해야함-->
                                                         <tr style="background-color:#fffc9e">
-                                                            <td colspan="4" style="text-align:center"><input type="date" class="form-control" style="display:inline-block; width:150px; text-align:center;" placeholder="date input" value="2019-09-09"></td>
+                                                            <td colspan="4" style="text-align:center"><input type="date" class="form-control" style="display:inline-block; width:150px; text-align:center;" placeholder="date input" value="2021-09-15"></td>
                                                         </tr>
 
                                                         <tr style="background-color:#dae8fc">
@@ -192,31 +182,10 @@
                                                             <th scope="col" class="disable" style="width:40%">지난주 한 일</th>
                                                             <th scope="col" style="width:100%">피드백</th>
                                                         </tr>
-
+                                                        
+                                                        <!-- 추가해야됨 -->
                                                         <?php
-                                                            foreach($feedback as $key=>$bean){
-                                                                ?>
-                                                                
-                                                                <tbody id="feedback-kr-<?=$key?>">
-                                                                    <tr>
-                                                                        <th class="KR" id="feedback-kr-<?=$key?>-head" rowspan="6">
-                                                                            Key Result <?=$key?>
-                                                                        </th>   
-                                                                    </tr>
-                                                                <?php
-                                                                foreach($bean as $key2=>$bean2){
-                                                                    ?>
-                                                                    <script>
-                                                                        $(document).ready(function(){
-                                                                            add_colum('feedback-kr-<?=$bean2['kr']?>', '<?=$bean2['담당자']?>', '<?=$bean2['할일']?>');
-                                                                        });
-                                                                    </script>
-                                                                    <?php
-                                                                }
-                                                                ?>
-                                                                </tbody>
-                                                                <?php
-                                                            }
+
                                                         ?>
 
                                                     </tbody>
@@ -230,40 +199,9 @@
                                                             <th>아이디어</th>
                                                         </tr>
 
+                                                        <!-- 추가해야됨 -->
                                                         <?php
-                                                            foreach($myarray as $key=>$bean){
-                                                                ?>
-                                                                <tbody id="idea-kr-<?=$key?>">
-                                                                    <tr>
-                                                                        <th class="KR" rowspan="2" id="idea-kr-<?=$key?>-head">
-                                                                            Key Result <?=$key?>
-                                                                        </th>
-                                                                    </tr>
 
-                                                                <?php
-                                                                    for($i=0; $i<2; $i++){
-                                                                        ?>
-                                                                        <script>
-                                                                            $(document).ready(function(){
-                                                                                add_colum('idea-kr-<?=$key?>');
-                                                                            });
-                                                                        </script>    
-
-                                                                        <?php
-                                                                    }    
-                                                                    ?>
-                                                                    
-                                                                </tbody>
-                                                                <tr>
-                                                                    <td colspan="4" style="text-align:center; ">
-                                                                        <button type="button" class="btn btn-success" id="btn1" onclick="add_colum('idea-kr-<?=$key?>')">+</button>
-                                                                        <button type="button" class="btn btn-danger" id="btn1" onclick="remove_colum('idea-kr-<?=$key?>')">-</button>
-                                                                    </td>
-                                                                 </tr>   
-
-                                                                <?php
-
-                                                            }
                                                         ?>
                                                     </tbody>
 
@@ -274,41 +212,10 @@
                                                             <th class="disable">담당자</th>
                                                             <th colspan="2">다음주 할 일</th>
                                                         </tr>
-
+                                                        
+                                                        <!-- 추가해야됨 -->
                                                         <?php
-                                                            foreach($myarray as $key=>$bean){
-                                                                ?>
-                                                                <tbody id="plan-kr-<?=$key?>">
-                                                                    <tr>
-                                                                        <th class="KR" rowspan="2" id="plan-kr-<?=$key?>-head">
-                                                                            Key Result <?=$key?>
-                                                                        </th>
-                                                                    </tr>
 
-                                                                <?php
-                                                                    for($i=0; $i<2; $i++){
-                                                                        ?>
-                                                                        <script>
-                                                                            $(document).ready(function(){
-                                                                                add_colum('plan-kr-<?=$key?>');
-                                                                            });
-                                                                        </script>    
-
-                                                                        <?php
-                                                                    }    
-                                                                    ?>
-                                                                    
-                                                                </tbody>
-                                                                <tr>
-                                                                    <td colspan="4" style="text-align:center; ">
-                                                                        <button type="button" class="btn btn-success" id="btn1" onclick="add_colum('plan-kr-<?=$key?>')">+</button>
-                                                                        <button type="button" class="btn btn-danger" id="btn1" onclick="remove_colum('plan-kr-<?=$key?>')">-</button>
-                                                                    </td>
-                                                                 </tr>   
-
-                                                                <?php
-
-                                                            }
                                                         ?>
 
                                                     </tbody>
@@ -353,119 +260,111 @@
         document.getElementById('sprint-sticky-button').click();
     }
 
-    function add_colum(b, manager, task){
-        var a = $('#' + b + '-head').attr('rowspan');
-        $('#' + b + '-head').attr('rowspan', a+2);
+    // function add_colum(b, manager, task){
+    //     var a = $('#' + b + '-head').attr('rowspan');
+    //     $('#' + b + '-head').attr('rowspan', a+2);
 
-        switch(b.split('-')[0])
-        {
-            case 'feedback':
-                var html = "<tr class='separator'><td rowspan='2' style='text-align:center'>" + manager + "</td><td rowspan='2'>" + task +
-                "</td><td><textarea rows='3' col='30' style='width:100%;' placeholder='high)'></textarea></td></tr>" +  
-                "<tr><td><textarea rows='3' col='30' style='width:100%' placeholder='low)'></textarea></td></tr>";
-                break;
+    //     switch(b.split('-')[0])
+    //     {
+    //         case 'feedback':
+    //             var html = "<tr class='separator'><td rowspan='2' style='text-align:center'>" + manager + "</td><td rowspan='2'>" + task +
+    //             "</td><td><textarea rows='3' col='30' style='width:100%;' placeholder='high)'></textarea></td></tr>" +  
+    //             "<tr><td><textarea rows='3' col='30' style='width:100%' placeholder='low)'></textarea></td></tr>";
+    //             break;
 
-            case 'idea':
-                var html = `<tr class='separator'>
-                                <td>
-                                    <select onchange="this.value=this.options[this.selectedIndex].value; change_child(this)">
-                                    <option value="none">=== 선택 ===</option>
-                                    <?php
-                                        foreach($manager as $key=>$bean){
-                                            ?>
-                                            <option value="<?=$bean['사원번호']?>"><?=$bean['이름']?></option>
-                                            <?php
-                                        }
-                                        ?>
-                                    </select>
-                                </td>
+    //         case 'idea':
+    //             var html = `<tr class='separator'>
+    //                             <td>
+    //                                 <select onchange="this.value=this.options[this.selectedIndex].value; change_child(this)">
+    //                                 <option value="none">=== 선택 ===</option>
+    //                                 <?php
 
-                                <td id='div_chk' value="123">
-                                    <select style='width: 100%;' onchange='this.value=this.options[this.selectedIndex].value;'></select>
-                                </td>
+    //                                     ?>
+    //                                 </select>
+    //                             </td>
 
-                                <td><textarea rows='3' col='30' style='width:100%' placeholder='[아이디어]'></textarea></td></td>
-                            </tr>`;
-                break;
+    //                             <td id='div_chk' value="123">
+    //                                 <select style='width: 100%;' onchange='this.value=this.options[this.selectedIndex].value;'></select>
+    //                             </td>
 
-            case 'plan':
-                var html =  `<tr class='separator'>
-                                <td>
-                                    <select onchange="this.value=this.options[this.selectedIndex].value;">
-                                        <option value="none">=== 선택 ===</option>
-                                        <?php
-                                            foreach($manager as $key2=>$bean2){
-                                                ?>
-                                                <option value="<?=$bean2['사원번호']?>"><?=$bean2['이름']?></option>
-                                                <?php
-                                            }
-                                            ?>
-                                    </select>
-                                </td>
+    //                             <td><textarea rows='3' col='30' style='width:100%' placeholder='[아이디어]'></textarea></td></td>
+    //                         </tr>`;
+    //             break;
+
+    //         case 'plan':
+    //             var html =  `<tr class='separator'>
+    //                             <td>
+    //                                 <select onchange="this.value=this.options[this.selectedIndex].value;">
+    //                                     <option value="none">=== 선택 ===</option>
+    //                                     <?php
+    //      
+    //                                         ?>
+    //                                 </select>
+    //                             </td>
                                 
-                                <td colspan='2'><textarea rows='3' col='30' style='width:100%' placeholder='[할일]'></textarea></td>
-                            </tr>`
-                break;
+    //                             <td colspan='2'><textarea rows='3' col='30' style='width:100%' placeholder='[할일]'></textarea></td>
+    //                         </tr>`
+    //             break;
 
-            default:
-                var html = "";
-                break;
-        }
+    //         default:
+    //             var html = "";
+    //             break;
+    //     }
 
-        $('#' + b).append(html);
-    }
+    //     $('#' + b).append(html);
+    // }
 
 
-    function remove_colum(b){
-        var table = document.getElementById(b);
+    // function remove_colum(b){
+    //     var table = document.getElementById(b);
 
-        if(table.rows.length <= 1)
-            return;
+    //     if(table.rows.length <= 1)
+    //         return;
         
-        else
-            table.deleteRow(-1);
-    }
+    //     else
+    //         table.deleteRow(-1);
+    // }
 
-    // 셀렉트박스 관련 함수 나중에 ajax 이용해서 데이터 받아올 예정
-    function change_child(element) {
+    // // 셀렉트박스 관련 함수 나중에 ajax 이용해서 데이터 받아올 예정
+    // function change_child(element) {
 
 
-        var child = element.parentNode.nextSibling.nextSibling
+    //     var child = element.parentNode.nextSibling.nextSibling
 
-        child.firstChild.remove();
-        child.innerHTML = "<select style='width: 100%;' onchange='this.value=this.options[this.selectedIndex].value;'></select>"
+    //     child.firstChild.remove();
+    //     child.innerHTML = "<select style='width: 100%;' onchange='this.value=this.options[this.selectedIndex].value;'></select>"
 
-        let jihun = ["회의록 양식 개발하기","회의록 양식 개발하기2","회의록 양식 개발하기3","회의록 양식 개발하기4","회의록 양식 개발하기5"];
-        let yujin = ["메인보드 개발하기","메인보드개발하기2","메인보드개발하기3","메인보드개발하기4","메인보드 개발하기5"];
-        let kyungmin = ["회의록 리스트 개발하기", "회의록 리스트 개발하기2", "회의록 리스트 개발하기3", "회의록 리스트 개발하기4", "회의록 리스트 개발하기5"]
+    //     let jihun = ["회의록 양식 개발하기","회의록 양식 개발하기2","회의록 양식 개발하기3","회의록 양식 개발하기4","회의록 양식 개발하기5"];
+    //     let yujin = ["메인보드 개발하기","메인보드개발하기2","메인보드개발하기3","메인보드개발하기4","메인보드 개발하기5"];
+    //     let kyungmin = ["회의록 리스트 개발하기", "회의록 리스트 개발하기2", "회의록 리스트 개발하기3", "회의록 리스트 개발하기4", "회의록 리스트 개발하기5"]
         
-        selectVal_parents = element.value;
+    //     selectVal_parents = element.value;
         
-        var selectItem;
+    //     var selectItem;
         
-        if(selectVal_parents == "null"){
-            return;
-        }else if(selectVal_parents == "111"){
-            selectItem = jihun;
-        }else if(selectVal_parents == "222"){
-            selectItem = yujin;
-        }else if(selectVal_parents == "333"){
-            selectItem = kyungmin;
-        }
+    //     if(selectVal_parents == "null"){
+    //         return;
+    //     }else if(selectVal_parents == "111"){
+    //         selectItem = jihun;
+    //     }else if(selectVal_parents == "222"){
+    //         selectItem = yujin;
+    //     }else if(selectVal_parents == "333"){
+    //         selectItem = kyungmin;
+    //     }
         
-        for(var i = 0; i < selectItem.length; i++){
-            $(child.firstChild).append("<option value='"+selectItem[i]+"'>"+selectItem[i]+"</option>");
-        }
+    //     for(var i = 0; i < selectItem.length; i++){
+    //         $(child.firstChild).append("<option value='"+selectItem[i]+"'>"+selectItem[i]+"</option>");
+    //     }
         
         
-    }
-     //Sprint Meeting 메뉴 활성화
-     elements = document.getElementsByClassName('m-menu__item--active');
-        for (var i = 0; i < elements.length; i++) {
-            elements[i].classList.remove('m-menu__item--active');
-        }
+    // }
+    //  //Sprint Meeting 메뉴 활성화
+    //  elements = document.getElementsByClassName('m-menu__item--active');
+    //     for (var i = 0; i < elements.length; i++) {
+    //         elements[i].classList.remove('m-menu__item--active');
+    //     }
 
-        document.getElementById('sprint_left_menu').classList.add('m-menu__item--active');
+    //     document.getElementById('sprint_left_menu').classList.add('m-menu__item--active');
 
 
 
