@@ -1,6 +1,6 @@
 .objective-div{
     border-radius : 10px;
-    height:85px;
+    height:105px;
     word-break:break-all;
     margin-left : 5px;
     margin-right : 5px;
@@ -32,18 +32,12 @@
 }
 
 .keyresult-content-div{
+    height : 130px;
     border-radius : 10px;
     margin : 5px; 
-    margin-left : 0px; 
     border : solid 0.2em; 
-    margin-right : 5px;
-    height : 100px;
     display : none;
-    font-size : 18px;
-}
-
-.keyresult-content-span{
-    margin-top : 5px;
+    font-size : 12px;
 }
 
 .funnel{
@@ -54,5 +48,22 @@
     margin : 3px;
     height : 30px; 
     border-radius : 5px; 
-    width : 194px
+    width : 194px;
+}
+
+.dash-kr-ol{
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 10px;
+}
+
+.dash-kr-li{
+    margin-left : 5px;
+    padding-left : 0;
+    margin-top : 5px;
+    cursor : pointer;
+}
+
+.dash-kr-li:hover{
+    color : #c1c1c1;
 }
