@@ -151,7 +151,7 @@ var Meeting = function (_Component) {
                   return React.createElement(
                       'a',
                       { className: 'meeting', href: '/home/sprint' },
-                      React.createElement('i', { className: 'fas fa-book' }),
+                      React.createElement('i', { className: 'fas fa-edit' }),
                       React.createElement(
                           'span',
                           null,

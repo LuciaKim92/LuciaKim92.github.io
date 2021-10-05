@@ -5,6 +5,10 @@
     font-family: 'Noto Sans KR', sans-serif;
 }
 
+.m-portlet .m-portlet__body {
+    padding: 2rem 2rem !important;
+}
+
 button.accordion-button {
     display: inline-block;
     font-weight: 400;
@@ -53,6 +57,6 @@ button.accordion-button::after {
         color: gray;
     }
 
-.fa-book {
-    margin-right: 10px;
+.fa-edit {
+    margin-right: 8px;
 }
