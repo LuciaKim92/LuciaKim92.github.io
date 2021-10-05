@@ -17,8 +17,19 @@ class Sprint_Meet_Model extends Model
         $this->dbconn = sqlsrv_connect($this->serverName, $this->connectionOptions); 
     }
 
+    public function search_last_spr(){
+
+        $query = "SELECT top 1 ID FROM spr_meet_mst order by MEET_DT desc";
+        $stmt = sqlsrv_query($this->dbconn, $query);
+        $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+
+        if($row == NULL)
+            return null;
+
+        return $row['ID'];
+    }
+
     public function search_spr_by_date($date){
-        $result = array();
 
         $query = "SELECT * from SPR_MEET_MST WHERE MEET_DT = $date";
         $stmt = sqlsrv_query($this->dbconn, $query);
@@ -36,8 +47,8 @@ class Sprint_Meet_Model extends Model
         $result = array();
 
         //SPR_MEET_MST랑 부서 테이블을 조인하여 다른 테이블 조회에 사용될 데이터 가져옴(결과 1개만 나옴...)
-        $query = "  SELECT A.OKR_OBJT_ID, A.MEET_DT, A.DEPT_NM, B.DEPT_NM as 'DEPT_UP_NM'
-                    FROM	(	SELECT A.OKR_OBJT_ID, A.MEET_DT, B.DEPT_NM, B.DEPT_UP_CD 
+        $query = "  SELECT A.OKR_OBJT_ID, A.MEET_DT, A.DEPT_CD, A.DEPT_NM, B.DEPT_NM as 'DEPT_UP_NM'
+                    FROM	(	SELECT A.OKR_OBJT_ID, A.MEET_DT, A.DEPT_CD, B.DEPT_NM, B.DEPT_UP_CD 
                                 FROM SPR_MEET_MST A INNER JOIN DWCTS.dbo.DEPT_MST B ON A.DWGP_CD = B.DWGP_CD AND A.DEPT_CD = B.DEPT_CD 
                                 WHERE A.ID = $id) A INNER JOIN DWCTS.dbo.DEPT_MST B ON A.DEPT_UP_CD = B.DEPT_CD";
 
@@ -52,6 +63,7 @@ class Sprint_Meet_Model extends Model
 
         //오브젝티브 아이디 및 이름
         $OBJT_ID = $row['OKR_OBJT_ID'];
+        $DEPT_CD = $row['DEPT_CD'];
         $result['MEET_DT'] = $row['MEET_DT'];
         $result['DEPT_NM'] = $row['DEPT_NM'];
         $result['DEPT_UP_NM'] = $row['DEPT_UP_NM'];
@@ -91,10 +103,6 @@ class Sprint_Meet_Model extends Model
             $stmt = sqlsrv_query($this->dbconn, $query);
 
             $temp = [];
-
-            if(sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC) == null){
-                continue;
-            }
             
             while ($row3 = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
             {
@@ -123,10 +131,6 @@ class Sprint_Meet_Model extends Model
             $stmt = sqlsrv_query($this->dbconn, $query);
 
             $temp = [];
-
-            if(sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC) == null){
-                continue;
-            }
 
             while ($row3 = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
             {
@@ -157,10 +161,6 @@ class Sprint_Meet_Model extends Model
 
             $temp = [];
 
-            if(sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC) == null){
-                continue;
-            }
-            
             while ($row3 = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
             {
                 array_push($temp, $row3);
@@ -172,12 +172,26 @@ class Sprint_Meet_Model extends Model
         $result['PLAN'] = $plan_arr;
 
 
+        //BOOKMARK 조회
+
+        $book_arr = array();
+
+        $query = "SELECT * FROM SPR_MEET_MST WHERE DEPT_CD = '$DEPT_CD'";
+        $stmt = sqlsrv_query($this->dbconn, $query);
+
+        while ($row2 = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
+        {
+            array_push($book_arr, ['ID' => $row2['ID'], 'MEET_DT' => $row2['MEET_DT']]);
+        }
+
+        $result['BOOKMARK'] = $book_arr;
 
         // result의 KEY: (MEET_DT, DEPT_NM, DEPT_UP_NM, KR, FEED, IDEA, PLAN)
         // KR의     KEY: (ID, CONTENT)
         // FEED의   KEY: (HIGHLIGHT, LOWLIGHT, EMP_NM, CONTENT(저번주 plan) )
         // IDEA의   KEY: (IDEA_CONTENT, EMP_NM, TO_DO_CONTENT, INIT_CONTENT)
         // PLAN의   KEY: (EMP_NM, CONTENT )
+        // BOOKMARK의 KEY:
         return $result;
 
     }
