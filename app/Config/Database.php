@@ -30,6 +30,28 @@ class Database extends Config
 	 *
 	 * @var array
 	 */
+
+
+	public $default = [
+		'DSN'      => '',
+		'hostname' => '211.233.21.82',
+		'username' => 'dwokr',
+		'password' => 'dwokr@)@!21',
+		'database' => 'DWCTS',
+		'DBDriver' => 'sqlsrv',
+		'DBPrefix' => '',
+		'pConnect' => false,
+		'DBDebug'  => (ENVIRONMENT !== 'production'),
+		'charset'  => 'utf8',
+		'DBCollat' => 'utf8_general_ci',
+		'swapPre'  => '',
+		'encrypt'  => false,
+		'compress' => false,
+		'strictOn' => false,
+		'failover' => [],
+		//'port'     => 4861,
+	];
+	 /*
 	public $default = [
 		'DSN'      => '',
 		'hostname' => 'localhost',
@@ -49,6 +71,7 @@ class Database extends Config
 		'failover' => [],
 		'port'     => 3306,
 	];
+	*/
 
 	/**
 	 * This database connection is used when
@@ -74,6 +97,49 @@ class Database extends Config
 		'strictOn' => false,
 		'failover' => [],
 		'port'     => 3306,
+	];
+
+
+	//OKR DB
+	public $okrdb = [
+		'DSN'      => '',
+		'hostname' => '211.233.21.82',
+		'username' => 'dwokr',
+		'password' => 'dwokr@)@!21',
+		'database' => 'DWOKR',
+		'DBDriver' => 'sqlsrv',
+		'DBPrefix' => '',
+		'pConnect' => false,
+		'DBDebug'  => (ENVIRONMENT !== 'production'),
+		'charset'  => 'utf8',
+		'DBCollat' => 'utf8_general_ci',
+		'swapPre'  => '',
+		'encrypt'  => false,
+		'compress' => false,
+		'strictOn' => false,
+		'failover' => [],
+		//'port'     => 4861,
+	];
+
+	//dwcts DB
+	public $ctsdb = [
+		'DSN'      => '',
+		'hostname' => '211.233.21.82',
+		'username' => 'dwokr',
+		'password' => 'dwokr@)@!21',
+		'database' => 'DWCTS',
+		'DBDriver' => 'sqlsrv',
+		'DBPrefix' => '',
+		'pConnect' => false,
+		'DBDebug'  => (ENVIRONMENT !== 'production'),
+		'charset'  => 'utf8',
+		'DBCollat' => 'utf8_general_ci',
+		'swapPre'  => '',
+		'encrypt'  => false,
+		'compress' => false,
+		'strictOn' => false,
+		'failover' => [],
+		//'port'     => 4861,
 	];
 
 	//--------------------------------------------------------------------

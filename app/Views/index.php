@@ -517,7 +517,7 @@ License: You must have a valid license purchased only from themeforest(the above
 										<div class="m-widget24">
 											<div class="m-widget24__item">
 												<h4 class="m-widget24__title">
-													대원씨티에스
+													<?php echo($_SESSION['comp_nm'])?>
 												</h4><br>
 												<br>
 												<div style="width:100%;">
@@ -526,8 +526,8 @@ License: You must have a valid license purchased only from themeforest(the above
 															ObJective
 														</span>
 														<br><hr class ="okr-hr">
-														<span id = "compObj" style="margin-left : 20px">
-															지속 가능한 1조 기업 기반 완성 "축적을 통한 Scale-Up"
+														<span id = "comp-obj-span" style="margin-left : 20px">
+															<?php echo($dashBoardData['comp']['obj']); ?>
 														</span>
 													</div>
 													<div class = "keyresult-bar" style="margin-right : 5px; margin-left : 5px" onclick = "openCompKR();">
@@ -536,30 +536,24 @@ License: You must have a valid license purchased only from themeforest(the above
 														</p>
 													</div>
 													<div id = "company-kr-div" class ="keyresult-content-div" style = "border-color : #7957ad; margin-left : 5px">
-														<?php
-														
-															$i = 0;
-															foreach($dashBoardData['comp']['krList'] as $key => $bean){
-																echo("&nbsp;");
-																echo($i+1);
-																echo(".<span id='' class = 'keyresult-content-span'>");
-																echo($bean);
-																echo("<br></span>");															
-															}
-															
-														?>
-														<!--
-														&nbsp;1.<span id = "" class = "keyresult-content-span">_______________<br></span>
-														&nbsp;2.<span id = "" class = "keyresult-content-span">_______________<br></span>
-														&nbsp;3.<span id = "" class = "keyresult-content-span">_______________<br></span>
-														-->
+														<ol class="dash-kr-ol">
+															<?php                   
+																$i = 1;                  
+																foreach($dashBoardData['comp']['krList'] as $key => $bean){
+																?>
+																<li class ="dash-kr-li" id = "dash-kr-li-comp-<?=$i?>"><?=$bean['CONTENT']?></li>
+																<?php
+																$i = $i + 1;
+																}
+															?>
+														</ol> 
 													</div>
 													<div class = "text-center okr-badge-div">
 														<span class="m-widget24__change">
-															<span class="okr-badge m-badge m-badge--brand">2</span>진행
+															<span class="okr-badge m-badge m-badge--brand"><?=$i-1?></span>진행
 														</span>
 														<span class="m-widget24__change">
-															<span class="okr-badge m-badge m-badge--success">2</span>완료
+															<span class="okr-badge m-badge m-badge--success"><?=$dashBoardData['team']['compKrListCnt']?></span>완료
 														</span>
 														<span class="m-widget24__change">
 															<span class = "funnel" onclick = "goInitiativeTool();"><span class="okr-badge m-badge m-badge--warning"> 2</span>펀넬</span>
@@ -573,7 +567,7 @@ License: You must have a valid license purchased only from themeforest(the above
 										<div class="m-widget24">
 											<div class="m-widget24__item">
 												<h4 class="m-widget24__title">
-													경영기획부문
+												<?php echo($_SESSION['dept_nm'])?>
 												</h4><br>
 												<br>
 												<div style="width:100%">
@@ -583,7 +577,7 @@ License: You must have a valid license purchased only from themeforest(the above
 														</span>
 														<br><hr class = "okr-hr">
 														<span style="margin-left : 20px">
-															"Infra"확충을 통한 一流 대원 만들기
+															<?php echo($dashBoardData['dept']['obj']); ?>
 														</span>
 													</div>
 													<div class = "keyresult-bar" style = "margin-right : 5px; margin-left : 5px" onclick = "openDeptKR();">
@@ -591,17 +585,25 @@ License: You must have a valid license purchased only from themeforest(the above
 															Key Results
 														</p>
 													</div>
-													<div id = "dept-kr-div" class ="keyresult-content-div" style = "border-color : #31859c;">
-														&nbsp;1.<span class = "keyresult-content-span">_______________<br></span>
-														&nbsp;2.<span class = "keyresult-content-span">_______________<br></span>
-														&nbsp;3.<span class = "keyresult-content-span">_______________<br></span>
+													<div id = "dept-kr-div" class ="keyresult-content-div" style = "border-color : #31859c">
+														<ol class="dash-kr-ol">
+															<?php                   
+																$i = 1;                  
+																foreach($dashBoardData['dept']['krList'] as $key => $bean){
+																?>
+																<li class ="dash-kr-li" id = "dash-kr-li-dept-<?=$i?>"><?=$bean['CONTENT']?></li>
+																<?php
+																$i = $i + 1;
+																}
+															?>
+														</ol> 
 													</div>
 													<div class = "text-center okr-badge-div">
 														<span class="m-widget24__change">
-															<span class="okr-badge m-badge m-badge--brand">222</span>진행
+															<span class="okr-badge m-badge m-badge--brand"><?=$i-1?></span>진행
 														</span>
 														<span class="m-widget24__change">
-															<span class="okr-badge m-badge m-badge--success">2</span>완료
+															<span class="okr-badge m-badge m-badge--success"><?=$dashBoardData['team']['compKrListCnt']?></span>완료
 														</span>
 														<span class="m-widget24__change">
 															<span class = "funnel" onclick = "goInitiativeTool();"><span class="okr-badge m-badge m-badge--warning"> 2</span>펀넬</span>
@@ -615,7 +617,7 @@ License: You must have a valid license purchased only from themeforest(the above
 										<div class="m-widget24">
 											<div class="m-widget24__item">
 												<h4 class="m-widget24__title">
-													OKR 추진팀
+												<?php echo($_SESSION['team_nm'])?>
 												</h4><br>
 												<br>
 												<div style="width:100%">
@@ -625,7 +627,7 @@ License: You must have a valid license purchased only from themeforest(the above
 														</span>
 														<br><hr class = "okr-hr">
 														<span style="margin-left : 20px">
-															OKR 축적문화 조성을 통한 1조기업의 인프라를 구축한다.
+															<?php echo($dashBoardData['team']['obj']); ?>
 														</span>
 													</div>
 													<div class ="keyresult-bar" style = "margin-right : 5px; margin-left : 5px" onclick = "openTeamKR();">
@@ -633,17 +635,25 @@ License: You must have a valid license purchased only from themeforest(the above
 															Key Results
 														</p>
 													</div>
-													<div id = "team-kr-div" class ="keyresult-content-div" style = "border-color : #558ed5;">
-														&nbsp;1.<span class = "keyresult-content-span">_______________<br></span>
-														&nbsp;2.<span class = "keyresult-content-span">_______________<br></span>
-														&nbsp;3.<span class = "keyresult-content-span">_______________<br></span>
+													<div id = "team-kr-div" class ="keyresult-content-div" style = "border-color : #558ed5">
+														<ol class="dash-kr-ol">
+															<?php
+																$i = 1;                  
+																foreach($dashBoardData['team']['krList'] as $key => $bean){
+																?>
+																<li class ="dash-kr-li" id = "dash-kr-li-team-<?=$i?>"><?=$bean['CONTENT']?></li>
+																<?php
+																$i = $i + 1;
+																}
+															?>
+														</ol> 
 													</div>
 													<div class = "text-center okr-badge-div">
 														<span class="m-widget24__change">
-															<span class="okr-badge m-badge m-badge--brand">2</span>진행
+															<span class="okr-badge m-badge m-badge--brand"><?=$i-1?></span>진행
 														</span>
 														<span class="m-widget24__change">
-															<span class="okr-badge m-badge m-badge--success">2</span>완료
+															<span class="okr-badge m-badge m-badge--success"><?=$dashBoardData['team']['compKrListCnt']?></span>완료
 														</span>
 														<span class="m-widget24__change">
 															<span class = "funnel" onclick = "goInitiativeTool();"><span class="okr-badge m-badge m-badge--warning"> 2</span>펀넬</span>
@@ -2906,10 +2916,6 @@ License: You must have a valid license purchased only from themeforest(the above
 				$("#newCFRMenu").toggle();
 			});
 			
-			//관리자 로그인 alert, 수락시 이동
-			function changeAdmin(){
-				if(confirm("관리자모드로 변경하시겠습니까?")) document.location = '/admin/confirm';
-			}
 
 			//조직도 누를 시 조직도 페이지로 이동
 			function goDeptPage(){
@@ -2951,9 +2957,14 @@ License: You must have a valid license purchased only from themeforest(the above
             for (var i = 0; i < elements.length; i++) {
                 elements[i].classList.remove('m-menu__item--active');
             }
-
             document.getElementById('dashboard_left_menu').classList.add('m-menu__item--active');
-			document.getElementById('loginID').innerText = "<?=$dashBoardData['max']?>";
+			
+			//document.getElementById('loginID').innerText = "<?=$dashBoardData['max']?>";
+
+			
+
+
+
 
             
 

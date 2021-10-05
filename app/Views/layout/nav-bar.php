@@ -1,4 +1,12 @@
 			<!-- BEGIN: Header -->
+			<head>
+				<style>
+					.admin-hr{
+						background-color : #fff;
+						border-top : 2px dotted #bbb;
+					}
+				</style>
+			</head>
 			<header id="m_header" class="m-grid__item    m-header " m-minimize-offset="200" m-minimize-mobile-offset="200">
 				<div class="m-container m-container--fluid m-container--full-height">
 					<div class="m-stack m-stack--ver m-stack--desktop">
@@ -168,15 +176,57 @@
 							<div id="m_header_topbar" class="m-topbar  m-stack m-stack--ver m-stack--general">
 								<div class="m-stack__item m-topbar__nav-wrapper">
 									<ul class="m-topbar__nav m-nav m-nav--inline">
+
 										<!-- 상단바 오른쪽 메뉴 1[관리자] : BEGIN -->
-										<li class="m-nav__item m-topbar__notifications m-dropdown m-dropdown--large m-dropdown--arrow m-dropdown--align-center 	m-dropdown--mobile-full-width" m-dropdown-toggle="click" m-dropdown-persistent="1">
-											<a href="#" class="m-nav__link m-dropdown__toggle" id="m_topbar_notification_icon" onclick="changeAdmin();">
+
+										<li class="m-nav__item m-topbar__user-profile  m-dropdown m-dropdown--medium m-dropdown--arrow  m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light" m-dropdown-toggle="click">
+											<a href="#" class="m-nav__link m-dropdown__toggle">
 												<span class="m-nav__link-icon">
 													<span class="m-nav__link-icon-wrapper"><img src="/assets/icon/setting_icon.png" width="20px" height="20px"></span>
 												</span>
 											</a>
+											<div class="m-dropdown__wrapper">
+												<span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust" style="background-color : #558ed5"></span>
+												<div class="m-dropdown__inner">
+													<div class="m-dropdown__header m--align-center">
+														<span class="m-dropdown__header-subtitle">관리자 모드</span>
+													</div>
+													<div class="m-dropdown__body">
+														<div class="m-dropdown__content">
+															<ul class="m-nav m-nav--skin-light">
+																<li class="m-nav__section m--hide">
+																	<span class="m-nav__section-text">Section</span>
+																</li>
+																<li class="m-nav__item">
+																	<a href="profile.html" class="m-nav__link">
+																		<span class="m-nav__link-text">OKR Map</span>
+																	</a>
+																</li>
+																<hr class = "admin-hr">
+																<li class="m-nav__item">
+																	<a href="profile.html" class="m-nav__link">
+																		<span class="m-nav__link-text">CFR Meeting</span>
+																	</a>
+																</li>
+																<hr class = "admin-hr">
+																<li class="m-nav__item">
+																	<a href="profile.html" class="m-nav__link">
+																		<span class="m-nav__link-text">Sprint Meeting</span>
+																	</a>
+																</li>
+																<hr class = "admin-hr">
+																<li class="m-nav__item">
+																	<a href="profile.html" class="m-nav__link">
+																		<span class="m-nav__link-text">OKR 사례</span>
+																	</a>
+																</li>
+															</ul>
+														</div>
+													</div>
+												</div>
+											</div>
 										</li>
-		  								<!-- 상단바 오른쪽 메뉴 1[관리자] : END -->
+										<!-- 상단바 오른쪽 메뉴 1[관리자] : END -->
 										
 										<!-- 상단바 오른쪽 메뉴 2[조직도] : BEGIN -->
 										<li class="m-nav__item m-topbar__notifications m-dropdown m-dropdown--large m-dropdown--arrow m-dropdown--align-center 	m-dropdown--mobile-full-width" m-dropdown-toggle="click" m-dropdown-persistent="1">
@@ -296,12 +346,32 @@
 						</div>
 					</div>
 				</div>
+
+				<!-- 관리자 버튼 누를 시 활성화 되는 창-->
+				<div id ="newCFRMenu" class="fixed-bottom bg-dark text-center" style="display : none; position: fixed; bottom: 80px; right: 75px; left : auto; width : 200px">
+					<div class = "text-light add-menu" style="background-color : #7957ad" onclick = "newInitiative();">
+						Initiatives 등록
+					</div>
+
+					<div class = "text-light add-menu" style="background-color : #31859c" onclick = "newCFR();">
+						CFR Meeting 요청
+					</div>
+				</div>
+
 			</header>
 			<script>
 				document.getElementById('loginID').innerText = "<?=$_SESSION['admin_names']?>";
 				//홈으로가기
 				function goHome(){
 					document.location = '/home/dashboard';
+				}
+				//관리자 로그인 alert, 수락시 이동
+				var check = $("#newCFRBtn");
+				check.click(function(){
+					$("#newCFRMenu").toggle();
+				});
+				function changeAdmin(){
+					if(confirm("관리자모드로 변경하시겠습니까?")) document.location = '/admin/confirm';
 				}
 			</script>
 
