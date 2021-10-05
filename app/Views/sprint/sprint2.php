@@ -372,7 +372,7 @@
                     }
 
                     else{
-                        // 일시적으로 change 이벤트 삭제
+                        // 일시적으로 change 이벤트 삭제 -> 달력 값 원래대로 하려고!
                         $("#date").unbind();
                         document.getElementById('date').value = "<?=$myarr['MEET_DT']?>";
                         $("#date").change(mytest123);

@@ -91,6 +91,10 @@ class Sprint_Meet_Model extends Model
             $stmt = sqlsrv_query($this->dbconn, $query);
 
             $temp = [];
+
+            if(sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC) == null){
+                continue;
+            }
             
             while ($row3 = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
             {
@@ -119,6 +123,11 @@ class Sprint_Meet_Model extends Model
             $stmt = sqlsrv_query($this->dbconn, $query);
 
             $temp = [];
+
+            if(sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC) == null){
+                continue;
+            }
+
             while ($row3 = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
             {
                 array_push($temp, $row3);
@@ -147,6 +156,11 @@ class Sprint_Meet_Model extends Model
             $stmt = sqlsrv_query($this->dbconn, $query);
 
             $temp = [];
+
+            if(sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC) == null){
+                continue;
+            }
+            
             while ($row3 = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
             {
                 array_push($temp, $row3);
