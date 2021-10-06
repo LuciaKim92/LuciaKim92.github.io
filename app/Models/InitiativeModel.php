@@ -4,7 +4,7 @@ namespace App\Models;
 use CodeIgniter\Database\ConnectionInterface;
 use CodeIgniter\Model;
 
-class LayoutModel extends Model{
+class InitiativeModel extends Model{
     var $admin_db;
 	var $admin_db_cfg;
 	function __construct()

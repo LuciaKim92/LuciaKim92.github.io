@@ -12,7 +12,15 @@ class InitiativeController extends BaseController{
         //echo 
         $mydata['id'] = $_POST['id'];
 		echo view("/initiative/write.php", $mydata);
-	}
+    }
+    
+     public function View(){
+        $mydata['id'] = $_POST['id'];
+        $initiativeModel = new InitiativeModel();
+ 
+		echo view("/initiative/view.php", $mydata);
+    }
+   
 }
 
 ?>

@@ -623,7 +623,7 @@
 															Key Results
 														</p>
 													</div>
-													<form id="form" action="/InitiativeController" method="post">
+													<form id="form" action="/InitiativeController/view" method="post">
 													<input type="hidden" id="id" name="id" value="">
 													<div id = "team-kr-div" class ="keyresult-content-div" style = "border-color : #558ed5">
 														<ol class="dash-kr-ol">
@@ -632,9 +632,7 @@
 																$id = array();                  
 																foreach($dashBoardData['team']['krList'] as $key => $bean){
 																	$id[$i-1]=$bean['ID'];
-																?>
-																
-																
+																?>								
 																<li class ="dash-kr-li" id = "dash-kr-li-team-<?=$i?>" onclick = "openInitiative('<?=$bean['ID']?>','<?=$bean['CONTENT']?>');"><?=$bean['CONTENT']?></li>
 																<?php
 																	$i = $i + 1;
