@@ -72,11 +72,17 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <h5>2021-09-13 (클릭시 이동)</h5>
-                                <p>세부내용</p>
-                                <hr>
-                                <h5>2021-09-14 (클릭시 이동)</h5>
-                                <p>세부내용</p>
+                                <?php
+                                    foreach($myarr['BOOKMARK'] as $key => $bean){
+                                        ?>
+                                        <h5>
+                                            <a href="/Sprint_Meet_Controller/spr_main_id/<?=$bean['ID']?>"> <?=$bean['MEET_DT']?> (클릭시 이동) </a>
+                                        </h5>
+                                        <hr>
+
+                                        <?php
+                                    }
+                                ?>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -110,7 +116,7 @@
                         <div class="row">
                             <div class="col-xl-12">
                                 <div class="m-portlet m-portlet--full-height  m-portlet--unair">
-                                    <div class="m-portlet__body" style="padding:0px">
+                                    <div class="m-portlet__body" style="padding:0px !important;">
                                         <table class="table table-bordered" id="sprint-table">
                                             <tbody>
                                                 <tr>
@@ -155,8 +161,8 @@
                                                 </div>
                                             </div>
 
-                                            <div class="m-portlet__body" style="padding:0px">
-                                                <table class="table table-bordered" id="sprint-table" style="height:100%; margin:0px">
+                                            <div class="m-portlet__body" style="padding:0px !important;">
+                                                <table class="table table-bordered" id="sprint-table" style="height:100% ; margin:0px">
                                                     <tbody>
                                                         <?php
 
@@ -204,7 +210,18 @@
                                                         </tr>
 
                                                         <?php
+                                                            if(sizeof($myarr['FEED'][0]) == 0){
+                                                                ?>
+                                                                <tr>
+                                                                    <th colspan="4">데이터가 없습니다.</th>
+                                                                </tr>
+                                                                <?php
+                                                            }
+
                                                             foreach($myarr['FEED'] as $key=>$bean){
+
+                                                                if(sizeof($myarr['FEED'][$key]) == 0)
+                                                                    continue;
                                                                 ?>
                                                                 
                                                                 <tbody id="feedback-kr-<?=$key+1?>">
@@ -245,6 +262,8 @@
 														
                                                         <?php
                                                             foreach($myarr['IDEA'] as $key=>$bean){
+                                                                if(sizeof($myarr['IDEA'][$key]) == 0)
+                                                                    continue;
                                                                 ?>
                                                                 
                                                                 <tbody id="idea-kr-<?=$key+1?>">
@@ -284,6 +303,8 @@
 
                                                         <?php
                                                             foreach($myarr['PLAN'] as $key=>$bean){
+                                                                    if(sizeof($myarr['PLAN'][$key]) == 0)
+                                                                        continue;
                                                                 ?>
                                                                 
                                                                 <tbody id="plan-kr-<?=$key+1?>">
@@ -367,12 +388,12 @@
 
                 if(data == '회의록 없음'){
 
-                    if(confirm("회의록이 없어요! 작성하시겠어요?")){
+                    if(confirm("회의록이 없습니다! 작성하시겠습니까?")){
                         location.href="/Sprint_Meet_Controller/spr_create";
                     }
 
                     else{
-                        // 일시적으로 change 이벤트 삭제
+                        // 일시적으로 change 이벤트 삭제 -> 달력 값 원래대로 하려고!
                         $("#date").unbind();
                         document.getElementById('date').value = "<?=$myarr['MEET_DT']?>";
                         $("#date").change(mytest123);
@@ -380,7 +401,16 @@
                 }
 
                 else{
-                    location.href="/Sprint_Meet_Controller/spr_main_id/"+data;
+                    if(confirm(temp + "일 회의록을 불러오시겠습니까?")){
+                        location.href="/Sprint_Meet_Controller/spr_main_id/"+data;
+                    }
+
+                    else{
+                        // 일시적으로 change 이벤트 삭제 -> 달력 값 원래대로 하려고!
+                        $("#date").unbind();
+                        document.getElementById('date').value = "<?=$myarr['MEET_DT']?>";
+                        $("#date").change(mytest123);
+                    }
                 }
             },
             error : function( jqxhr , status , error ){

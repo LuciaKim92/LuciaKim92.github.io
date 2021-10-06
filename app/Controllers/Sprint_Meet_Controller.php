@@ -23,8 +23,19 @@ class Sprint_Meet_Controller extends BaseController
 
 		$this->Model1 = new Sprint_Meet_Model;
 
+        if($id == null){
+            $id = $this->Model1->search_last_spr();
+        }
+
 		$myarr = $this->Model1->search_spr_by_id($id);
+
+        //날짜 파싱
 		$myarr['MEET_DT'] = date("Y-m-d", strtotime($myarr['MEET_DT']));
+
+        foreach($myarr['BOOKMARK']  as $key => $bean){
+            $myarr['BOOKMARK'][$key]['MEET_DT'] = date("Y-m-d", strtotime($bean['MEET_DT']));
+        }
+
 		$mydata['myarr'] = $myarr;
 
 		$this->session_setting();

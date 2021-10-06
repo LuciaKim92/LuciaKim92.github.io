@@ -1,17 +1,5 @@
 <!DOCTYPE html>
 
-<!-- 
-Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 4
-Author: KeenThemes
-Website: http://www.keenthemes.com/
-Contact: support@keenthemes.com
-Follow: www.twitter.com/keenthemes
-Dribbble: www.dribbble.com/keenthemes
-Like: www.facebook.com/keenthemes
-Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
-Renew Support: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
-License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
--->
 <html lang="en">
 
 	<!-- begin::Head -->
@@ -553,7 +541,7 @@ License: You must have a valid license purchased only from themeforest(the above
 															<span class="okr-badge m-badge m-badge--brand"><?=$i-1?></span>진행
 														</span>
 														<span class="m-widget24__change">
-															<span class="okr-badge m-badge m-badge--success"><?=$dashBoardData['team']['compKrListCnt']?></span>완료
+															<span class="okr-badge m-badge m-badge--success"><?=$dashBoardData['comp']['compKrListCnt']?></span>완료
 														</span>
 														<span class="m-widget24__change">
 															<span class = "funnel" onclick = "goInitiativeTool();"><span class="okr-badge m-badge m-badge--warning"> 2</span>펀넬</span>
@@ -603,7 +591,7 @@ License: You must have a valid license purchased only from themeforest(the above
 															<span class="okr-badge m-badge m-badge--brand"><?=$i-1?></span>진행
 														</span>
 														<span class="m-widget24__change">
-															<span class="okr-badge m-badge m-badge--success"><?=$dashBoardData['team']['compKrListCnt']?></span>완료
+															<span class="okr-badge m-badge m-badge--success"><?=$dashBoardData['dept']['compKrListCnt']?></span>완료
 														</span>
 														<span class="m-widget24__change">
 															<span class = "funnel" onclick = "goInitiativeTool();"><span class="okr-badge m-badge m-badge--warning"> 2</span>펀넬</span>
@@ -635,19 +623,24 @@ License: You must have a valid license purchased only from themeforest(the above
 															Key Results
 														</p>
 													</div>
+													<form id="form" action="/InitiativeController/view" method="post">
+													<input type="hidden" id="id" name="id" value="">
 													<div id = "team-kr-div" class ="keyresult-content-div" style = "border-color : #558ed5">
 														<ol class="dash-kr-ol">
 															<?php
-																$i = 1;                  
+																$i = 1;
+																$id = array();                  
 																foreach($dashBoardData['team']['krList'] as $key => $bean){
-																?>
-																<li class ="dash-kr-li" id = "dash-kr-li-team-<?=$i?>"><?=$bean['CONTENT']?></li>
+																	$id[$i-1]=$bean['ID'];
+																?>								
+																<li class ="dash-kr-li" id = "dash-kr-li-team-<?=$i?>" onclick = "openInitiative('<?=$bean['ID']?>','<?=$bean['CONTENT']?>');"><?=$bean['CONTENT']?></li>
 																<?php
-																$i = $i + 1;
+																	$i = $i + 1;
 																}
 															?>
 														</ol> 
 													</div>
+													</form>
 													<div class = "text-center okr-badge-div">
 														<span class="m-widget24__change">
 															<span class="okr-badge m-badge m-badge--brand"><?=$i-1?></span>진행
@@ -2959,30 +2952,32 @@ License: You must have a valid license purchased only from themeforest(the above
             }
             document.getElementById('dashboard_left_menu').classList.add('m-menu__item--active');
 			
-			//document.getElementById('loginID').innerText = "<?=$dashBoardData['max']?>";
+			//대시보드 -> Initiative 연결
+			
+			function openInitiative(id, content){
+				<?php 	//$mydata['id'] = "<script>document.write(".id.")</script>"; ?>
+				$("#id").val(id);
+				if(confirm("["+ content + "] 해당 내용의 Initiative Tool로 이동하시겠습니까?")){
+					
+					$("#form").submit();
+					//document.location = '/InitiativeController?id='+id;
+					<?php //return view('/initiative/write.php', $mydata); ?>
+					// $.ajax({
+					// 	url:'/InitiativeController',
+					// 	type:'get',
+					// 	data:{
+					// 		id : id
+					// 	},
+					// 	success:function(data){
+							
+					// 	}
+					// });
 
+				}
+			}
 			
 
-
-
-
-            
-
-			//Objective 불러와서 내용 바꾸기
-
-
-		
-			/*
-			if(code.equals('comp')){
-				$("#company-kr-div").toggle();
-			}
-			else if('dept' == code){
-				$("#dept-kr-div").toggle();
-			}
-			else if(code == 'team'){
-				$("#team-kr-div").toggle();
-			}
-			*/
+			
 		</script>
 
 
