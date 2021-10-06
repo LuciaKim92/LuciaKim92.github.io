@@ -44,13 +44,13 @@ class Sprint_Meet_Controller extends BaseController
 		return view('/sprint/sprint2.php', $mydata);
     }
 
-    //회의록 날짜로 검색
+    //회의록 날짜로 검색 ajax 통신
     public function spr_main_date(){
 
         $a = $_POST['DATE'];
   
-        $this->Model1 = new Sprint_Meet_Model;
-        $id = $this->Model1->search_spr_by_date(str_replace("-", "", $a));
+        $this->Model = new Sprint_Meet_Model;
+        $id = $this->Model->search_spr_by_date(str_replace("-", "", $a));
 
         if($id == null)
             print_r("회의록 없음");
@@ -61,6 +61,9 @@ class Sprint_Meet_Controller extends BaseController
 
     // 회의록 작성
     public function spr_create(){
+
+        $this->Model = new Sprint_Meet_Model;
+        $this->Model->test111();
 
         $this->session_setting();
 		$data = $_SESSION;

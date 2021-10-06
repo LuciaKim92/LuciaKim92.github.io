@@ -196,6 +196,36 @@ class Sprint_Meet_Model extends Model
 
     }
 
+    public function test111(){
+
+        
+        //최종적으로 리턴
+        $result = array();
+
+        //SPR_MEET_MST랑 부서 테이블을 조인하여 다른 테이블 조회에 사용될 데이터 가져옴(결과 1개만 나옴...)
+        $query = "  SELECT A.DWGP_CD, A.DEPT_CD, A.DEPT_NM, B.DEPT_NM, C.ID, C.OBJECTIVE
+                    FROM	
+                        (SELECT A.DWGP_CD, A.DEPT_CD, B.DEPT_NM, B.DEPT_UP_CD 
+                        FROM DWCTS.dbo.EMP_MST A INNER JOIN DWCTS.dbo.DEPT_MST B ON A.DWGP_CD = B.DWGP_CD AND A.DEPT_CD = B.DEPT_CD 
+                        WHERE A.EMP_NO = 'B221002') A INNER JOIN DWCTS.dbo.DEPT_MST B ON A.DEPT_UP_CD = B.DEPT_CD INNER JOIN OKR_OBJT_MST C ON A.DEPT_CD = C.DEPT_CD
+        
+                    WHERE C.PROC_ST = '0' ";
+
+        $stmt = sqlsrv_query($this->dbconn, $query);
+        $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+
+        // 예외처리필요함!
+
+        foreach($row as $key => $bean){
+            echo $bean['DWGP_CD'];
+            echo $bean['DEPT_CD'];
+            echo $bean['DEPT_NM'];
+            echo $bean['ID'];
+            echo $bean['OBJECTIVE'];
+        }
+
+
+        }
 
 
 }

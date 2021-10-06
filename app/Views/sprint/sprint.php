@@ -105,7 +105,7 @@
                         <div class="row">
                             <div class="col-xl-12">
                                 <div class="m-portlet m-portlet--full-height  m-portlet--unair">
-                                    <div class="m-portlet__body" style="padding:0px">
+                                    <div class="m-portlet__body" style="padding:0px !important">
                                         <table class="table table-bordered" id="sprint-table">
                                             <tbody>
                                                 <tr>
@@ -146,7 +146,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="m-portlet__body" style="padding:0px">
+                                            <div class="m-portlet__body" style="padding:0px !important">
                                                 <table class="table table-bordered" id="sprint-table" style="height:150px">
                                                     <tbody>
                                                         <?php

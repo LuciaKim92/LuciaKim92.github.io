@@ -194,7 +194,7 @@
 
                                                     <tbody>
 
-                                                        <!--달력부분 차후 날짜변경시 그 날짜의 회의록 불러오도록 함수 추가해야함-->
+                                                        <!--달력부분 날짜변경시 그 날짜의 회의록 불러옴 없으면 작성 여부 묻기-->
                                                         <tr style="background-color:#fffc9e">
                                                             <td colspan="4" style="text-align:center">
                                                                 <input type="date" id="date" class="form-control" style="display:inline-block; width:150px; text-align:center;" placeholder="date input" value="<?=$myarr['MEET_DT']?>">
