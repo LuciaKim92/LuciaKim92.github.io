@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controllers;
 use App\Models\Sprint_Meet_Model;
 
@@ -23,6 +22,7 @@ class Sprint_Meet_Controller extends BaseController
 
 		$this->Model1 = new Sprint_Meet_Model;
 
+        //예외처리필요
         if($id == null){
             $id = $this->Model1->search_last_spr();
         }
@@ -59,16 +59,28 @@ class Sprint_Meet_Controller extends BaseController
             print_r($id);
     }
 
-    // 회의록 작성
-    public function spr_create(){
+    // 회의록 작성 (날짜를 파라미터로 없으면 오늘날짜)
+    public function spr_create($date=NULL){
+
+        date_default_timezone_set('Asia/Seoul');
+        
+        if($date == NULL)
+            $date = date("Y-m-d");
+
+        //DB로 보낼꺼
+        $date2 = str_replace("-", "", $date);
+        
 
         $this->Model = new Sprint_Meet_Model;
-        $this->Model->test111();
+        $myarr = $this->Model->test111($date2);
 
         $this->session_setting();
 		$data = $_SESSION;
         
-        return view('/sprint/sprint.php');
+        $mydata['myarr'] = $myarr;
+        $mydata['MEET_DT'] = $date;
+
+        return view('/sprint/sprint.php', $mydata);
     }
 
     
@@ -76,6 +88,15 @@ class Sprint_Meet_Controller extends BaseController
     //회의록 수정
     public function spr_edit(){
 
+    }
+
+    //To do 리스트 반환 AJAX 통신
+    public function get_to_do_list(){
+
+        $this->Model = new Sprint_Meet_Model;
+        $myarr = $this->Model->search_todo($_POST['KR_ID'], $_POST['EMP_NO']);
+
+        echo json_encode($myarr);
     }
 
 

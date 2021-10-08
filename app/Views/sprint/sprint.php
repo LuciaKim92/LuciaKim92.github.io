@@ -72,11 +72,17 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <h5>2021-09-13 (클릭시 이동)</h5>
-                                <p>세부내용</p>
-                                <hr>
-                                <h5>2021-09-14 (클릭시 이동)</h5>
-                                <p>세부내용</p>
+                                <?php
+                                    foreach($myarr['BOOKMARK'] as $key => $bean){
+                                        ?>
+                                        <h5>
+                                            <a href="/Sprint_Meet_Controller/spr_main_id/<?=$bean['ID']?>"> <?=$bean['MEET_DT']?> (클릭시 이동) </a>
+                                        </h5>
+                                        <hr>
+
+                                        <?php
+                                    }
+                                ?>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -110,7 +116,7 @@
                                             <tbody>
                                                 <tr>
                                                     <th style="width:50%">부분(본부)/팀</th>
-                                                    <th>안녕</th>
+                                                    <th><?=$myarr['DEPT_UP_NM']?>/<?=$myarr['DEPT_NM']?></th>
                                                 </tr>
                                             </tbody>
                                         </table>                                                
@@ -122,7 +128,7 @@
                         <div class="row">
                             <div class="col-xl-12">
                                 <div class="row">
-                                    <div class="col-xl-4">
+                                    <div class="col-xl-6">
                                         <div class="m-portlet m-portlet--full-height  m-portlet--unair">
                                             <div class="m-portlet__head" style="background-color:#cbcefb; display:table; width:100%">
                                                 <div class="m-portlet__head-title" style="display:table-cell; vertical-align:middle; text-align:center">
@@ -131,13 +137,13 @@
                                             </div>
 
                                             <div class="m-portlet__body" style="display:table; text-align:center; width:100%">
-                                                <h1 style="display:table-cell; vertical-align:middle;">안녕하세요</h1>
+                                                <h1 style="display:table-cell; vertical-align:middle;">"<?=$myarr['OBJECTIVE']?>"</h1>
                                             </div>
 
                                         </div>
                                     </div>
 
-                                    <div class="col-xl-8">
+                                    <div class="col-xl-6">
                                         <div class="m-portlet m-portlet--full-height  m-portlet--unair">
 
                                             <div class="m-portlet__head" style="background-color:#cbcefb; display:table; width:100%">
@@ -147,10 +153,17 @@
                                             </div>
 
                                             <div class="m-portlet__body" style="padding:0px !important">
-                                                <table class="table table-bordered" id="sprint-table" style="height:150px">
+                                                <table class="table table-bordered" id="sprint-table" style="height:100%">
                                                     <tbody>
                                                         <?php
- 
+                                                            foreach($myarr['KR'] as $key=>$bean){
+                                                                ?>
+                                                                <tr>
+                                                                    <th scope="row" style="width:10%"><?=$key+1?></th>
+                                                                    <td><?=$bean['CONTENT']?></td>
+                                                                </tr>
+                                                                <?php
+                                                            }
                                                         ?>
                                                     </tbody>
                                                 </table>
@@ -173,7 +186,7 @@
 
                                                         <!--달력부분 차후 날짜변경시 그 날짜의 회의록 불러오도록 함수 추가해야함-->
                                                         <tr style="background-color:#fffc9e">
-                                                            <td colspan="4" style="text-align:center"><input type="date" class="form-control" style="display:inline-block; width:150px; text-align:center;" placeholder="date input" value="2021-09-15"></td>
+                                                            <td colspan="4" style="text-align:center"><input type="date" id="date" class="form-control" style="display:inline-block; width:150px; text-align:center;" placeholder="date input" value="<?=$MEET_DT?>"></td>
                                                         </tr>
 
                                                         <tr style="background-color:#dae8fc">
@@ -185,9 +198,48 @@
                                                         
                                                         <!-- 추가해야됨 -->
                                                         <?php
+                                                            $i = 0;
+                                                            foreach($myarr['KR'] as $key=>$bean){
+                                                                    if($myarr['KR'][$key]['LAST_PLAN'] == null){
+                                                                        
+                                                                        $i++;
 
+                                                                        if($i == sizeof($myarr['KR'])){
+                                                                            ?>
+                                                                            <tr>
+                                                                                <th colspan="4">데이터가 없습니다.</th>
+                                                                            </tr>    
+                                                                            <?php                                                                        
+                                                                        }
+                                                                            
+                                                                        continue;
+                                                                    }
+                                                                ?>
+                                                                <tbody id="feedback-kr-<?=$key+1?>">
+                                                                    <tr>
+                                                                        <th class="KR" id="feedback-kr-<?=$key+1?>-head" rowspan="6">
+                                                                            Key Result <?=$key+1?>
+                                                                        </th>   
+                                                                    </tr>
+
+																	<?php
+																		foreach($bean['LAST_PLAN'] as $key2 => $bean2){                    
+																			?>           
+																			<script>
+                                                                                $(document).ready(function(){
+                                                                                    add_feedback_column('feedback-kr-<?=$key+1?>', '<?=$bean2["EMP_NM"]?>', '<?=$bean2["CONTENT"]?>');
+                                                                                });
+																			</script>
+
+																			<?php
+																		}
+																	?>
+
+                                                                </tbody>
+
+                                                                <?php
+                                                            }
                                                         ?>
-
                                                     </tbody>
 
                                                     <!-- 아이디어부분 -->
@@ -201,7 +253,33 @@
 
                                                         <!-- 추가해야됨 -->
                                                         <?php
+                                                            foreach($myarr['KR'] as $key=>$bean){
+                                                                ?>
+                                                                
+                                                                <tbody id="idea-kr-<?=$key+1?>">
+                                                                    <tr>
+                                                                        <th class="KR" id="idea-kr-<?=$key+1?>-head" rowspan="6" value=<?=$bean['ID']?>>
+                                                                            Key Result <?=$key+1?>
+                                                                        </th>   
+                                                                    </tr>
 
+                                                                    <script>
+                                                                    $(document).ready(function(){
+                                                                        add_idea_column('idea-kr-<?=$key+1?>');
+                                                                    });
+                                                                    </script>
+                                                                																															
+                                                                </tbody>
+
+                                                                <tr>
+                                                                    <td colspan="4" style="text-align:center; ">
+                                                                        <button type="button" class="btn btn-success" id="btn1" onclick="add_idea_column('idea-kr-<?=$key+1?>')">+</button>
+                                                                        <button type="button" class="btn btn-danger" id="btn1" onclick="remove_column('idea-kr-<?=$key+1?>')">-</button>
+                                                                    </td>
+                                                                 </tr>
+
+                                                                <?php
+                                                            }
                                                         ?>
                                                     </tbody>
 
@@ -215,7 +293,33 @@
                                                         
                                                         <!-- 추가해야됨 -->
                                                         <?php
+                                                            foreach($myarr['KR'] as $key=>$bean){
+                                                                ?>
+                                                                
+                                                                <tbody id="plan-kr-<?=$key+1?>">
+                                                                    <tr>
+                                                                        <th class="KR" id="plan-kr-<?=$key+1?>-head" rowspan="6">
+                                                                            Key Result <?=$key+1?>
+                                                                        </th>   
+                                                                    </tr>
 
+                                                                    <script>
+                                                                    $(document).ready(function(){
+                                                                        add_plan_column('plan-kr-<?=$key+1?>');
+                                                                    });
+                                                                    </script>
+                                                                																															
+                                                                </tbody>
+
+                                                                <tr>
+                                                                    <td colspan="4" style="text-align:center; ">
+                                                                        <button type="button" class="btn btn-success" id="btn1" onclick="add_plan_column('plan-kr-<?=$key+1?>')">+</button>
+                                                                        <button type="button" class="btn btn-danger" id="btn1" onclick="remove_column('plan-kr-<?=$key+1?>')">-</button>
+                                                                    </td>
+                                                                 </tr>
+
+                                                                <?php
+                                                            }
                                                         ?>
 
                                                     </tbody>
@@ -260,111 +364,176 @@
         document.getElementById('sprint-sticky-button').click();
     }
 
-    // function add_colum(b, manager, task){
-    //     var a = $('#' + b + '-head').attr('rowspan');
-    //     $('#' + b + '-head').attr('rowspan', a+2);
+    //날짜변경관련
+    $('#date').change(mytest123=function(){
+        
+        var temp = document.getElementById('date').value
 
-    //     switch(b.split('-')[0])
-    //     {
-    //         case 'feedback':
-    //             var html = "<tr class='separator'><td rowspan='2' style='text-align:center'>" + manager + "</td><td rowspan='2'>" + task +
-    //             "</td><td><textarea rows='3' col='30' style='width:100%;' placeholder='high)'></textarea></td></tr>" +  
-    //             "<tr><td><textarea rows='3' col='30' style='width:100%' placeholder='low)'></textarea></td></tr>";
-    //             break;
+        $.ajax({
+            type : 'POST',
+            url : '/Sprint_Meet_Controller/spr_main_date',
+            cache : false,
+            data : {"DATE": temp},
+            success : function( data ){
+                console.log( data );
 
-    //         case 'idea':
-    //             var html = `<tr class='separator'>
-    //                             <td>
-    //                                 <select onchange="this.value=this.options[this.selectedIndex].value; change_child(this)">
-    //                                 <option value="none">=== 선택 ===</option>
-    //                                 <?php
+                if(data == '회의록 없음'){
 
-    //                                     ?>
-    //                                 </select>
-    //                             </td>
+                    if(confirm("회의록이 없습니다! 작성하시겠습니까?")){
+                        location.href="/Sprint_Meet_Controller/spr_create/"+temp;
+                    }
 
-    //                             <td id='div_chk' value="123">
-    //                                 <select style='width: 100%;' onchange='this.value=this.options[this.selectedIndex].value;'></select>
-    //                             </td>
+                    else{
+                        // 일시적으로 change 이벤트 삭제 -> 달력 값 원래대로 하려고!
+                        $("#date").unbind();
+                        document.getElementById('date').value = "<?=$MEET_DT?>";
+                        $("#date").change(mytest123);
+                    }
+                }
 
-    //                             <td><textarea rows='3' col='30' style='width:100%' placeholder='[아이디어]'></textarea></td></td>
-    //                         </tr>`;
-    //             break;
+                else{
+                    if(confirm(temp + "일 회의록을 불러오시겠습니까?")){
+                        location.href="/Sprint_Meet_Controller/spr_main_id/"+data;
+                    }
 
-    //         case 'plan':
-    //             var html =  `<tr class='separator'>
-    //                             <td>
-    //                                 <select onchange="this.value=this.options[this.selectedIndex].value;">
-    //                                     <option value="none">=== 선택 ===</option>
-    //                                     <?php
-    //      
-    //                                         ?>
-    //                                 </select>
-    //                             </td>
+                    else{
+                        // 일시적으로 change 이벤트 삭제 -> 달력 값 원래대로 하려고!
+                        $("#date").unbind();
+                        document.getElementById('date').value = "<?=$MEET_DT?>";
+                        $("#date").change(mytest123);
+                    }
+                }
+            },
+            error : function( jqxhr , status , error ){
+                // console.log( jqxhr , status , error );
+            }
+        });
+
+    });
+
+
+    function add_feedback_column(b, manager, task){
+		var a = $('#' + b + '-head').attr('rowspan');
+        $('#' + b + '-head').attr('rowspan', a+2);
+
+		var html = "<tr class='separator'><td rowspan='2' style='text-align:center'>" + manager + "</td><td rowspan='2'>" + task +
+                    "</td><td><textarea rows='3' col='30' style='width:100%;' placeholder='high)'></textarea></td></tr>" +  
+                    "<tr><td><textarea rows='3' col='30' style='width:100%' placeholder='low)'></textarea></td></tr>";
+
+
+		$('#' + b).append(html);
+	}
+
+	function add_idea_column(b){
+
+		var a = $('#' + b + '-head').attr('rowspan');
+        $('#' + b + '-head').attr('rowspan', a+2);
+
+		var html = `<tr class='separator'>
+                        <td>
+                            <select name="` + b + '-head' + `"onchange="this.value=this.options[this.selectedIndex].value; change_child(this)">
+                                <option value="none">선택</option>
+                                <?php
+                                    foreach($myarr['EMP_LIST'] as $key => $bean){
+                                        ?>
+                                        <option value="<?=$bean['EMP_NO']?>"><?=$bean['EMP_NM']?></option>
+                                        <?php
+                                    }
+                                ?>
+                            </select>
+                            
+                        </td>
+
+                        <td id='div_chk' value="123">
+                            <select style='width: 100%;' onchange='this.value=this.options[this.selectedIndex].value;'></select>
+                        </td>
+
+                        <td><textarea rows='3' col='30' style='width:100%' placeholder='[아이디어]'></textarea></td></td>
+                    </tr>`;
+
+		$('#' + b).append(html);
+	}
+
+	function add_plan_column(b){
+		var a = $('#' + b + '-head').attr('rowspan');
+        $('#' + b + '-head').attr('rowspan', a+2);
+
+		var html = `<tr class='separator'>
+                        <td>
+                            <select onchange="this.value=this.options[this.selectedIndex].value;">
+                                <option value="none">=== 선택 ===</option>
+                                <?php
+                                    foreach($myarr['EMP_LIST'] as $key => $bean){
+                                        ?>
+                                        <option value="<?=$bean['EMP_NO']?>"><?=$bean['EMP_NM']?></option>
+                                        <?php
+                                    }
+                                ?>
+                            </select>
+                        </td>
                                 
-    //                             <td colspan='2'><textarea rows='3' col='30' style='width:100%' placeholder='[할일]'></textarea></td>
-    //                         </tr>`
-    //             break;
+                        <td colspan='2'><textarea rows='3' col='30' style='width:100%' placeholder='[할일]'></textarea></td>
+                    </tr>`;
 
-    //         default:
-    //             var html = "";
-    //             break;
-    //     }
-
-    //     $('#' + b).append(html);
-    // }
+		$('#' + b).append(html);
+	}
 
 
-    // function remove_colum(b){
-    //     var table = document.getElementById(b);
 
-    //     if(table.rows.length <= 1)
-    //         return;
+    function remove_column(b){
+        var table = document.getElementById(b);
+
+        if(table.rows.length <= 1)
+            return;
         
-    //     else
-    //         table.deleteRow(-1);
-    // }
+        else
+            table.deleteRow(-1);
+    }
 
-    // // 셀렉트박스 관련 함수 나중에 ajax 이용해서 데이터 받아올 예정
-    // function change_child(element) {
+    // 셀렉트박스 관련 함수 
+    function change_child(element) {
 
+        var kr_id = $("#"+element.name).attr("value");
 
-    //     var child = element.parentNode.nextSibling.nextSibling
+        var child = element.parentNode.nextSibling.nextSibling
 
-    //     child.firstChild.remove();
-    //     child.innerHTML = "<select style='width: 100%;' onchange='this.value=this.options[this.selectedIndex].value;'></select>"
+        child.firstChild.remove();
+        child.innerHTML = "<select style='width: 100%;' onchange='this.value=this.options[this.selectedIndex].value;'></select>"
 
-    //     let jihun = ["회의록 양식 개발하기","회의록 양식 개발하기2","회의록 양식 개발하기3","회의록 양식 개발하기4","회의록 양식 개발하기5"];
-    //     let yujin = ["메인보드 개발하기","메인보드개발하기2","메인보드개발하기3","메인보드개발하기4","메인보드 개발하기5"];
-    //     let kyungmin = ["회의록 리스트 개발하기", "회의록 리스트 개발하기2", "회의록 리스트 개발하기3", "회의록 리스트 개발하기4", "회의록 리스트 개발하기5"]
-        
-    //     selectVal_parents = element.value;
-        
-    //     var selectItem;
-        
-    //     if(selectVal_parents == "null"){
-    //         return;
-    //     }else if(selectVal_parents == "111"){
-    //         selectItem = jihun;
-    //     }else if(selectVal_parents == "222"){
-    //         selectItem = yujin;
-    //     }else if(selectVal_parents == "333"){
-    //         selectItem = kyungmin;
-    //     }
-        
-    //     for(var i = 0; i < selectItem.length; i++){
-    //         $(child.firstChild).append("<option value='"+selectItem[i]+"'>"+selectItem[i]+"</option>");
-    //     }
-        
-        
-    // }
-    //  //Sprint Meeting 메뉴 활성화
-    //  elements = document.getElementsByClassName('m-menu__item--active');
-    //     for (var i = 0; i < elements.length; i++) {
-    //         elements[i].classList.remove('m-menu__item--active');
-    //     }
+        $.ajax({
+            type : 'POST',
+            url : '/Sprint_Meet_Controller/get_to_do_list',
+            cache : false,
+            data : {"KR_ID": kr_id, "EMP_NO": element.value},
+            success : function( data ){
+                
+                const result = jQuery.parseJSON(data);
+                var temp = '';
 
-    //     document.getElementById('sprint_left_menu').classList.add('m-menu__item--active');
+                for (let i = 0; i < result['TODO'].length; i++) {
+
+                    if(temp != result['TODO'][i]['INIT_CONTENT']){
+                        temp = result['TODO'][i]['INIT_CONTENT'];
+                        $(child.firstChild).append("<optgroup label='"+temp+"'>");
+                    }
+
+                    $(child.firstChild).append("<option value='"+result['TODO'][i]['ID']+"'>"+result['TODO'][i]['CONTENT']+"</option>");
+                }
+
+            },
+            error : function( jqxhr , status , error ){
+                // console.log( jqxhr , status , error );
+            }
+        });
+    }
+
+     //Sprint Meeting 메뉴 활성화
+     elements = document.getElementsByClassName('m-menu__item--active');
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].classList.remove('m-menu__item--active');
+        }
+
+        document.getElementById('sprint_left_menu').classList.add('m-menu__item--active');
 
 
 

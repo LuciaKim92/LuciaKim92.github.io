@@ -210,18 +210,24 @@
                                                         </tr>
 
                                                         <?php
-                                                            if(sizeof($myarr['FEED'][0]) == 0){
-                                                                ?>
-                                                                <tr>
-                                                                    <th colspan="4">데이터가 없습니다.</th>
-                                                                </tr>
-                                                                <?php
-                                                            }
+                                                            $i=0;
 
                                                             foreach($myarr['FEED'] as $key=>$bean){
 
-                                                                if(sizeof($myarr['FEED'][$key]) == 0)
+                                                                if(sizeof($myarr['FEED'][$key]) == 0){
+
+                                                                     $i++;
+
+                                                                    if($i == sizeof($myarr['FEED'])){
+                                                                        ?>
+                                                                        <tr>
+                                                                            <th colspan="4">데이터가 없습니다.</th>
+                                                                        </tr>    
+                                                                        <?php                                                                        
+                                                                    }
+
                                                                     continue;
+                                                                }
                                                                 ?>
                                                                 
                                                                 <tbody id="feedback-kr-<?=$key+1?>">
@@ -389,7 +395,7 @@
                 if(data == '회의록 없음'){
 
                     if(confirm("회의록이 없습니다! 작성하시겠습니까?")){
-                        location.href="/Sprint_Meet_Controller/spr_create";
+                        location.href="/Sprint_Meet_Controller/spr_create/"+temp;
                     }
 
                     else{
