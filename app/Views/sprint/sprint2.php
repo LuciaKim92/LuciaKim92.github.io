@@ -100,7 +100,7 @@
                         </li>
 
                         <li class="m-nav-sticky__item" data-toggle="m-tooltip" title="" data-placement="left" data-original-title="작성하기">
-                            <a href="/home/sprint"><i class="la la-plus-circle"></i></a>
+                            <a href="/Sprint_Meet_Controller/spr_create"><i class="la la-plus-circle"></i></a>
                         </li>
 
                         <li class="m-nav-sticky__item" data-toggle="m-tooltip" title="" data-placement="left" data-original-title="수정하기">

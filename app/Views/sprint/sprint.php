@@ -100,13 +100,16 @@
                         </li>
 
                         <li class="m-nav-sticky__item" data-toggle="m-tooltip" title="" data-placement="left" data-original-title="저장하기">
-                            <a href="https://keenthemes.com/metronic/documentation.html" target="_blank"><i class="la la-save"></i></a>
+                            <a href="#" target="_blank"><i class="la la-save"></i></a>
                         </li>
                         <li class="m-nav-sticky__item" data-toggle="m-tooltip" title="" data-placement="left" data-original-title="목록으로">
                             <a href="/home/sprint_list" ><i class="la la-list"></i></a>
                         </li>
                     </ul>
 
+
+                <form name="sprint_form" action="/Sprint_Meet_Controller/spr_save" method="post">    
+                    <input id="submit" type="submit"></input>
 					<div class="m-content">
                         <div class="row">
                             <div class="col-xl-12">
@@ -115,6 +118,8 @@
                                         <table class="table table-bordered" id="sprint-table">
                                             <tbody>
                                                 <tr>
+                                                    <input type="hidden" name="DWGP_CD" value="<?=$myarr['DWGP_CD']?>"></input>
+                                                    <input type="hidden" name="DEPT_CD" value="<?=$myarr['DEPT_CD']?>"></input>
                                                     <th style="width:50%">부분(본부)/팀</th>
                                                     <th><?=$myarr['DEPT_UP_NM']?>/<?=$myarr['DEPT_NM']?></th>
                                                 </tr>
@@ -137,6 +142,7 @@
                                             </div>
 
                                             <div class="m-portlet__body" style="display:table; text-align:center; width:100%">
+                                                <input type="hidden" name="OKR_OBJT_ID" value="<?=$myarr['ID']?>"></input>
                                                 <h1 style="display:table-cell; vertical-align:middle;">"<?=$myarr['OBJECTIVE']?>"</h1>
                                             </div>
 
@@ -172,7 +178,7 @@
                                         </div>
                                     </div>
                                 </div>
-
+                </form>                                                
                                 <div class="row">
                                     <div class="col-xl-12">
                                         <div class="m-portlet m-portlet--full-height  m-portlet--unair">
@@ -186,7 +192,7 @@
 
                                                         <!--달력부분 차후 날짜변경시 그 날짜의 회의록 불러오도록 함수 추가해야함-->
                                                         <tr style="background-color:#fffc9e">
-                                                            <td colspan="4" style="text-align:center"><input type="date" id="date" class="form-control" style="display:inline-block; width:150px; text-align:center;" placeholder="date input" value="<?=$MEET_DT?>"></td>
+                                                            <td colspan="4" style="text-align:center"><input type="date" name="MEET_DT" id="date" class="form-control" style="display:inline-block; width:150px; text-align:center;" placeholder="date input" value="<?=$MEET_DT?>"></td>
                                                         </tr>
 
                                                         <tr style="background-color:#dae8fc">
@@ -207,6 +213,9 @@
                                                                         if($i == sizeof($myarr['KR'])){
                                                                             ?>
                                                                             <tr>
+                                                                                <input type="hidden" name="feed-plan[]" value="none"></input>
+                                                                                <input type="hidden" name="feed-high[]" value="none"></input>
+                                                                                <input type="hidden" name="feed-low[]" value="none"></input>
                                                                                 <th colspan="4">데이터가 없습니다.</th>
                                                                             </tr>    
                                                                             <?php                                                                        
@@ -224,10 +233,10 @@
 
 																	<?php
 																		foreach($bean['LAST_PLAN'] as $key2 => $bean2){                    
-																			?>           
+																			?>
 																			<script>
                                                                                 $(document).ready(function(){
-                                                                                    add_feedback_column('feedback-kr-<?=$key+1?>', '<?=$bean2["EMP_NM"]?>', '<?=$bean2["CONTENT"]?>');
+                                                                                    add_feedback_column('feedback-kr-<?=$key+1?>', '<?=$bean2["EMP_NM"]?>', '<?=$bean2["CONTENT"]?>', <?=$bean2['PLAN_ID']?>);
                                                                                 });
 																			</script>
 
@@ -265,7 +274,7 @@
 
                                                                     <script>
                                                                     $(document).ready(function(){
-                                                                        add_idea_column('idea-kr-<?=$key+1?>');
+                                                                        add_idea_column('idea-kr-<?=$key+1?>', <?=$bean['ID']?>);
                                                                     });
                                                                     </script>
                                                                 																															
@@ -273,7 +282,7 @@
 
                                                                 <tr>
                                                                     <td colspan="4" style="text-align:center; ">
-                                                                        <button type="button" class="btn btn-success" id="btn1" onclick="add_idea_column('idea-kr-<?=$key+1?>')">+</button>
+                                                                        <button type="button" class="btn btn-success" id="btn1" onclick="add_idea_column('idea-kr-<?=$key+1?>', <?=$bean['ID']?>)">+</button>
                                                                         <button type="button" class="btn btn-danger" id="btn1" onclick="remove_column('idea-kr-<?=$key+1?>')">-</button>
                                                                     </td>
                                                                  </tr>
@@ -305,7 +314,7 @@
 
                                                                     <script>
                                                                     $(document).ready(function(){
-                                                                        add_plan_column('plan-kr-<?=$key+1?>');
+                                                                        add_plan_column('plan-kr-<?=$key+1?>', <?=$bean['ID']?>);
                                                                     });
                                                                     </script>
                                                                 																															
@@ -313,7 +322,7 @@
 
                                                                 <tr>
                                                                     <td colspan="4" style="text-align:center; ">
-                                                                        <button type="button" class="btn btn-success" id="btn1" onclick="add_plan_column('plan-kr-<?=$key+1?>')">+</button>
+                                                                        <button type="button" class="btn btn-success" id="btn1" onclick="add_plan_column('plan-kr-<?=$key+1?>', <?=$bean['ID']?>)">+</button>
                                                                         <button type="button" class="btn btn-danger" id="btn1" onclick="remove_column('plan-kr-<?=$key+1?>')">-</button>
                                                                     </td>
                                                                  </tr>
@@ -412,26 +421,29 @@
     });
 
 
-    function add_feedback_column(b, manager, task){
+    function add_feedback_column(b, manager, task, id){
 		var a = $('#' + b + '-head').attr('rowspan');
         $('#' + b + '-head').attr('rowspan', a+2);
 
-		var html = "<tr class='separator'><td rowspan='2' style='text-align:center'>" + manager + "</td><td rowspan='2'>" + task +
-                    "</td><td><textarea rows='3' col='30' style='width:100%;' placeholder='high)'></textarea></td></tr>" +  
-                    "<tr><td><textarea rows='3' col='30' style='width:100%' placeholder='low)'></textarea></td></tr>";
-
+		var html =  "<tr class='separator'><td rowspan='2' style='text-align:center'>" + manager + "</td><td rowspan='2'>" + task +
+                    "<input type='hidden' name='feed-plan[]' value='"+id+"'></input>"+        
+                    "</td><td><textarea name='feed-high[]' rows='3' col='30' style='width:100%;' placeholder='high)'></textarea></td></tr>" +  
+                    "<tr><td><textarea name='feed-low[]' rows='3' col='30' style='width:100%' placeholder='low)'></textarea></td></tr>";
 
 		$('#' + b).append(html);
 	}
 
-	function add_idea_column(b){
+	function add_idea_column(b, c){
 
 		var a = $('#' + b + '-head').attr('rowspan');
         $('#' + b + '-head').attr('rowspan', a+2);
 
+        console.log(c);
+
 		var html = `<tr class='separator'>
                         <td>
-                            <select name="` + b + '-head' + `"onchange="this.value=this.options[this.selectedIndex].value; change_child(this)">
+                            <input type='hidden' name='idea-kr[]' value='`+c+`'></input>
+                            <select id="`+b+'-head'+`" name="idea-name[]"onchange="this.value=this.options[this.selectedIndex].value; change_child(this)">
                                 <option value="none">선택</option>
                                 <?php
                                     foreach($myarr['EMP_LIST'] as $key => $bean){
@@ -445,22 +457,25 @@
                         </td>
 
                         <td id='div_chk' value="123">
-                            <select style='width: 100%;' onchange='this.value=this.options[this.selectedIndex].value;'></select>
+                            <select name="idea-todo[]" style='width: 100%;' onchange='this.value=this.options[this.selectedIndex].value;'>
+                                <option value="none">=== 선택 ===</option>
+                            </select>
                         </td>
 
-                        <td><textarea rows='3' col='30' style='width:100%' placeholder='[아이디어]'></textarea></td></td>
+                        <td><textarea name='idea-content[]' rows='3' col='30' style='width:100%' placeholder='[아이디어]'></textarea></td></td>
                     </tr>`;
 
 		$('#' + b).append(html);
 	}
 
-	function add_plan_column(b){
+	function add_plan_column(b, c){
 		var a = $('#' + b + '-head').attr('rowspan');
         $('#' + b + '-head').attr('rowspan', a+2);
 
 		var html = `<tr class='separator'>
+                        <input type='hidden' name='plan-kr[]' value='`+c+`'></input>
                         <td>
-                            <select onchange="this.value=this.options[this.selectedIndex].value;">
+                            <select name='plan-name[]' onchange="this.value=this.options[this.selectedIndex].value;">
                                 <option value="none">=== 선택 ===</option>
                                 <?php
                                     foreach($myarr['EMP_LIST'] as $key => $bean){
@@ -472,7 +487,7 @@
                             </select>
                         </td>
                                 
-                        <td colspan='2'><textarea rows='3' col='30' style='width:100%' placeholder='[할일]'></textarea></td>
+                        <td colspan='2'><textarea name='plan-content[]' rows='3' col='30' style='width:100%' placeholder='[할일]'></textarea></td>
                     </tr>`;
 
 		$('#' + b).append(html);
@@ -493,12 +508,15 @@
     // 셀렉트박스 관련 함수 
     function change_child(element) {
 
-        var kr_id = $("#"+element.name).attr("value");
+        var kr_id = $("#"+element.id).attr("value");
+        // console.log(kr_id);
 
         var child = element.parentNode.nextSibling.nextSibling
 
         child.firstChild.remove();
-        child.innerHTML = "<select style='width: 100%;' onchange='this.value=this.options[this.selectedIndex].value;'></select>"
+        child.innerHTML =  "<select name='idea-todo[]' style='width: 100%;' onchange='this.value=this.options[this.selectedIndex].value;'>" +
+                            "<option value='none'>=== 선택 ===</option>"+
+                            "</select>";
 
         $.ajax({
             type : 'POST',

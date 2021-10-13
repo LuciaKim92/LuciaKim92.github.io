@@ -9,7 +9,7 @@ class Sprint_Meet_Controller extends BaseController
 		$this->response = \Config\Services::response();
 		$this->session = \Config\Services::session();
 		$user_data = array(
-			"admin_ids" => 'id',
+			"admin_ids" => 123123,
 			"admin_names" => '이유진',
 			"emp_no" => '1234',
 			"logged_in" => TRUE
@@ -44,7 +44,7 @@ class Sprint_Meet_Controller extends BaseController
 		return view('/sprint/sprint2.php', $mydata);
     }
 
-    //회의록 날짜로 검색 ajax 통신
+    //회의록 날짜로 검색 (달력) ajax 통신
     public function spr_main_date(){
 
         $a = $_POST['DATE'];
@@ -83,11 +83,74 @@ class Sprint_Meet_Controller extends BaseController
         return view('/sprint/sprint.php', $mydata);
     }
 
-    
+    public function spr_save(){
 
+        $this->session_setting();
+        $this->Model = new Sprint_Meet_Model;
+
+        // ['OKR_OBJT_ID']
+        // ['DWGP_CD']
+        // ['DEPT_CD']
+        // ['MEET_DT']
+        // ['feed-plan'], ['feed-high'], ['feed-low']                       스프린트미팅마스터는 생성후에...
+        // ['idea-kr'], ['idea-name'], ['idea-todo'], ['idea-content']      스프린트미팅마스터는 생성후에...
+        // ['plan-kr'], ['plan-name'], ['plan-content']                     스프린트미팅마스터는 생성후에...
+        // 만들어야할 컬럼
+        // 스프린트미팅 마스터 -> 스프린트미팅 피드백 -> 스프린트미팅 아이디어 -> 스프린트미팅 계획
+
+        $arr = array();
+        $feed_arr = array();
+        $idea_arr = array();
+        $plan_arr = array();
+        
+        $_POST['MEET_DT'] = str_replace("-", "", $_POST['MEET_DT']);
+
+        for($i=0; $i < sizeof($_POST['feed-plan']); $i++){
+            array_push($feed_arr, [   'feed-plan' => $_POST['feed-plan'][$i]
+                                    , 'feed-high' => $_POST['feed-high'][$i]
+                                    , 'feed-low'  => $_POST['feed-low'][$i] 
+                                ]);
+        }
+
+        for($i=0; $i < sizeof($_POST['idea-kr']); $i++){
+            array_push($idea_arr, [   'idea-kr'      => $_POST['idea-kr'][$i]
+                                    , 'idea-name'    => $_POST['idea-name'][$i]
+                                    , 'idea-todo'    => $_POST['idea-todo'][$i] 
+                                    , 'idea-content' => $_POST['idea-content'][$i]
+                                ]);
+        }
+
+        for($i=0; $i < sizeof($_POST['plan-kr']); $i++){
+            array_push($plan_arr, [   'plan-kr'       => $_POST['plan-kr'][$i]
+                                    , 'plan-name'     => $_POST['plan-name'][$i]
+                                    , 'plan-content'  => $_POST['plan-content'][$i] 
+                                ]);
+        }
+
+        $arr['CREATE_BY']   = $_SESSION['admin_names'];
+        $arr['CREATE_ID']   = $_SESSION['admin_ids'];
+        $arr['OKR_OBJT_ID'] = $_POST['OKR_OBJT_ID'];
+        $arr['DWGP_CD']     = $_POST['DWGP_CD'];
+        $arr['DEPT_CD']     = $_POST['DEPT_CD'];
+        $arr['MEET_DT']     = $_POST['MEET_DT'];
+        $arr['feed'] = $feed_arr;
+        $arr['idea'] = $idea_arr;
+        $arr['plan'] = $plan_arr;
+
+
+        $arr['SPR_MEET_ID'] = $this->Model->insert_spr_meet_mst($arr);
+        $this->Model->insert_spr_content($arr);
+
+        $this->spr_main_id($arr['SPR_MEET_ID']);
+        // VAR_DUMP($_POST);
+
+    }
+
+    
     //회의록 수정
     public function spr_edit(){
-
+        $this->Model = new Sprint_Meet_Model;
+        $this->Model->search_spr_by_id(1000000);
     }
 
     //To do 리스트 반환 AJAX 통신

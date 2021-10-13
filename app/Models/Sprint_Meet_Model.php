@@ -195,7 +195,7 @@ class Sprint_Meet_Model extends Model
 
         $book_arr = array();
 
-        $query = "SELECT * FROM SPR_MEET_MST WHERE DEPT_CD = '$DEPT_CD'";
+        $query = "SELECT * FROM SPR_MEET_MST WHERE DEPT_CD = '$DEPT_CD' ORDER BY MEET_DT DESC";
         $stmt = sqlsrv_query($this->dbconn, $query);
 
         while ($row2 = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
@@ -325,7 +325,7 @@ class Sprint_Meet_Model extends Model
 
         $DEPT_CD = $result['DEPT_CD'];
 
-        $query = "SELECT * FROM SPR_MEET_MST WHERE DEPT_CD = '$DEPT_CD'";
+        $query = "SELECT * FROM SPR_MEET_MST WHERE DEPT_CD = '$DEPT_CD' ORDER BY MEET_DT DESC";
         $stmt = sqlsrv_query($this->dbconn, $query);
 
         while ($row2 = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
@@ -342,5 +342,130 @@ class Sprint_Meet_Model extends Model
         return $result;
     }
 
+    // create spr_meet_mst (insert)
+    public function insert_spr_meet_mst($arr){
 
+        $query = "
+                    INSERT INTO [dbo].[SPR_MEET_MST]
+                            ([CREATE_ON]
+                            ,[CREATE_BY]
+                            ,[CREATE_ID]
+                            ,[OKR_OBJT_ID]
+                            ,[DWGP_CD]
+                            ,[DEPT_CD]
+                            ,[MEET_DT])
+                    
+                    OUTPUT INSERTED.ID
+                    
+                    VALUES
+                        (GETDATE()
+                        ,'".$arr['CREATE_BY']."'
+                        ,".$arr['CREATE_ID']."
+                        ,".$arr['OKR_OBJT_ID']."
+                        ,'".$arr['DWGP_CD']."'
+                        ,'".$arr['DEPT_CD']."'
+                        ,'".$arr['MEET_DT']."'
+                        )
+                ";
+
+        $stmt = sqlsrv_query($this->dbconn, $query);
+        $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+
+        return $row['ID'];
+    }
+    
+
+
+    // create feed, idea, plan (insert)
+    public function insert_spr_content($arr){
+
+        foreach($arr['feed'] as $key => $bean){
+            if($bean['feed-plan'] && $bean['feed-high'] && $bean['feed-low']){
+                // echo $bean['feed-plan'];
+                // echo $bean['feed-high'];
+                // echo $bean['feed-low'];
+
+                $query = "INSERT INTO [dbo].[SPR_MEET_FEED]
+                                    ([CREATE_ON]
+                                    ,[CREATE_BY]
+                                    ,[CREATE_ID]
+                                    ,[SPR_MEET_PLAN_ID]
+                                    ,[HIGHLIGHT]
+                                    ,[LOWLIGHT]
+                                    ,[SPR_MEET_ID])
+                                    
+                                VALUES
+                                    (GETDATE()
+                                    ,'".$arr['CREATE_BY']."'
+                                    ,".$arr['CREATE_ID']."
+                                    ,".$bean['feed-plan']."
+                                    ,'".$bean['feed-high']."'
+                                    ,'".$bean['feed-low']."'
+                                    ,".$arr['SPR_MEET_ID'].") 
+                            ";
+                
+                $stmt = sqlsrv_query($this->dbconn, $query);
+            }
+        }
+
+        foreach($arr['idea'] as $key => $bean){
+            if($bean['idea-kr'] && $bean['idea-name'] && $bean['idea-todo'] && $bean['idea-content']){
+                // echo $bean['idea-kr'];
+                // echo $bean['idea-name'];
+                // echo $bean['idea-todo'];
+                // echo $bean['idea-content'];
+
+                $query = "INSERT INTO [dbo].[SPR_MEET_IDEA]
+                                    ([CREATE_ON]
+                                    ,[CREATE_BY]
+                                    ,[CREATE_ID]
+                                    ,[SPR_MEET_ID]
+                                    ,[OKR_KEYS_ID]
+                                    ,[OKR_TODO_ID]
+                                    ,[EMPY_NO]
+                                    ,[CONTENT])
+
+                                VALUES
+                                    (GETDATE()
+                                    ,'".$arr['CREATE_BY']."'
+                                    ,".$arr['CREATE_ID']."
+                                    ,".$arr['SPR_MEET_ID']."
+                                    ,".$bean['idea-kr']."
+                                    ,".$bean['idea-todo']."
+                                    ,'".$bean['idea-name']."'
+                                    ,'".$bean['idea-content']."')";
+
+                $stmt = sqlsrv_query($this->dbconn, $query);
+            }
+        }
+
+        foreach($arr['plan'] as $key => $bean){
+            if($bean['plan-kr'] && $bean['plan-name'] && $bean['plan-content']){
+                // echo $bean['plan-kr'];
+                // echo $bean['plan-name'];
+                // echo $bean['plan-content'];
+
+                $query = "INSERT INTO [dbo].[SPR_MEET_PLAN]
+                                    ([CREATE_ON]
+                                    ,[CREATE_BY]
+                                    ,[CREATE_ID]
+                                    ,[SPR_MEET_ID]
+                                    ,[OKR_KEYS_ID]
+                                    ,[EMPY_NO]
+                                    ,[CONTENT])
+
+                                VALUES
+                                    (GETDATE()
+                                    ,'".$arr['CREATE_BY']."'
+                                    ,".$arr['CREATE_ID']."
+                                    ,".$arr['SPR_MEET_ID']."
+                                    ,".$bean['plan-kr']."
+                                    ,'".$bean['plan-name']."'
+                                    ,'".$bean['plan-content']."')"; 
+
+                $stmt = sqlsrv_query($this->dbconn, $query);
+            }
+
+        }
+    }
 }
