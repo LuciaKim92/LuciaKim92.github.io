@@ -43,7 +43,7 @@
                 <div class="m-subheader ">
                     <div class="d-flex align-items-center">
                         <div class="mr-auto">
-                            <h3 class="m-subheader__title ">Sprint Meeting</h3>
+                            <h3 class="m-subheader__title ">Sprint Meeting 목록</h3>
                         </div>
                         <div>
                             <span class="m-subheader__daterange" id="m_dashboard_daterangepicker">
@@ -66,7 +66,7 @@
                             <div class="m-portlet__head-caption">
                                 <div class="m-portlet__head-title">
                                     <h3 class="m-portlet__head-text">
-                                        Sprint Meeting 회의록
+                                        회의록 조회
                                     </h3>
                                 </div>
                             </div>
@@ -76,15 +76,54 @@
                                 <div class="m-accordion__item m-accordion__item--brand">
                                     <div class="m-accordion__item-head" role="tab" id="m_accordion_5_item_3_head" data-toggle="collapse" href="#m_accordion_5_item_3_body" aria-expanded="    false">
                                         <span class="m-accordion__item-icon"><i class="fas fa-book"></i></span>
-                                        <span class="m-accordion__item-title">회의록 조회</span>
+                                        <span class="m-accordion__item-title">조건 설정</span>
                                         <span class="m-accordion__item-mode"></span>
                                     </div>
                                     <div class="m-accordion__item-body collapse show" id="m_accordion_5_item_3_body" class=" " role="tabpanel" aria-labelledby="m_accordion_5_item_3_head" data-parent="#m_accordion_5">
                                         <div class="m-accordion__item-content">
-                                            <p>
-                                                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into
-                                                electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
-                                            </p>
+                                        <div class="form-group m-form__group row">
+                            <label class="col-lg-2 col-sm-3 col-form-label">검색어</label>
+                            <div class="col-lg-10 col-sm-9">
+                                <input type="text" id="find_text" class="form-control m-input--fixed" placeholder="" style="width: 60%;">
+                            </div>
+                        </div>
+                        <div class="m-form__seperator m-form__seperator--dashed"></div>
+                        <div class="m-form__seperator m-form__seperator--dashed"></div>
+                        <div class="form-group m-form__group row">
+                            <label class="col-lg-2 col-sm-3 col-form-label">기간</label>
+                            <div class="col-lg-10 col-sm-9">
+                                <select id="date_tp" class="form-control m-input--fixed" style="width: 130px; margin-bottom: 3px; cursor: pointer;">
+                                    <option value="INS" selected>등록일자</option>
+                                </select>
+                                <div style="display: flex; align-items: center;">
+                                    <div id="date_group" class="btn-group btn-group-toggle" data-toggle="buttons">
+                                        <label class="btn m-btn--square  btn-secondary m-btn m-btn--custom m-btn--label-metal" onclick="NewsList.SetDate('d', 0)">
+                                            <input type="radio" name="options" id="option1" autocomplete="off"> 오늘
+                                        </label>
+                                        <label class="btn m-btn--square  btn-secondary m-btn m-btn--custom m-btn--label-metal active" onclick="NewsList.SetDate('d', -7)">
+                                            <input type="radio" name="options" id="option2" autocomplete="off" checked> 1주일
+                                        </label>
+                                        <label class="btn m-btn--square  btn-secondary m-btn m-btn--custom m-btn--label-metal" onclick="NewsList.SetDate('m', -1)">
+                                            <input type="radio" name="options" id="option3" autocomplete="off"> 1개월
+                                        </label>
+                                        <label class="btn m-btn--square  btn-secondary m-btn m-btn--custom m-btn--label-metal" onclick="NewsList.SetDate('m', -3)">
+                                            <input type="radio" name="options" id="option3" autocomplete="off"> 3개월
+                                        </label>
+                                        <label class="btn m-btn--square  btn-secondary m-btn m-btn--custom m-btn--label-metal" onclick="NewsList.SetDate('m', -6)">
+                                            <input type="radio" name="options" id="option3" autocomplete="off"> 6개월
+                                        </label>
+                                    </div>
+                                    <div style="margin-left: 3px;">
+                                        <div class="input-group date" style="display: inline-flex; width: 160px;">
+                                            <input type="datetime-local" class="form-control m-input" id="start_dt" value="">
+                                        </div> ~
+                                        <div class="input-group date" style="display: inline-flex; width: 160px;">
+                                            <input type="datetime-local" class="form-control m-input" id="end_dt" value="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                                         </div>
                                     </div>
                                 </div>
