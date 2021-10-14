@@ -36,7 +36,7 @@
         <!-- begin::Body -->
         <div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body">
 
-            <?php echo view("layout/side_menu"); ?>
+            <?php echo view("/layout/side_menu"); ?>
             <div class="m-grid__item m-grid__item--fluid m-wrapper">
 
                 <!-- BEGIN: Subheader -->
@@ -44,17 +44,6 @@
                     <div class="d-flex align-items-center">
                         <div class="mr-auto">
                             <h3 class="m-subheader__title ">Sprint Meeting 목록</h3>
-                        </div>
-                        <div>
-                            <span class="m-subheader__daterange" id="m_dashboard_daterangepicker">
-                                <span class="m-subheader__daterange-label">
-                                    <span class="m-subheader__daterange-title"></span>
-                                    <span class="m-subheader__daterange-date m--font-brand"></span>
-                                </span>
-                                <a href="#" class="btn btn-sm btn-brand m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--square">
-                                    <i class="la la-angle-down"></i>
-                                </a>
-                            </span>
                         </div>
                     </div>
                 </div>
@@ -79,54 +68,103 @@
                                         <span class="m-accordion__item-title">조건 설정</span>
                                         <span class="m-accordion__item-mode"></span>
                                     </div>
-                                    <div class="m-accordion__item-body collapse show" id="m_accordion_5_item_3_body" class=" " role="tabpanel" aria-labelledby="m_accordion_5_item_3_head" data-parent="#m_accordion_5">
-                                        <div class="m-accordion__item-content">
-                                        <div class="form-group m-form__group row">
-                            <label class="col-lg-2 col-sm-3 col-form-label">검색어</label>
-                            <div class="col-lg-10 col-sm-9">
-                                <input type="text" id="find_text" class="form-control m-input--fixed" placeholder="" style="width: 60%;">
-                            </div>
-                        </div>
-                        <div class="m-form__seperator m-form__seperator--dashed"></div>
-                        <div class="m-form__seperator m-form__seperator--dashed"></div>
-                        <div class="form-group m-form__group row">
-                            <label class="col-lg-2 col-sm-3 col-form-label">기간</label>
-                            <div class="col-lg-10 col-sm-9">
-                                <select id="date_tp" class="form-control m-input--fixed" style="width: 130px; margin-bottom: 3px; cursor: pointer;">
-                                    <option value="INS" selected>등록일자</option>
-                                </select>
-                                <div style="display: flex; align-items: center;">
-                                    <div id="date_group" class="btn-group btn-group-toggle" data-toggle="buttons">
-                                        <label class="btn m-btn--square  btn-secondary m-btn m-btn--custom m-btn--label-metal" onclick="NewsList.SetDate('d', 0)">
-                                            <input type="radio" name="options" id="option1" autocomplete="off"> 오늘
-                                        </label>
-                                        <label class="btn m-btn--square  btn-secondary m-btn m-btn--custom m-btn--label-metal active" onclick="NewsList.SetDate('d', -7)">
-                                            <input type="radio" name="options" id="option2" autocomplete="off" checked> 1주일
-                                        </label>
-                                        <label class="btn m-btn--square  btn-secondary m-btn m-btn--custom m-btn--label-metal" onclick="NewsList.SetDate('m', -1)">
-                                            <input type="radio" name="options" id="option3" autocomplete="off"> 1개월
-                                        </label>
-                                        <label class="btn m-btn--square  btn-secondary m-btn m-btn--custom m-btn--label-metal" onclick="NewsList.SetDate('m', -3)">
-                                            <input type="radio" name="options" id="option3" autocomplete="off"> 3개월
-                                        </label>
-                                        <label class="btn m-btn--square  btn-secondary m-btn m-btn--custom m-btn--label-metal" onclick="NewsList.SetDate('m', -6)">
-                                            <input type="radio" name="options" id="option3" autocomplete="off"> 6개월
-                                        </label>
-                                    </div>
-                                    <div style="margin-left: 3px;">
-                                        <div class="input-group date" style="display: inline-flex; width: 160px;">
-                                            <input type="datetime-local" class="form-control m-input" id="start_dt" value="">
-                                        </div> ~
-                                        <div class="input-group date" style="display: inline-flex; width: 160px;">
-                                            <input type="datetime-local" class="form-control m-input" id="end_dt" value="">
+                                    <div class="m-accordion__item-body collapse show" id="m_accordion_5_item_3_body" role="tabpanel" aria-labelledby="m_accordion_5_item_3_head" data-parent="#m_accordion_5">
+                                        <div class="m-accordion__item-content" style="padding-top: 30px !important;">
+                                            <div class="form-group m-form__group row">
+                                                <label class="col-lg-2 col-sm-3 col-form-label">부서</label>
+                                                <div class="col-lg-10 col-sm-9">
+                                                    <div class="m-select2 m-select2--square">
+                                                        <select class="form-control m-select2" id="m_select2_12_1" name="company" data-placeholder="Square style" style="width: 40%;">
+                                                            <option value="dwcts" selected>대원씨티에스</option>
+                                                            <option value="AK">Option 1</option>
+                                                            <option value="AK">Option 2</option>
+                                                            <option value="AK">Option 3</option>
+                                                            <option value="AK">Option 4</option>
+                                                            <option value="AK">Option 5</option>
+                                                        </select>
+                                                        <select class="form-control m-select2" id="m_select2_12_2" name="dept" data-placeholder="Square style" style="width: 40%;">
+                                                            <option value="it" selected>IT혁신팀</option>
+                                                            <option value="AK">Option 1</option>
+                                                            <option value="AK">Option 2</option>
+                                                            <option value="AK">Option 3</option>
+                                                            <option value="AK">Option 4</option>
+                                                            <option value="AK">Option 5</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group m-form__group row">
+                                                <label class="col-lg-2 col-sm-3 col-form-label">검색어</label>
+                                                <div class="col-lg-10 col-sm-9">
+                                                    <input type="text" id="find_text" class="form-control m-input--fixed" placeholder="" style="width: 60%;">
+                                                </div>
+                                            </div>
+                                            <div class="m-form__seperator m-form__seperator--dashed"></div>
+                                            <div class="m-form__seperator m-form__seperator--dashed"></div>
+                                            <div class="form-group m-form__group row">
+                                                <label class="col-lg-2 col-sm-3 col-form-label">기간</label>
+                                                <div class="col-lg-10 col-sm-9">
+                                                    <select id="date_tp" class="form-control m-input--fixed" style="margin-bottom: 3px; cursor: pointer;">
+                                                        <option value="INS" selected>미팅일자</option>
+                                                    </select>
+                                                    <div style="display: flex; align-items: center;">
+                                                        <div id="date_group" class="btn-group btn-group-toggle" data-toggle="buttons">
+                                                            <label class="btn m-btn--square  btn-secondary m-btn m-btn--custom m-btn--label-metal active" onclick="setDate('d', 0)">
+                                                                <input type="radio" name="options" id="option1" autocomplete="off"> 오늘
+                                                            </label>
+                                                            <label class="btn m-btn--square  btn-secondary m-btn m-btn--custom m-btn--label-metal" onclick="setDate('d', -7)">
+                                                                <input type="radio" name="options" id="option2" autocomplete="off" checked> 1주일
+                                                            </label>
+                                                            <label class="btn m-btn--square  btn-secondary m-btn m-btn--custom m-btn--label-metal" onclick="setDate('m', -1)">
+                                                                <input type="radio" name="options" id="option3" autocomplete="off"> 1개월
+                                                            </label>
+                                                            <label class="btn m-btn--square  btn-secondary m-btn m-btn--custom m-btn--label-metal" onclick="setDate('m', -3)">
+                                                                <input type="radio" name="options" id="option3" autocomplete="off"> 3개월
+                                                            </label>
+                                                            <label class="btn m-btn--square  btn-secondary m-btn m-btn--custom m-btn--label-metal" onclick="setDate('m', -6)">
+                                                                <input type="radio" name="options" id="option3" autocomplete="off"> 6개월
+                                                            </label>
+                                                        </div>
+                                                        <div style="margin-left: 3px;">
+                                                            <div class="input-group date" style="display: inline-flex; width: 160px;">
+                                                                <input type="date" class="form-control m-input" id="start_dt">
+                                                            </div> ~
+                                                            <div class="input-group date" style="display: inline-flex; width: 160px;">
+                                                                <input type="date" class="form-control m-input" id="end_dt">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="m-form__actions m-form__actions" style="padding: 10px; text-align: center;">
+                                                <div class="row">
+                                                    <div class="col-lg-12 ml-lg-auto">
+                                                        <button type="submit" class="btn btn-brand" style="width: 100px;">검색</button>
+                                                        <button type="reset" class="btn btn-secondary" style="width: 100px;">초기화</button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <script>
+                                    var ed_date = new Date();
+                                    document.getElementById('start_dt').valueAsDate = new Date();
+                                    document.getElementById('end_dt').valueAsDate = ed_date;
+
+                                    function setDate(date_tp, number) {
+                                        var set_date = new Date();
+
+                                        if (date_tp == 'd') {
+                                            set_date.setDate(ed_date.getDate() + number);
+                                        } else {
+                                            set_date.setMonth(ed_date.getMonth() + number);
+                                        }
+
+                                        document.getElementById('start_dt').valueAsDate = set_date;
+                                    }
+                                </script>
+
                                 <div class="m-accordion__item m-accordion__item--info">
                                     <div class="m-accordion__item-head" role="tab" id="m_accordion_5_item_2_head" data-toggle="collapse" href="#m_accordion_5_item_2_body" aria-expanded="    false">
                                         <span class="m-accordion__item-icon"><i class="fas fa-book"></i></span>
@@ -155,7 +193,7 @@
 
 		<!--begin::Page Vendors -->
 		<script src="/assets/vendors/custom/fullcalendar/fullcalendar.bundle.js" type="text/javascript"></script>
-
+        <script src="/assets/demo/default/custom/crud/forms/widgets/select2.js" type="text/javascript"></script>
 		<!--end::Page Vendors -->
 
 		<!--begin::Page Scripts -->
