@@ -100,7 +100,7 @@
                         </li>
 
                         <li class="m-nav-sticky__item" data-toggle="m-tooltip" title="" data-placement="left" data-original-title="작성하기">
-                            <a href="/home/sprint"><i class="la la-plus-circle"></i></a>
+                            <a href="/Sprint_Meet_Controller/spr_create"><i class="la la-plus-circle"></i></a>
                         </li>
 
                         <li class="m-nav-sticky__item" data-toggle="m-tooltip" title="" data-placement="left" data-original-title="수정하기">
@@ -194,7 +194,7 @@
 
                                                     <tbody>
 
-                                                        <!--달력부분 차후 날짜변경시 그 날짜의 회의록 불러오도록 함수 추가해야함-->
+                                                        <!--달력부분 날짜변경시 그 날짜의 회의록 불러옴 없으면 작성 여부 묻기-->
                                                         <tr style="background-color:#fffc9e">
                                                             <td colspan="4" style="text-align:center">
                                                                 <input type="date" id="date" class="form-control" style="display:inline-block; width:150px; text-align:center;" placeholder="date input" value="<?=$myarr['MEET_DT']?>">
@@ -210,18 +210,24 @@
                                                         </tr>
 
                                                         <?php
-                                                            if(sizeof($myarr['FEED'][0]) == 0){
-                                                                ?>
-                                                                <tr>
-                                                                    <th colspan="4">데이터가 없습니다.</th>
-                                                                </tr>
-                                                                <?php
-                                                            }
+                                                            $i=0;
 
                                                             foreach($myarr['FEED'] as $key=>$bean){
 
-                                                                if(sizeof($myarr['FEED'][$key]) == 0)
+                                                                if(sizeof($myarr['FEED'][$key]) == 0){
+
+                                                                     $i++;
+
+                                                                    if($i == sizeof($myarr['FEED'])){
+                                                                        ?>
+                                                                        <tr>
+                                                                            <th colspan="4">데이터가 없습니다.</th>
+                                                                        </tr>    
+                                                                        <?php                                                                        
+                                                                    }
+
                                                                     continue;
+                                                                }
                                                                 ?>
                                                                 
                                                                 <tbody id="feedback-kr-<?=$key+1?>">
@@ -389,7 +395,7 @@
                 if(data == '회의록 없음'){
 
                     if(confirm("회의록이 없습니다! 작성하시겠습니까?")){
-                        location.href="/Sprint_Meet_Controller/spr_create";
+                        location.href="/Sprint_Meet_Controller/spr_create/"+temp;
                     }
 
                     else{
