@@ -26,7 +26,20 @@ var App = function (_Component) {
       company: [{ id: 1,
         field: "경영 기획 부문",
         teams: [{ name: "IT 혁신팀",
-          update: "2021-09-10"
+          minutes: [
+            { num: 1,
+              date: "2021-09-10",
+              update: "2021-10-15"
+            },
+            { num: 2,
+              date: "2021-10-01",
+              update: "2021-10-01"
+            },
+            { num: 3,
+              date: "2021-10-08",
+              update: "2021-10-13"
+            }
+          ]
         }, { name: "OKR 추진팀",
           update: "2021-09-10"
         }, { name: "재경팀",
@@ -111,11 +124,6 @@ var MeetingsList = function (_Component) {
                               'span',
                               { className: 'header-title' },
                               item.field
-                          ),
-                          React.createElement(
-                              'span',
-                              { className: 'update-date' },
-                              '\uCD5C\uC885 \uC218\uC815\uC77C'
                           )
                       ),
                       React.createElement(
@@ -159,9 +167,9 @@ var Meeting = function (_Component) {
                           ' \uD68C\uC758\uB85D'
                       ),
                       React.createElement(
-                          'span',
-                          { className: 'update-date' },
-                          team.update
+                        'span',
+                        { className: 'update-date' },
+                        '\uCD5C\uC885 \uC218\uC815\uC77C'
                       )
                   );
               })

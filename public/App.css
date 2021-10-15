@@ -9,6 +9,12 @@
     padding: 2rem 2rem !important;
 }
 
+div.accordion-item {
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+}
+
 button.accordion-button {
     display: inline-block;
     font-weight: 400;

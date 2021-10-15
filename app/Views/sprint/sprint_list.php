@@ -199,7 +199,7 @@
 		<!--begin::Page Scripts -->
 		<script src="/assets/app/js/dashboard.js" type="text/javascript"></script>
 
-		<!--end::Page Scripts -->s
+		<!--end::Page Scripts -->
 
 	<script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
 	<script src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js" crossorigin></script>
