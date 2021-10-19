@@ -74,8 +74,8 @@
                                                 <label class="col-lg-2 col-sm-3 col-form-label">부서</label>
                                                 <div class="col-lg-10 col-sm-9">
                                                     <div class="m-select2 m-select2--square">
-                                                        <select class="form-control m-select2" id="m_select2_12_1" name="company" data-placeholder="Square style" style="width: 40%;">
-                                                            <option value="dwcts" selected><?php echo($_SESSION['comp_nm'])?></option>
+                                                        <select class="form-control m-select2" id="m_select2_12_1" name="comp" data-placeholder="Square style" style="width: 40%;">
+                                                            <option value="<?php echo($_SESSION['comp_cd'])?>" selected><?php echo($_SESSION['comp_nm'])?></option>
                                                         </select>
                                                         <select class="form-control m-select2" id="m_select2_12_2" name="dept" data-placeholder="Square style" style="width: 40%;">
                                                             <option value="<?php echo($_SESSION['team_cd'])?>" selected><?php echo($_SESSION['team_nm'])?></option>
@@ -144,7 +144,7 @@
                                             <div class="m-form__actions m-form__actions" style="padding: 10px; text-align: center;">
                                                 <div class="row">
                                                     <div class="col-lg-12 ml-lg-auto">
-                                                        <button type="submit" class="btn btn-brand" style="width: 100px;">검색</button>
+                                                        <button type="submit" class="btn btn-brand" style="width: 100px;" onclick="searchSprMeet();">검색</button>
                                                         <button type="reset" class="btn btn-secondary" style="width: 100px;">초기화</button>
                                                     </div>
                                                 </div>
@@ -154,8 +154,8 @@
                                 </div>
                                 <script>
                                     var ed_date = new Date();
-                                    document.getElementById('start_dt').valueAsDate = new Date();
-                                    document.getElementById('end_dt').valueAsDate = ed_date;
+                                    document.getElementById('st_dt').valueAsDate = new Date();
+                                    document.getElementById('ed_dt').valueAsDate = ed_date;
 
                                     function setDate(date_tp, number) {
                                         var set_date = new Date();
@@ -166,7 +166,7 @@
                                             set_date.setMonth(ed_date.getMonth() + number);
                                         }
 
-                                        document.getElementById('start_dt').valueAsDate = set_date;
+                                        document.getElementById('st_dt').valueAsDate = set_date;
                                     }
                                 </script>
 
@@ -212,32 +212,20 @@
     <script>var Alert = ReactBootstrap.Alert;</script>
 	<script src="/App.js" charset="utf-8"></script>
     <script>
-        var sql = require('mssql');
+        function searchSprMeet() {
+            var dept_cd = document.querySelector('select[name=dept]').value;
+            var comp_cd = document.querySelector('select[name=comp]').value;
+            var find_txt = document.getElementById('find_txt').value;
+            var date_tp = document.getElementById('date_tp').value;
+            var st_dt = document.getElementById('st_dt').value;
+            var ed_dt = document.getElementById('ed_dt').value;
 
-        var config = { 
-            user: 'dwokr', 
-            password: 'dwokr@)@!21', 
-            server: '211.233.21.82', 
-            database: 'DWOKR', 
-            options: { encrypt: true }
-        } 
+            
+        }
 
-        sql.connect(config, err => {
-            // ... error checks
-            console.log(err.message);
-
-            // Stored Procedure
-            new sql.Request()
-            .input('input_parameter', sql.Int, value)
-            .output('output_parameter', sql.VarChar(50))
-            .execute('USP_SEARCH_SPRINTMEETING_LIST', (err, result) => {
-                // ... error checks
-                console.log(err.message);
-
-                console.dir(result)
-            })
-        })
+        
     </script>
+    <script src="/assets/app/js/sprint_list.js" type="text/javascript"></script>
 </body>
 
 </html>
