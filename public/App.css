@@ -9,25 +9,25 @@
     padding: 2rem 2rem !important;
 }
 
-div.accordion-item {
-    border-top: none !important;
-    border-left: none !important;
-    border-right: none !important;
-}
-
 button.accordion-button {
     display: inline-block;
     font-weight: 400;
 }
 
 .accordion-button:focus {
-    border-color: transparent !important;
-    box-shadow: 0 0 0 0 rgb(13 110 253 / 0%) !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 button.accordion-button::after {
     position: absolute;
     right: 1em;
+}
+
+button.accordion-button:not(.collapsed) {
+    color: #0c63e4;
+    background-color: #e7f1ff;
+    box-shadow: none !important;
 }
 
 .update-date {
@@ -38,28 +38,38 @@ button.accordion-button::after {
 
 .accordion-body {
     font-weight: 300;
-    padding: 0 1.25rem !important;
+    padding: 0 !important;
 }
 
 .meeting {
+    border-top: 1px solid rgba(170, 159, 159, 0.2) !important;
+}
+
+.meeting .accordion-button:hover {
+    background-color: #e7f1ff;
+}
+
+.meeting .accordion-body {
+    padding: 0 1.25rem !important;
+}
+
+.minutes {
     display: block;
     width: 100%;
     height: 3rem;
     line-height: 3rem;
     color: black;
-    text-decoration: none;
 }
 
-    .meeting .update-date {
-        font-size: 0.85rem;
+    .minutes .update-date {
         color: gray;
     }
 
-    .meeting:not(:last-child) {
+    .minutes:not(:last-child) {
         border-bottom: 1px solid rgba(170, 159, 159, 0.2);
     }
 
-    .meeting:hover {
+    .minutes:hover {
         color: gray;
     }
 

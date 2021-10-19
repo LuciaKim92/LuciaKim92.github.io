@@ -7,8 +7,8 @@
 	<title>Jquery Comments Plugin</title>
 	<link rel="stylesheet" type="text/css" href="/App.css" />
 	<link rel="stylesheet"
-  		  href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
-  		  integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
   		  crossorigin="anonymous" />
 	<script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" data-auto-replace-svg="nest"></script>
 
@@ -75,20 +75,25 @@
                                                 <div class="col-lg-10 col-sm-9">
                                                     <div class="m-select2 m-select2--square">
                                                         <select class="form-control m-select2" id="m_select2_12_1" name="company" data-placeholder="Square style" style="width: 40%;">
-                                                            <option value="dwcts" selected>대원씨티에스</option>
-                                                            <option value="AK">Option 1</option>
-                                                            <option value="AK">Option 2</option>
-                                                            <option value="AK">Option 3</option>
-                                                            <option value="AK">Option 4</option>
-                                                            <option value="AK">Option 5</option>
+                                                            <option value="dwcts" selected><?php echo($_SESSION['comp_nm'])?></option>
                                                         </select>
                                                         <select class="form-control m-select2" id="m_select2_12_2" name="dept" data-placeholder="Square style" style="width: 40%;">
-                                                            <option value="it" selected>IT혁신팀</option>
-                                                            <option value="AK">Option 1</option>
-                                                            <option value="AK">Option 2</option>
-                                                            <option value="AK">Option 3</option>
-                                                            <option value="AK">Option 4</option>
-                                                            <option value="AK">Option 5</option>
+                                                            <option value="<?php echo($_SESSION['team_cd'])?>" selected><?php echo($_SESSION['team_nm'])?></option>
+                                                            <?php          
+                                                                if($SUB_DEPTS != null) {       
+                                                                    foreach($SUB_DEPTS as $key => $bean){
+                                                                        if( $SUB_DEPTS[$key]['DEPT_TP'] == '3' ) {
+                                                                    ?>
+                                                                    <option value="<?=$bean['DEPT_CD']?>">--<?=$bean['DEPT_NM']?></option>
+                                                                    <?php
+                                                                        } else {
+                                                                    ?>
+                                                                    <option value="<?=$bean['DEPT_CD']?>"><?=$bean['DEPT_NM']?></option>
+                                                                    <?php
+                                                                        }
+                                                                    }
+                                                                }
+                                                            ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -96,7 +101,7 @@
                                             <div class="form-group m-form__group row">
                                                 <label class="col-lg-2 col-sm-3 col-form-label">검색어</label>
                                                 <div class="col-lg-10 col-sm-9">
-                                                    <input type="text" id="find_text" class="form-control m-input--fixed" placeholder="" style="width: 60%;">
+                                                    <input type="text" id="find_txt" class="form-control m-input--fixed" placeholder="" style="width: 60%;">
                                                 </div>
                                             </div>
                                             <div class="m-form__seperator m-form__seperator--dashed"></div>
@@ -105,7 +110,7 @@
                                                 <label class="col-lg-2 col-sm-3 col-form-label">기간</label>
                                                 <div class="col-lg-10 col-sm-9">
                                                     <select id="date_tp" class="form-control m-input--fixed" style="margin-bottom: 3px; cursor: pointer;">
-                                                        <option value="INS" selected>미팅일자</option>
+                                                        <option value="MEET" selected>미팅일자</option>
                                                     </select>
                                                     <div style="display: flex; align-items: center;">
                                                         <div id="date_group" class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -127,10 +132,10 @@
                                                         </div>
                                                         <div style="margin-left: 3px;">
                                                             <div class="input-group date" style="display: inline-flex; width: 160px;">
-                                                                <input type="date" class="form-control m-input" id="start_dt">
+                                                                <input type="date" class="form-control m-input" id="st_dt">
                                                             </div> ~
                                                             <div class="input-group date" style="display: inline-flex; width: 160px;">
-                                                                <input type="date" class="form-control m-input" id="end_dt">
+                                                                <input type="date" class="form-control m-input" id="ed_dt">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -201,10 +206,38 @@
 
 		<!--end::Page Scripts -->
 
-	<script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+	<script src="https://unpkg.com/react/umd/react.development.js" crossorigin></script>
 	<script src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js" crossorigin></script>
-	<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+	<script src="https://unpkg.com/react-dom/umd/react-dom.development.js" crossorigin></script>
+    <script>var Alert = ReactBootstrap.Alert;</script>
 	<script src="/App.js" charset="utf-8"></script>
+    <script>
+        var sql = require('mssql');
+
+        var config = { 
+            user: 'dwokr', 
+            password: 'dwokr@)@!21', 
+            server: '211.233.21.82', 
+            database: 'DWOKR', 
+            options: { encrypt: true }
+        } 
+
+        sql.connect(config, err => {
+            // ... error checks
+            console.log(err.message);
+
+            // Stored Procedure
+            new sql.Request()
+            .input('input_parameter', sql.Int, value)
+            .output('output_parameter', sql.VarChar(50))
+            .execute('USP_SEARCH_SPRINTMEETING_LIST', (err, result) => {
+                // ... error checks
+                console.log(err.message);
+
+                console.dir(result)
+            })
+        })
+    </script>
 </body>
 
 </html>

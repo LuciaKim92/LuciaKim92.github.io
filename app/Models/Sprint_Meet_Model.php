@@ -17,6 +17,19 @@ class Sprint_Meet_Model extends Model
         $this->dbconn = sqlsrv_connect($this->serverName, $this->connectionOptions); 
     }
 
+    public function get_sub_depts($dept_cd) {
+        $cts_db = \Config\Database::connect('ctsdb');
+        
+        $builder = $cts_db->table('DEPT_MAP');
+        $builder->select('*');
+        $builder->where('DEPT_UP_CD', $dept_cd);
+        $builder->where('BEND_DT','29991231');
+        $builder->where('USE_YN','Y');
+        $query = $builder->get();
+
+        return $query->getResultArray();
+    }
+
     public function search_todo($kr_id, $emp_no){
         $query = "SELECT A.CONTENT as INIT_CONTENT, B.ID, B.CONTENT, B.OKR_INIT_ID 
                     FROM OKR_INIT_MST A INNER JOIN OKR_TODO_MST B ON A.ID = B.OKR_INIT_ID
