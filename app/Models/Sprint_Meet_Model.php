@@ -8,9 +8,10 @@ class Sprint_Meet_Model extends Model
     public function __construct(){
         $this->serverName = "211.233.21.82";
         $this->connectionOptions = array(
-            "database" => "", // 데이터베이스명
+            "database" => "DWOKR", // 데이터베이스명
             "uid" => "dwokr",   // 유저 아이디
-            "pwd" => "dwokr@)@!21"    // 유저 비번
+            "pwd" => "dwokr@)@!21",    // 유저 비번
+            "CharacterSet" => "UTF-8"
         );
 
 
@@ -34,7 +35,7 @@ class Sprint_Meet_Model extends Model
 
         $stmt = sqlsrv_query($this->dbconn, '{CALL DWOKR.dbo.USP_SEARCH_SPRINTMEETING_LIST(?,?,?,?,?,?)}', $params);
         $list_arr = array();
-        
+
         while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
         {
             array_push($list_arr, [

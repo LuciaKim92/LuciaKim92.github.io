@@ -18,8 +18,7 @@ class Sprint_Meet_Controller extends BaseController
 	}
 
     public function get_spr_meet_list() {
-        $this->SprModel = new Sprint_Meet_Model;
-
+        
         $DWGP_CD = $_POST['DWGP_CD'];
         $DEPT_CD = $_POST['DEPT_CD'];
         $FIND_TXT = $_POST['FIND_TXT'];
@@ -36,6 +35,7 @@ class Sprint_Meet_Controller extends BaseController
             array($ED_DT,SQLSRV_PARAM_IN)
         );
 
+        $this->SprModel = new Sprint_Meet_Model;
         $data = $this->SprModel->get_spr_meet_list($params);
         
         $result_arr = json_encode($data);
