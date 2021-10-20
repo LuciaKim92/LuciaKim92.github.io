@@ -17,6 +17,33 @@ class Sprint_Meet_Controller extends BaseController
 		$this->session->set($user_data);
 	}
 
+    public function get_spr_meet_list() {
+        $this->SprModel = new Sprint_Meet_Model;
+
+        $DWGP_CD = $_POST['DWGP_CD'];
+        $DEPT_CD = $_POST['DEPT_CD'];
+        $FIND_TXT = $_POST['FIND_TXT'];
+        $DATE_TP = $_POST['DATE_TP'];
+        $ST_DT = str_replace("-", "", $_POST['ST_DT']);
+        $ED_DT = str_replace("-", "", $_POST['ED_DT']);
+
+        $params = array(
+            array($DWGP_CD,SQLSRV_PARAM_IN),
+            array($DEPT_CD,SQLSRV_PARAM_IN),
+            array($FIND_TXT,SQLSRV_PARAM_IN),
+            array($DATE_TP,SQLSRV_PARAM_IN),
+            array($ST_DT,SQLSRV_PARAM_IN),
+            array($ED_DT,SQLSRV_PARAM_IN)
+        );
+
+        $data = $this->SprModel->get_spr_meet_list($params);
+        
+        $result_arr = json_encode($data);
+        file_put_contents("result.json", $result_arr);
+
+        return $result_arr;
+    }
+
     //회의록 메인 ID로 검색   (ID 없을시 최근날짜로 리턴)
     public function spr_main_id($id=null){
 

@@ -12,6 +12,9 @@
   		  crossorigin="anonymous" />
 	<script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" data-auto-replace-svg="nest"></script>
 
+    <!-- 제이쿼리 -->
+    <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+
     <!--begin::Global Theme Styles -->
     <link href="/assets/vendors/base/vendors.bundle.css" rel="stylesheet" type="text/css" />
 
@@ -75,7 +78,7 @@
                                                 <div class="col-lg-10 col-sm-9">
                                                     <div class="m-select2 m-select2--square">
                                                         <select class="form-control m-select2" id="m_select2_12_1" name="comp" data-placeholder="Square style" style="width: 40%;">
-                                                            <option value="<?php echo($_SESSION['comp_cd'])?>" selected><?php echo($_SESSION['comp_nm'])?></option>
+                                                            <option value="DWM" selected><?php echo($_SESSION['comp_nm'])?></option>
                                                         </select>
                                                         <select class="form-control m-select2" id="m_select2_12_2" name="dept" data-placeholder="Square style" style="width: 40%;">
                                                             <option value="<?php echo($_SESSION['team_cd'])?>" selected><?php echo($_SESSION['team_nm'])?></option>
@@ -206,26 +209,38 @@
 
 		<!--end::Page Scripts -->
 
+        <script>
+            function searchSprMeet() {
+
+                var formData = new FormData();
+                formData.append('DWGP_CD', $("select[name=comp]").val());
+                formData.append('DEPT_CD', $("select[name=dept]").val());
+                formData.append('FIND_TXT', $("#find_txt").val());
+                formData.append('DATE_TP', $("#date_tp").val());
+                formData.append('ST_DT', $("#st_dt").val());
+                formData.append('ED_DT', $("#ed_dt").val());
+
+                $.ajax({
+                    type : 'POST',
+                    url : '/Sprint_Meet_Controller/get_spr_meet_list',
+                    data : formData,
+                    contentType: false,
+                    processData: false,
+                    success : function(res){
+                        console.log(res);
+                        
+                    },
+                    error : function( jqxhr , status , error ){
+                        //console.log( jqxhr , status , error );
+                    }
+                });
+            }
+        </script>
 	<script src="https://unpkg.com/react/umd/react.development.js" crossorigin></script>
 	<script src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js" crossorigin></script>
 	<script src="https://unpkg.com/react-dom/umd/react-dom.development.js" crossorigin></script>
     <script>var Alert = ReactBootstrap.Alert;</script>
 	<script src="/App.js" charset="utf-8"></script>
-    <script>
-        function searchSprMeet() {
-            var dept_cd = document.querySelector('select[name=dept]').value;
-            var comp_cd = document.querySelector('select[name=comp]').value;
-            var find_txt = document.getElementById('find_txt').value;
-            var date_tp = document.getElementById('date_tp').value;
-            var st_dt = document.getElementById('st_dt').value;
-            var ed_dt = document.getElementById('ed_dt').value;
-
-            
-        }
-
-        
-    </script>
-    <script src="/assets/app/js/sprint_list.js" type="text/javascript"></script>
 </body>
 
 </html>

@@ -30,6 +30,27 @@ class Sprint_Meet_Model extends Model
         return $query->getResultArray();
     }
 
+    public function get_spr_meet_list($params) {
+
+        $stmt = sqlsrv_query($this->dbconn, '{CALL DWOKR.dbo.USP_SEARCH_SPRINTMEETING_LIST(?,?,?,?,?,?)}', $params);
+        $list_arr = array();
+        
+        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
+        {
+            array_push($list_arr, [
+                'ID' => $row['ID'], 
+                'UPDATE_DT' => $row['UPDATE_DT'], 
+                'MEET_DT' => $row['MEET_DT'], 
+                'DEPT_NM' => $row['DEPT_NM'], 
+                'DEPT_UP_NM' => $row['DEPT_UP_NM']
+            ]);
+        }
+
+        $result['SPR_MEET_LIST'] = $list_arr;
+
+        return $result;
+    }
+
     public function search_todo($kr_id, $emp_no){
         $query = "SELECT A.CONTENT as INIT_CONTENT, B.ID, B.CONTENT, B.OKR_INIT_ID 
                     FROM OKR_INIT_MST A INNER JOIN OKR_TODO_MST B ON A.ID = B.OKR_INIT_ID
