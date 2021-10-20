@@ -47,7 +47,7 @@ class Sprint_Meet_Model extends Model
             ]);
         }
 
-        $result['SPR_MEET_LIST'] = $list_arr;
+        $result = $list_arr;
 
         return $result;
     }
