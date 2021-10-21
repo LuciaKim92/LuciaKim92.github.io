@@ -14,7 +14,6 @@ class Sprint_Meet_Model extends Model
             "CharacterSet" => "UTF-8"
         );
 
-
         $this->dbconn = sqlsrv_connect($this->serverName, $this->connectionOptions); 
     }
 
@@ -38,17 +37,33 @@ class Sprint_Meet_Model extends Model
 
         while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
         {
+            //날짜 스트링 변환
+            $str = $row['MEET_DT'];
+            $str2 = $row['UPDATE_DT'];
+
+            $year = substr($str, 0, 4);
+            $month = substr($str, 4, 2);
+            $day = substr($str, 6, 2);
+            $str = $year.'.'.$month.'.'.$day;
+
+            if($row['UPDATE_DT'] != '') {
+                $year2 = substr($str2, 0, 4);
+                $month2 = substr($str2, 4, 2);
+                $day2 = substr($str2, 6, 2);
+                $str2 = $year.'.'.$month.'.'.$day;
+            }
+
             array_push($list_arr, [
                 'ID' => $row['ID'], 
-                'UPDATE_DT' => $row['UPDATE_DT'], 
-                'MEET_DT' => $row['MEET_DT'], 
+                'UPDATE_DT' => $str2, 
+                'MEET_DT' => $str, 
                 'DEPT_NM' => $row['DEPT_NM'], 
                 'DEPT_UP_NM' => $row['DEPT_UP_NM']
             ]);
         }
-
+        
         $result = $list_arr;
-
+        
         return $result;
     }
 

@@ -37,9 +37,7 @@ class Sprint_Meet_Controller extends BaseController
 
         $this->SprModel = new Sprint_Meet_Model;
         $data = $this->SprModel->get_spr_meet_list($params);
-
-        $result_arr = json_encode($data);
-        file_put_contents("result.json", $result_arr);
+        $result_arr = json_encode($data, JSON_UNESCAPED_UNICODE);
 
         return $result_arr;
     }
