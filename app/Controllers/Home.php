@@ -116,7 +116,7 @@ class Home extends BaseController
 
 		$temp = $layoutModel->GetDeptCode($_SESSION['team_cd']);
 
-		if($temp['CHIEF_EMP_NO'] == $_SESSION['emp_no']) {
+		if ($temp['CHIEF_EMP_NO'] == $_SESSION['emp_no']) {
 			$data = $sprintMeetModel->get_sub_depts($_SESSION['team_cd']);
 		} else {
 			$data = null;

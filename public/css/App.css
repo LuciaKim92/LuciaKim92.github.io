@@ -75,11 +75,7 @@ button.accordion-button:not(.collapsed) {
         text-decoration: none !important;
     }
 
-    .minutes:hover > i {
-        color: black;
-    }
-
-    .minutes:hover > span.meeting-date {
+    .minutes:hover {
         color: silver;
     }
 
