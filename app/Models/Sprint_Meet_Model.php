@@ -17,56 +17,7 @@ class Sprint_Meet_Model extends Model
         $this->dbconn = sqlsrv_connect($this->serverName, $this->connectionOptions); 
     }
 
-    public function get_sub_depts($dept_cd) {
-        $cts_db = \Config\Database::connect('ctsdb');
-        
-        $builder = $cts_db->table('DEPT_MAP');
-        $builder->select('*');
-        $builder->where('DEPT_UP_CD', $dept_cd);
-        $builder->where('BEND_DT','29991231');
-        $builder->where('USE_YN','Y');
-        $query = $builder->get();
-
-        return $query->getResultArray();
-    }
-
-    public function get_spr_meet_list($params) {
-
-        $stmt = sqlsrv_query($this->dbconn, '{CALL DWOKR.dbo.USP_SEARCH_SPRINTMEETING_LIST(?,?,?,?,?,?)}', $params);
-        $list_arr = array();
-
-        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
-        {
-            //날짜 스트링 변환
-            $str = $row['MEET_DT'];
-            $str2 = $row['UPDATE_DT'];
-
-            $year = substr($str, 0, 4);
-            $month = substr($str, 4, 2);
-            $day = substr($str, 6, 2);
-            $str = $year.'.'.$month.'.'.$day;
-
-            if($row['UPDATE_DT'] != '') {
-                $year2 = substr($str2, 0, 4);
-                $month2 = substr($str2, 4, 2);
-                $day2 = substr($str2, 6, 2);
-                $str2 = $year.'.'.$month.'.'.$day;
-            }
-
-            array_push($list_arr, [
-                'ID' => $row['ID'], 
-                'UPDATE_DT' => $str2, 
-                'MEET_DT' => $str, 
-                'DEPT_NM' => $row['DEPT_NM'], 
-                'DEPT_UP_NM' => $row['DEPT_UP_NM']
-            ]);
-        }
-        
-        $result = $list_arr;
-        
-        return $result;
-    }
-
+    //회의록 작성에서 담당자 선택시 ToDo 표시
     public function search_todo($kr_id, $emp_no){
         $query = "SELECT A.CONTENT as INIT_CONTENT, B.ID, B.CONTENT, B.OKR_INIT_ID 
                     FROM OKR_INIT_MST A INNER JOIN OKR_TODO_MST B ON A.ID = B.OKR_INIT_ID
@@ -86,6 +37,7 @@ class Sprint_Meet_Model extends Model
         return $result;
     }
 
+    //가장최근 회의록 ID 리턴
     public function search_last_spr(){
 
         $query = "SELECT top 1 ID FROM spr_meet_mst order by MEET_DT desc";
@@ -98,6 +50,7 @@ class Sprint_Meet_Model extends Model
         return $row['ID'];
     }
 
+    //날짜에 회의록있다면 ID 리턴
     public function search_spr_by_date($date){
 
         $query = "SELECT * from SPR_MEET_MST WHERE MEET_DT = $date";
@@ -110,14 +63,15 @@ class Sprint_Meet_Model extends Model
         return $row['ID'];
     }
 
+    //id로 회의록 조회
     public function search_spr_by_id($id){
 
         //최종적으로 리턴
         $result = array();
 
         //SPR_MEET_MST랑 부서 테이블을 조인하여 다른 테이블 조회에 사용될 데이터 가져옴(결과 1개만 나옴...)
-        $query = "  SELECT A.OKR_OBJT_ID, A.MEET_DT, A.DEPT_CD, A.DEPT_NM, B.DEPT_NM as 'DEPT_UP_NM'
-                    FROM	(	SELECT A.OKR_OBJT_ID, A.MEET_DT, A.DEPT_CD, B.DEPT_NM, B.DEPT_UP_CD 
+        $query = "  SELECT A.ID, A.OKR_OBJT_ID, A.MEET_DT, A.DEPT_CD, A.DEPT_NM, B.DEPT_NM as 'DEPT_UP_NM'
+                    FROM	(	SELECT A.ID, A.OKR_OBJT_ID, A.MEET_DT, A.DEPT_CD, B.DEPT_NM, B.DEPT_UP_CD 
                                 FROM SPR_MEET_MST A INNER JOIN DWCTS.dbo.DEPT_MST B ON A.DWGP_CD = B.DWGP_CD AND A.DEPT_CD = B.DEPT_CD 
                                 WHERE A.ID = $id) A INNER JOIN DWCTS.dbo.DEPT_MST B ON A.DEPT_UP_CD = B.DEPT_CD";
 
@@ -133,6 +87,7 @@ class Sprint_Meet_Model extends Model
         //오브젝티브 아이디 및 이름
         $OBJT_ID = $row['OKR_OBJT_ID'];
         $DEPT_CD = $row['DEPT_CD'];
+        $result['SPR_MEET_ID'] = $row['ID'];
         $result['MEET_DT'] = $row['MEET_DT'];
         $result['DEPT_NM'] = $row['DEPT_NM'];
         $result['DEPT_UP_NM'] = $row['DEPT_UP_NM'];
@@ -166,7 +121,7 @@ class Sprint_Meet_Model extends Model
             // echo $key;
             $kr_id = $bean['ID'];
 
-            $query = "  SELECT A.HIGHLIGHT, A.LOWLIGHT, B.EMP_NM, B.CONTENT 
+            $query = "  SELECT A.ID, A.HIGHLIGHT, A.LOWLIGHT, B.EMP_NM, B.CONTENT 
                         FROM SPR_MEET_FEED A INNER JOIN (SELECT A.*, B.EMP_NM FROM SPR_MEET_PLAN A INNER JOIN DWCTS.dbo.EMP_MST B ON A.EMPY_NO = B.EMP_NO) B ON A.SPR_MEET_PLAN_ID = B.ID
                         WHERE OKR_KEYS_ID = $kr_id AND A.SPR_MEET_ID = $id";
             $stmt = sqlsrv_query($this->dbconn, $query);
@@ -178,7 +133,8 @@ class Sprint_Meet_Model extends Model
                 array_push($temp, $row3);
             }
 
-            array_push($feed_arr, $temp);
+            // array_push($feed_arr, $temp);
+            $feed_arr[$bean['ID']] = $temp;
         }
 
         $result['FEED'] = $feed_arr;
@@ -192,9 +148,9 @@ class Sprint_Meet_Model extends Model
             // echo $key;
             $kr_id = $bean['ID'];
 
-            $query = "  SELECT A.CONTENT as 'IDEA_CONTENT', A.EMP_NM, B.CONTENT as 'TO_DO_CONTENT', B.INIT_CONTENT
+            $query = "  SELECT A.ID, A.OKR_KEYS_ID, A.EMPY_NO, A.CONTENT as 'IDEA_CONTENT', A.EMP_NM, B.ID as TODO_ID, B.INIT_ID, B.CONTENT as 'TO_DO_CONTENT', B.INIT_CONTENT
             FROM    (SELECT A.*, B.EMP_NM FROM SPR_MEET_IDEA A INNER JOIN DWCTS.dbo.EMP_MST B ON A.EMPY_NO = B.EMP_NO) A INNER JOIN 
-                    (SELECT A.*, B.CONTENT INIT_CONTENT FROM OKR_TODO_MST A INNER JOIN OKR_INIT_MST B ON A.OKR_INIT_ID = B.ID) B ON A.OKR_TODO_ID = B.ID
+                    (SELECT A.*, B.ID as INIT_ID, B.CONTENT INIT_CONTENT FROM OKR_TODO_MST A INNER JOIN OKR_INIT_MST B ON A.OKR_INIT_ID = B.ID) B ON A.OKR_TODO_ID = B.ID
             WHERE A.SPR_MEET_ID = $id AND A.OKR_KEYS_ID = $kr_id";
 
             $stmt = sqlsrv_query($this->dbconn, $query);
@@ -206,7 +162,8 @@ class Sprint_Meet_Model extends Model
                 array_push($temp, $row3);
             }
 
-            array_push($idea_arr, $temp);
+            // array_push($idea_arr, $temp);
+            $idea_arr[$bean['ID']] = $temp;
         }
 
         $result['IDEA'] = $idea_arr;
@@ -221,7 +178,7 @@ class Sprint_Meet_Model extends Model
             // echo $key;
             $kr_id = $bean['ID'];
 
-            $query = "  SELECT B.EMP_NM, A.CONTENT 
+            $query = "  SELECT A.ID, A.OKR_KEYS_ID, A.EMPY_NO, B.EMP_NM, A.CONTENT 
                         FROM SPR_MEET_PLAN A INNER JOIN DWCTS.dbo.EMP_MST B ON A.EMPY_NO = B.EMP_NO
                          WHERE A.SPR_MEET_ID = $id AND A.OKR_KEYS_ID=$kr_id ";
             
@@ -235,7 +192,8 @@ class Sprint_Meet_Model extends Model
                 array_push($temp, $row3);
             }
 
-            array_push($plan_arr, $temp);
+            // array_push($plan_arr, $temp);
+            $plan_arr[$bean['ID']] = $temp;
         }
 
         $result['PLAN'] = $plan_arr;
@@ -255,7 +213,7 @@ class Sprint_Meet_Model extends Model
 
         $result['BOOKMARK'] = $book_arr;
 
-        // result의 KEY: (MEET_DT, DEPT_NM, DEPT_UP_NM, KR, FEED, IDEA, PLAN)
+        // result의 KEY: (SPR_MEET_ID, MEET_DT, DEPT_NM, DEPT_UP_NM, KR, FEED, IDEA, PLAN)
         // KR의     KEY: (ID, CONTENT)
         // FEED의   KEY: (HIGHLIGHT, LOWLIGHT, EMP_NM, CONTENT(저번주 plan) )
         // IDEA의   KEY: (IDEA_CONTENT, EMP_NM, TO_DO_CONTENT, INIT_CONTENT)
@@ -265,7 +223,8 @@ class Sprint_Meet_Model extends Model
 
     }
 
-    public function test111($DATE){
+    //회의록 작성시 자동 얼라인되는 것들 리턴
+    public function create_spr($DATE){
 
         
         //최종적으로 리턴
@@ -354,20 +313,20 @@ class Sprint_Meet_Model extends Model
 
 
 
-        // 사원들 리스트...(데이터가 없어서 그냥 우리팀만...)
-        $query = "SELECT EMP_NO, EMP_NM 
-                  FROM DWCTS.dbo.EMP_MST 
-                  WHERE DEPT_CD ='MD00000707' AND USE_YN = 'Y' AND NOT EMP_NO IN ('CARD01', 'DWRPA', 'SYSTEM', 'USER01')";
-        $stmt = sqlsrv_query($this->dbconn, $query);
+        // // 사원들 리스트...(데이터가 없어서 그냥 우리팀만...)
+        // $query = "SELECT EMP_NO, EMP_NM 
+        //           FROM DWCTS.dbo.EMP_MST 
+        //           WHERE DEPT_CD ='MD00000707' AND USE_YN = 'Y' AND NOT EMP_NO IN ('CARD01', 'DWRPA', 'SYSTEM', 'USER01')";
+        // $stmt = sqlsrv_query($this->dbconn, $query);
 
-        $temp = [];
+        // $temp = [];
 
-        while ($row3 = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
-        {
-            array_push($temp, $row3);
-        }
+        // while ($row3 = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
+        // {
+        //     array_push($temp, $row3);
+        // }
 
-        $result['EMP_LIST'] = $temp;
+        // $result['EMP_LIST'] = $temp;
 
 
         //BOOKMARK 조회
@@ -429,13 +388,18 @@ class Sprint_Meet_Model extends Model
     // create feed, idea, plan (insert)
     public function insert_spr_content($arr){
 
+        $query = '';
         foreach($arr['feed'] as $key => $bean){
-            if($bean['feed-plan'] && $bean['feed-high'] && $bean['feed-low']){
-                // echo $bean['feed-plan'];
-                // echo $bean['feed-high'];
-                // echo $bean['feed-low'];
+            if($bean['feed-plan']){
 
-                $query = "INSERT INTO [dbo].[SPR_MEET_FEED]
+                if($bean['feed-high'] == null)
+                    $bean['feed-high'] = "피드백이 없습니다.";
+                
+                if($bean['feed-low'] == null)
+                    $bean['feed-low'] = "피드백이 없습니다.";
+
+
+                $temp = "INSERT INTO [dbo].[SPR_MEET_FEED]
                                     ([CREATE_ON]
                                     ,[CREATE_BY]
                                     ,[CREATE_ID]
@@ -454,7 +418,7 @@ class Sprint_Meet_Model extends Model
                                     ,".$arr['SPR_MEET_ID'].") 
                             ";
                 
-                $stmt = sqlsrv_query($this->dbconn, $query);
+                $query = $query.$temp;
             }
         }
 
@@ -465,7 +429,7 @@ class Sprint_Meet_Model extends Model
                 // echo $bean['idea-todo'];
                 // echo $bean['idea-content'];
 
-                $query = "INSERT INTO [dbo].[SPR_MEET_IDEA]
+                $temp = "INSERT INTO [dbo].[SPR_MEET_IDEA]
                                     ([CREATE_ON]
                                     ,[CREATE_BY]
                                     ,[CREATE_ID]
@@ -485,7 +449,7 @@ class Sprint_Meet_Model extends Model
                                     ,'".$bean['idea-name']."'
                                     ,'".$bean['idea-content']."')";
 
-                $stmt = sqlsrv_query($this->dbconn, $query);
+                $query = $query.$temp;
             }
         }
 
@@ -495,7 +459,7 @@ class Sprint_Meet_Model extends Model
                 // echo $bean['plan-name'];
                 // echo $bean['plan-content'];
 
-                $query = "INSERT INTO [dbo].[SPR_MEET_PLAN]
+                $temp = "INSERT INTO [dbo].[SPR_MEET_PLAN]
                                     ([CREATE_ON]
                                     ,[CREATE_BY]
                                     ,[CREATE_ID]
@@ -513,9 +477,199 @@ class Sprint_Meet_Model extends Model
                                     ,'".$bean['plan-name']."'
                                     ,'".$bean['plan-content']."')"; 
 
-                $stmt = sqlsrv_query($this->dbconn, $query);
+                $query = $query.$temp;
             }
 
         }
+
+        $stmt = sqlsrv_query($this->dbconn, $query);
     }
+
+    //유저 정보로 소속 팀 리스트 넘김 ... 나중에 바꿀 여지 있음...
+    public function get_emp_list($EMP_NO){
+
+        $query = "
+                    SELECT A.EMP_NO, A.EMP_NM
+                    
+                    FROM 
+                            DWCTS.DBO.EMP_MST AS A WITH(NOLOCK)
+                            INNER JOIN
+                            DBO.OKR_ORGN_MAP AS B WITH(NOLOCK)
+                                ON A.EMP_NO = B.EMPY_NO
+                            INNER JOIN
+                            (SELECT DEPT_CD FROM DWCTS.DBO.EMP_MST WHERE EMP_NO = 'P221002') AS C
+                                ON A.DEPT_CD = C.DEPT_CD
+                            
+                    
+                    ORDER BY
+                            B.SORT_SEQ
+                ";
+
+        $stmt = sqlsrv_query($this->dbconn, $query);
+
+        $result = array();
+
+        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
+        {
+            array_push($result, $row);
+        }
+
+        return $result;
+    }
+
+
+    //회의록 수정
+    public function update_spr_content($arr){
+
+        $query = '';
+
+        foreach($arr['feed'] as $key => $bean){
+            if($bean['feed-id'] && $bean['feed-high'] && $bean['feed-low']){
+
+                $temp = "
+                            UPDATE [dbo].[SPR_MEET_FEED]
+                                SET 
+                                    [UPDATE_ON] = GETDATE()
+                                    ,[UPDATE_BY] = '".$arr['UPDATE_BY']."'
+                                    ,[UPDATE_ID] = ".$arr['UPDATE_ID']."
+                                    ,[HIGHLIGHT] = '".$bean['feed-high']."'
+                                    ,[LOWLIGHT] = '".$bean['feed-low']."'
+                                WHERE ID = ".$bean['feed-id']."
+                            ";
+                
+                $query = $query.$temp;
+            }
+        }
+
+
+        foreach($arr['idea'] as $key => $bean){
+
+            if($bean['idea-delete'] == 'Y'){
+
+                $temp = "
+                            DELETE FROM [dbo].[SPR_MEET_IDEA]
+                                WHERE ID = ".$bean['idea-id']."
+                            ";
+                            
+                $query = $query.$temp;
+            }
+
+            else{
+
+                if($bean['idea-id'] && $bean['idea-name'] && $bean['idea-todo'] && $bean['idea-content']){
+
+                    $temp = "
+                                UPDATE [dbo].[SPR_MEET_IDEA]
+                                    SET 
+                                         [UPDATE_ON] = GETDATE()
+                                        ,[UPDATE_BY] = '".$arr['UPDATE_BY']."'
+                                        ,[UPDATE_ID] = ".$arr['UPDATE_ID']."
+                                        ,[OKR_TODO_ID] = ".$bean['idea-todo']."
+                                        ,[EMPY_NO] = '".$bean['idea-name']."'
+                                        ,[CONTENT] = '".$bean['idea-content']."'
+                                    WHERE ID = ".$bean['idea-id']."
+                                ";
+    
+                    $query = $query.$temp;
+                }
+
+            }
+        }
+
+        foreach($arr['plan'] as $key => $bean){
+            
+            if($bean['plan-delete'] == 'Y'){
+
+                $temp = "
+                            DELETE FROM [dbo].[SPR_MEET_FEED]
+                            WHERE SPR_MEET_PLAN_ID = ".$bean['plan-id']."
+
+                            DELETE FROM [dbo].[SPR_MEET_PLAN]
+                                WHERE ID = ".$bean['plan-id']."
+                            ";
+                            
+                $query = $query.$temp;
+            }
+
+            else{
+
+                if($bean['plan-id'] && $bean['plan-name'] && $bean['plan-content']){
+
+                    $temp = "
+                                UPDATE [dbo].[SPR_MEET_PLAN]
+                                    SET 
+                                         [UPDATE_ON] = GETDATE()
+                                        ,[UPDATE_BY] = '".$arr['UPDATE_BY']."'
+                                        ,[UPDATE_ID] = ".$arr['UPDATE_ID']."
+                                        ,[EMPY_NO] = '".$bean['plan-name']."'
+                                        ,[CONTENT] = '".$bean['plan-content']."'
+                                WHERE ID = ".$bean['plan-id']."
+                             "; 
+    
+                    $query = $query.$temp;
+                }
+
+            }
+        }
+
+        foreach($arr['new-idea'] as $key => $bean){
+            if($bean['idea-new-kr'] && $bean['idea-new-name'] && $bean['idea-new-todo'] && $bean['idea-new-content']){
+
+                $temp = "
+                            INSERT INTO [dbo].[SPR_MEET_IDEA]
+                                        ([CREATE_ON]
+                                        ,[CREATE_BY]
+                                        ,[CREATE_ID]
+                                        ,[SPR_MEET_ID]
+                                        ,[OKR_KEYS_ID]
+                                        ,[OKR_TODO_ID]
+                                        ,[EMPY_NO]
+                                        ,[CONTENT])
+                                VALUES
+                                        (GETDATE()
+                                        ,'".$arr['CREATE_BY']."'
+                                        ,".$arr['CREATE_ID']."
+                                        ,".$arr['SPR_MEET_ID']."
+                                        ,".$bean['idea-new-kr']."
+                                        ,".$bean['idea-new-todo']."
+                                        ,'".$bean['idea-new-name']."'
+                                        ,'".$bean['idea-new-content']."')
+                         "; 
+
+                $query = $query.$temp;
+            }
+        }
+
+        foreach($arr['new-plan'] as $key => $bean){
+            if($bean['plan-new-kr'] && $bean['plan-new-name'] && $bean['plan-new-content']){
+
+                $temp = "
+                            INSERT INTO [dbo].[SPR_MEET_PLAN]
+                                        ([CREATE_ON]
+                                        ,[CREATE_BY]
+                                        ,[CREATE_ID]
+                                        ,[SPR_MEET_ID]
+                                        ,[OKR_KEYS_ID]
+                                        ,[EMPY_NO]
+                                        ,[CONTENT])
+                                  VALUES
+                                        (GETDATE()
+                                        ,'".$arr['CREATE_BY']."'
+                                        ,".$arr['CREATE_ID']."
+                                        ,".$arr['SPR_MEET_ID']."
+                                        ,".$bean['plan-new-kr']."
+                                        ,'".$bean['plan-new-name']."'
+                                        ,'".$bean['plan-new-content']."')
+                         "; 
+
+                $query = $query.$temp;
+            }
+        }
+
+
+
+
+        $stmt = sqlsrv_query($this->dbconn, $query);
+    }
+
 }

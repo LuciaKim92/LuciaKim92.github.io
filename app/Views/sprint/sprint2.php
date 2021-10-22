@@ -104,7 +104,7 @@
                         </li>
 
                         <li class="m-nav-sticky__item" data-toggle="m-tooltip" title="" data-placement="left" data-original-title="수정하기">
-                            <a href="/home/sprint"><i class="la la-pencil-square"></i></a>
+                            <a href="/Sprint_Meet_Controller/spr_edit/<?=$myarr['SPR_MEET_ID']?>"><i class="la la-pencil-square"></i></a>
                         </li>
 
                         <li class="m-nav-sticky__item" data-toggle="m-tooltip" title="" data-placement="left" data-original-title="목록으로">
@@ -211,6 +211,7 @@
 
                                                         <?php
                                                             $i=0;
+                                                            $index = 1;
 
                                                             foreach($myarr['FEED'] as $key=>$bean){
 
@@ -230,10 +231,10 @@
                                                                 }
                                                                 ?>
                                                                 
-                                                                <tbody id="feedback-kr-<?=$key+1?>">
+                                                                <tbody id="feedback-kr-<?=$index?>">
                                                                     <tr>
-                                                                        <th class="KR" id="feedback-kr-<?=$key+1?>-head" rowspan="6">
-                                                                            Key Result <?=$key+1?>
+                                                                        <th class="KR" id="feedback-kr-<?=$index?>-head" rowspan="6">
+                                                                            Key Result <?=$index?>
                                                                         </th>   
                                                                     </tr>
 
@@ -242,7 +243,7 @@
 																			?>
 																			<script>
                                                                                 $(document).ready(function(){
-                                                                                    add_feedback_column('feedback-kr-<?=$key+1?>', '<?=$bean2["EMP_NM"]?>', '<?=$bean2["CONTENT"]?>',  '<?=$bean2["HIGHLIGHT"]?>', '<?=$bean2["LOWLIGHT"]?>');
+                                                                                    add_feedback_column('feedback-kr-<?=$index?>', '<?=$bean2["EMP_NM"]?>', '<?=$bean2["CONTENT"]?>',  '<?=$bean2["HIGHLIGHT"]?>', '<?=$bean2["LOWLIGHT"]?>');
                                                                                 });
 																			</script>
 
@@ -253,6 +254,7 @@
                                                                 </tbody>
 
                                                                 <?php
+                                                                $index++;
                                                             }
                                                         ?>
                                                     </tbody>
@@ -267,15 +269,16 @@
                                                         </tr>
 														
                                                         <?php
+                                                            $index = 1;
                                                             foreach($myarr['IDEA'] as $key=>$bean){
                                                                 if(sizeof($myarr['IDEA'][$key]) == 0)
                                                                     continue;
                                                                 ?>
                                                                 
-                                                                <tbody id="idea-kr-<?=$key+1?>">
+                                                                <tbody id="idea-kr-<?=$index?>">
                                                                     <tr>
-                                                                        <th class="KR" id="idea-kr-<?=$key+1?>-head" rowspan="6">
-                                                                            Key Result <?=$key+1?>
+                                                                        <th class="KR" id="idea-kr-<?=$index?>-head" rowspan="6">
+                                                                            Key Result <?=$index?>
                                                                         </th>   
                                                                     </tr>
 
@@ -284,7 +287,7 @@
 																			?>
 																			<script>
 																			$(document).ready(function(){
-																				add_idea_column('idea-kr-<?=$key+1?>', '<?=$bean2["EMP_NM"]?>', '<?=$bean2["TO_DO_CONTENT"]?>',  '<?=$bean2["IDEA_CONTENT"]?>');
+																				add_idea_column('idea-kr-<?=$index?>', '<?=$bean2["EMP_NM"]?>', '<?=$bean2["TO_DO_CONTENT"]?>',  '<?=$bean2["IDEA_CONTENT"]?>');
 																			});
 																			</script>
 
@@ -294,6 +297,7 @@
                                                                 																															
                                                                 </tbody>
                                                                 <?php
+                                                                $index++;
                                                             }
                                                         ?>
                                                     </tbody>
@@ -308,15 +312,16 @@
                                                         </tr>
 
                                                         <?php
+                                                            $index = 1;
                                                             foreach($myarr['PLAN'] as $key=>$bean){
                                                                     if(sizeof($myarr['PLAN'][$key]) == 0)
                                                                         continue;
                                                                 ?>
                                                                 
-                                                                <tbody id="plan-kr-<?=$key+1?>">
+                                                                <tbody id="plan-kr-<?=$index?>">
                                                                     <tr>
-                                                                        <th class="KR" id="plan-kr-<?=$key+1?>-head" rowspan="6">
-                                                                            Key Result <?=$key+1?>
+                                                                        <th class="KR" id="plan-kr-<?=$index?>-head" rowspan="6">
+                                                                            Key Result <?=$index?>
                                                                         </th>   
                                                                     </tr>
 
@@ -325,7 +330,7 @@
 																			?>
 																			<script>
 																			$(document).ready(function(){
-																				add_plan_column('plan-kr-<?=$key+1?>', '<?=$bean2["EMP_NM"]?>', '<?=$bean2["CONTENT"]?>');
+																				add_plan_column('plan-kr-<?=$index?>', '<?=$bean2["EMP_NM"]?>', '<?=$bean2["CONTENT"]?>');
 																			});
 																			</script>
 
@@ -335,6 +340,7 @@
                                                                 																															
                                                                 </tbody>
                                                                 <?php
+                                                                $index++;
                                                             }
                                                         ?>
 
