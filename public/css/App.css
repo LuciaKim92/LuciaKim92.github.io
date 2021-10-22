@@ -5,6 +5,10 @@
     font-family: 'Noto Sans KR', sans-serif;
 }
 
+#m_header_nav {
+    background-color: rgb(32, 31, 43) !important;
+}
+
 .date_select {
     display: flex;
     flex-direction: row;
@@ -14,6 +18,10 @@
 .date_picker {
     display: inline-block;
     margin-left: 3px;
+}
+
+#st_dt, #ed_dt {
+    cursor: pointer;
 }
 
 @media screen and (max-width: 1350px) {

@@ -17,6 +17,56 @@ class Sprint_Meet_Model extends Model
         $this->dbconn = sqlsrv_connect($this->serverName, $this->connectionOptions); 
     }
 
+    public function get_sub_depts($dept_cd) {
+        $cts_db = \Config\Database::connect('ctsdb');
+        
+        $builder = $cts_db->table('DEPT_MAP');
+        $builder->select('*');
+        $builder->where('DEPT_UP_CD', $dept_cd);
+        $builder->where('BEND_DT','29991231');
+        $builder->where('USE_YN','Y');
+        $query = $builder->get();
+
+        return $query->getResultArray();
+    }
+
+    public function get_spr_meet_list($params) {
+
+        $stmt = sqlsrv_query($this->dbconn, '{CALL DWOKR.dbo.USP_SEARCH_SPRINTMEETING_LIST(?,?,?,?,?,?)}', $params);
+        $list_arr = array();
+
+        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
+        {
+            //날짜 스트링 변환
+            $str = $row['MEET_DT'];
+            $str2 = $row['UPDATE_DT'];
+
+            $year = substr($str, 0, 4);
+            $month = substr($str, 4, 2);
+            $day = substr($str, 6, 2);
+            $str = $year.'.'.$month.'.'.$day;
+
+            if($row['UPDATE_DT'] != '') {
+                $year2 = substr($str2, 0, 4);
+                $month2 = substr($str2, 4, 2);
+                $day2 = substr($str2, 6, 2);
+                $str2 = $year.'.'.$month.'.'.$day;
+            }
+
+            array_push($list_arr, [
+                'ID' => $row['ID'], 
+                'UPDATE_DT' => $str2, 
+                'MEET_DT' => $str, 
+                'DEPT_NM' => $row['DEPT_NM'], 
+                'DEPT_UP_NM' => $row['DEPT_UP_NM']
+            ]);
+        }
+        
+        $result = $list_arr;
+        
+        return $result;
+    }
+
     //회의록 작성에서 담당자 선택시 ToDo 표시
     public function search_todo($kr_id, $emp_no){
         $query = "SELECT A.CONTENT as INIT_CONTENT, B.ID, B.CONTENT, B.OKR_INIT_ID 

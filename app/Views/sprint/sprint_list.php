@@ -243,7 +243,7 @@
                     contentType: false,
                     processData: false,
                     success : function(res){
-                        console.log(res);
+                        //console.log(res);
                         var data = JSON.parse(res);
                         ReactDOM.render(React.createElement(App, {fields: data}, null), document.getElementById('root'));
                     },
