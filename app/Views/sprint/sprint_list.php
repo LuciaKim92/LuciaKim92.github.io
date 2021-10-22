@@ -5,7 +5,7 @@
         <meta name=description content="">
         <meta name=viewport content="width=device-width, initial-scale=1">
         <title>Jquery Comments Plugin</title>
-        
+
         <link rel="stylesheet" type="text/css" href="/css/App.css" />
         <link rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
@@ -114,13 +114,13 @@
                                                     <select id="date_tp" class="form-control m-input--fixed" style="margin-bottom: 3px; cursor: pointer;">
                                                         <option value="MEET" selected>미팅일자</option>
                                                     </select>
-                                                    <div style="display: flex; align-items: center;">
+                                                    <div class="date_select">
                                                         <div id="date_group" class="btn-group btn-group-toggle" data-toggle="buttons">
                                                             <label class="btn m-btn--square  btn-secondary m-btn m-btn--custom m-btn--label-metal active" onclick="setDate('d', 0)">
-                                                                <input type="radio" name="options" id="option1" autocomplete="off"> 오늘
+                                                                <input type="radio" name="options" id="option1" autocomplete="off" checked> 오늘
                                                             </label>
                                                             <label class="btn m-btn--square  btn-secondary m-btn m-btn--custom m-btn--label-metal" onclick="setDate('d', -7)">
-                                                                <input type="radio" name="options" id="option2" autocomplete="off" checked> 1주일
+                                                                <input type="radio" name="options" id="option2" autocomplete="off"> 1주일
                                                             </label>
                                                             <label class="btn m-btn--square  btn-secondary m-btn m-btn--custom m-btn--label-metal" onclick="setDate('m', -1)">
                                                                 <input type="radio" name="options" id="option3" autocomplete="off"> 1개월
@@ -132,7 +132,7 @@
                                                                 <input type="radio" name="options" id="option3" autocomplete="off"> 6개월
                                                             </label>
                                                         </div>
-                                                        <div style="margin-left: 3px;">
+                                                        <div class="date_picker">
                                                             <div class="input-group date" style="display: inline-flex; width: 160px;">
                                                                 <input type="date" class="form-control m-input" id="st_dt">
                                                             </div> ~
