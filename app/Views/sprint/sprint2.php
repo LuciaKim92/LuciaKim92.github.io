@@ -107,6 +107,10 @@
                             <a href="/Sprint_Meet_Controller/spr_edit/<?=$myarr['SPR_MEET_ID']?>"><i class="la la-pencil-square"></i></a>
                         </li>
 
+                        <li class="m-nav-sticky__item" data-toggle="m-tooltip" title="" data-placement="left" data-original-title="삭제하기">
+                            <a href="javascript:confirm_delete();"><i class="la la-trash"></i></a>
+                        </li>
+
                         <li class="m-nav-sticky__item" data-toggle="m-tooltip" title="" data-placement="left" data-original-title="목록으로">
                             <a href="/home/sprint_list"><i class="la la-list"></i></a>
                         </li>
@@ -475,8 +479,17 @@
 		$('#' + b).append(html);
 	}
 
+    function confirm_delete(){
+        if(confirm("회의록을 정말 삭제하시겠습니까?")){
+            location.href="/Sprint_Meet_Controller/spr_delete/<?=$myarr['SPR_MEET_ID']?>";
+        }
+
+        else
+            return;
+    }
+
      //Sprint Meeting 메뉴 활성화
-     elements = document.getElementsByClassName('m-menu__item--active');
+    elements = document.getElementsByClassName('m-menu__item--active');
         for (var i = 0; i < elements.length; i++) {
             elements[i].classList.remove('m-menu__item--active');
         }
