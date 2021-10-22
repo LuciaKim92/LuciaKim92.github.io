@@ -8,11 +8,11 @@ class Sprint_Meet_Model extends Model
     public function __construct(){
         $this->serverName = "211.233.21.82";
         $this->connectionOptions = array(
-            "database" => "", // 데이터베이스명
+            "database" => "DWOKR", // 데이터베이스명
             "uid" => "dwokr",   // 유저 아이디
-            "pwd" => "dwokr@)@!21"    // 유저 비번
+            "pwd" => "dwokr@)@!21",    // 유저 비번
+            "CharacterSet" => "UTF-8"
         );
-
 
         $this->dbconn = sqlsrv_connect($this->serverName, $this->connectionOptions); 
     }

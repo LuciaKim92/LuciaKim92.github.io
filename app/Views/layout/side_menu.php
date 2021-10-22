@@ -7,7 +7,7 @@
 					<div id="m_ver_menu" class="m-aside-menu  m-aside-menu--skin-dark m-aside-menu--submenu-skin-dark " m-menu-vertical="1" m-menu-scrollable="0" m-menu-dropdown-timeout="500">
 						<ul class="m-menu__nav ">
 							<!-- 대시보드 메뉴 [dashboard_left_menu]-->
-							<li id = "dashboard_left_menu" class="m-menu__item  m-menu__item--active" aria-haspopup="true"><a href="/home/dashboard" class="m-menu__link "><span class="m-menu__item-here"></span><i class="m-menu__link-icon flaticon-line-graph"></i><span class="m-menu__link-text">Dashboard</span></a></li>
+							<li id = "dashboard_left_menu" class="m-menu__item  m-menu__item--active" aria-haspopup="true"><a href="/home" class="m-menu__link "><span class="m-menu__item-here"></span><i class="m-menu__link-icon flaticon-line-graph"></i><span class="m-menu__link-text">Dashboard</span></a></li>
 							
 							<!-- 대시보드 아래 OKR 섹션 -->
 							<li class="m-menu__section ">

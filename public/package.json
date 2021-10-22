@@ -11,6 +11,9 @@
   "description": "",
   "dependencies": {
     "babel-cli": "^6.26.0",
-    "babel-preset-react-app": "^3.1.2"
+    "babel-preset-react-app": "^3.1.2",
+    "browserify": "^17.0.0",
+    "mssql": "^7.2.1",
+    "uniq": "^1.0.1"
   }
 }
