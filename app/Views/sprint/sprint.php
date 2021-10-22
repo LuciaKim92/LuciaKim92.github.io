@@ -178,7 +178,7 @@
                                         </div>
                                     </div>
                                 </div>
-                </form>                                                
+
                                 <div class="row">
                                     <div class="col-xl-12">
                                         <div class="m-portlet m-portlet--full-height  m-portlet--unair">
@@ -205,6 +205,7 @@
                                                         <!-- 추가해야됨 -->
                                                         <?php
                                                             $i = 0;
+                                                            $index = 1;
                                                             foreach($myarr['KR'] as $key=>$bean){
                                                                     if($myarr['KR'][$key]['LAST_PLAN'] == null){
                                                                         
@@ -224,10 +225,10 @@
                                                                         continue;
                                                                     }
                                                                 ?>
-                                                                <tbody id="feedback-kr-<?=$key+1?>">
+                                                                <tbody id="feedback-kr-<?=$index?>">
                                                                     <tr>
-                                                                        <th class="KR" id="feedback-kr-<?=$key+1?>-head" rowspan="6">
-                                                                            Key Result <?=$key+1?>
+                                                                        <th class="KR" id="feedback-kr-<?=$index?>-head" rowspan="6">
+                                                                            Key Result <?=$index?>
                                                                         </th>   
                                                                     </tr>
 
@@ -236,7 +237,7 @@
 																			?>
 																			<script>
                                                                                 $(document).ready(function(){
-                                                                                    add_feedback_column('feedback-kr-<?=$key+1?>', '<?=$bean2["EMP_NM"]?>', '<?=$bean2["CONTENT"]?>', <?=$bean2['PLAN_ID']?>);
+                                                                                    add_feedback_column('feedback-kr-<?=$index?>', '<?=$bean2["EMP_NM"]?>', '<?=$bean2["CONTENT"]?>', <?=$bean2['PLAN_ID']?>);
                                                                                 });
 																			</script>
 
@@ -247,6 +248,7 @@
                                                                 </tbody>
 
                                                                 <?php
+                                                                $index++;
                                                             }
                                                         ?>
                                                     </tbody>
@@ -262,19 +264,20 @@
 
                                                         <!-- 추가해야됨 -->
                                                         <?php
+                                                            $index = 1;
                                                             foreach($myarr['KR'] as $key=>$bean){
                                                                 ?>
                                                                 
-                                                                <tbody id="idea-kr-<?=$key+1?>">
+                                                                <tbody id="idea-kr-<?=$index?>">
                                                                     <tr>
-                                                                        <th class="KR" id="idea-kr-<?=$key+1?>-head" rowspan="6" value=<?=$bean['ID']?>>
-                                                                            Key Result <?=$key+1?>
+                                                                        <th class="KR" id="idea-kr-<?=$index?>-head" rowspan="6" value=<?=$bean['ID']?>>
+                                                                            Key Result <?=$index?>
                                                                         </th>   
                                                                     </tr>
 
                                                                     <script>
                                                                     $(document).ready(function(){
-                                                                        add_idea_column('idea-kr-<?=$key+1?>', <?=$bean['ID']?>);
+                                                                        add_idea_column('idea-kr-<?=$index?>', <?=$bean['ID']?>);
                                                                     });
                                                                     </script>
                                                                 																															
@@ -282,12 +285,13 @@
 
                                                                 <tr>
                                                                     <td colspan="4" style="text-align:center; ">
-                                                                        <button type="button" class="btn btn-success" id="btn1" onclick="add_idea_column('idea-kr-<?=$key+1?>', <?=$bean['ID']?>)">+</button>
-                                                                        <button type="button" class="btn btn-danger" id="btn1" onclick="remove_column('idea-kr-<?=$key+1?>')">-</button>
+                                                                        <button type="button" class="btn btn-success" id="btn1" onclick="add_idea_column('idea-kr-<?=$index?>', <?=$bean['ID']?>)">+</button>
+                                                                        <button type="button" class="btn btn-danger" id="btn1" onclick="remove_column('idea-kr-<?=$index?>')">-</button>
                                                                     </td>
                                                                  </tr>
 
                                                                 <?php
+                                                                $index++;
                                                             }
                                                         ?>
                                                     </tbody>
@@ -302,19 +306,20 @@
                                                         
                                                         <!-- 추가해야됨 -->
                                                         <?php
+                                                            $index = 1;
                                                             foreach($myarr['KR'] as $key=>$bean){
                                                                 ?>
                                                                 
-                                                                <tbody id="plan-kr-<?=$key+1?>">
+                                                                <tbody id="plan-kr-<?=$index?>">
                                                                     <tr>
-                                                                        <th class="KR" id="plan-kr-<?=$key+1?>-head" rowspan="6">
-                                                                            Key Result <?=$key+1?>
+                                                                        <th class="KR" id="plan-kr-<?=$index?>-head" rowspan="6">
+                                                                            Key Result <?=$index?>
                                                                         </th>   
                                                                     </tr>
 
                                                                     <script>
                                                                     $(document).ready(function(){
-                                                                        add_plan_column('plan-kr-<?=$key+1?>', <?=$bean['ID']?>);
+                                                                        add_plan_column('plan-kr-<?=$index?>', <?=$bean['ID']?>);
                                                                     });
                                                                     </script>
                                                                 																															
@@ -322,12 +327,13 @@
 
                                                                 <tr>
                                                                     <td colspan="4" style="text-align:center; ">
-                                                                        <button type="button" class="btn btn-success" id="btn1" onclick="add_plan_column('plan-kr-<?=$key+1?>', <?=$bean['ID']?>)">+</button>
-                                                                        <button type="button" class="btn btn-danger" id="btn1" onclick="remove_column('plan-kr-<?=$key+1?>')">-</button>
+                                                                        <button type="button" class="btn btn-success" id="btn1" onclick="add_plan_column('plan-kr-<?=$index?>', <?=$bean['ID']?>)">+</button>
+                                                                        <button type="button" class="btn btn-danger" id="btn1" onclick="remove_column('plan-kr-<?=$index?>')">-</button>
                                                                     </td>
                                                                  </tr>
 
                                                                 <?php
+                                                                $index++;
                                                             }
                                                         ?>
 
@@ -340,6 +346,7 @@
                             </div>
                         </div>
                     </div>
+                </form> 
 			</div>
 
 			<!-- end:: Body -->
@@ -369,6 +376,15 @@
 
 <!-- 스프린트.js-->
 <script>
+
+    window.onpageshow = function(event) {
+        if ( event.persisted || (window.performance && window.performance.navigation.type == 2)) {
+            // Back Forward Cache로 브라우저가 로딩될 경우 혹은 브라우저 뒤로가기 했을 경우
+            alert("잘못된 접근입니다!");
+            history.back();
+        }
+    }
+
     function test(){
         document.getElementById('sprint-sticky-button').click();
     }

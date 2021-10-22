@@ -6,8 +6,14 @@
 	<meta name=viewport content="width=device-width, initial-scale=1">
 	<title>Jquery Comments Plugin</title>
 
-    <!-- 제이쿼리 -->
-    <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+ 
+	<!-- jquery-contextmenu -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.9.2/jquery.contextMenu.css" integrity="sha512-EF5k2tHv4ShZB7zESroCVlbLaZq2n8t1i8mr32tgX0cyoHc3GfxuP7IoT8w/pD+vyoq7ye//qkFEqQao7Ofrag==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.9.2/jquery.contextMenu.js" integrity="sha512-2ABKLSEpFs5+UK1Ol+CgAVuqwBCHBA0Im0w4oRCflK/n8PUVbSv5IY7WrKIxMynss9EKLVOn1HZ8U/H2ckimWg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.9.2/jquery.ui.position.js" integrity="sha512-vBR2rismjmjzdH54bB2Gx+xSe/17U0iHpJ1gkyucuqlTeq+Q8zwL8aJDIfhQtnWMVbEKMzF00pmFjc9IPjzR7w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 
 	<link rel="stylesheet" type="text/css" href="/App.css" />
 	<!-- <link rel="stylesheet"
@@ -92,7 +98,7 @@
                         </div>
                     </div>
 
-                    <!-- 옆에 따라다니는 메뉴 (책갈피, 작성/수정하기, 목록으로) -->
+                    <!-- 옆에 따라다니는 메뉴 (책갈피, 작성, 목록으로) -->
                     <ul class="m-nav-sticky" style="margin-top: 30px; background-color:#282733;">
 
                         <li id="sprint-sticky-li" class="m-nav-sticky__item" data-toggle="m-tooltip" title="" data-placement="left" data-original-title="책갈피">
@@ -103,15 +109,16 @@
                             <a href="/Sprint_Meet_Controller/spr_create"><i class="la la-plus-circle"></i></a>
                         </li>
 
-                        <li class="m-nav-sticky__item" data-toggle="m-tooltip" title="" data-placement="left" data-original-title="수정하기">
-                            <a href="/Sprint_Meet_Controller/spr_edit/<?=$myarr['SPR_MEET_ID']?>"><i class="la la-pencil-square"></i></a>
-                        </li>
-
                         <li class="m-nav-sticky__item" data-toggle="m-tooltip" title="" data-placement="left" data-original-title="목록으로">
                             <a href="/home/sprint_list"><i class="la la-list"></i></a>
                         </li>
                     </ul>
 
+                <!-- 폼 시작 -->
+                <form name="sprint_form" action="/Sprint_Meet_Controller/spr_edit_save" method="post" onsubmit="submit_function()">
+
+                    <input type="hidden" name="SPR_MEET_ID" value="<?=$myarr['SPR_MEET_ID']?>"></input>
+                    <input id="submit" type="submit";></input>
 					<div class="m-content">
                         <div class="row">
                             <div class="col-xl-12">
@@ -184,6 +191,7 @@
                                     </div>
                                 </div>
 
+
                                 <div class="row">
                                     <div class="col-xl-12">
                                         <div class="m-portlet m-portlet--full-height  m-portlet--unair">
@@ -243,7 +251,7 @@
 																			?>
 																			<script>
                                                                                 $(document).ready(function(){
-                                                                                    add_feedback_column('feedback-kr-<?=$index?>', '<?=$bean2["EMP_NM"]?>', '<?=$bean2["CONTENT"]?>',  '<?=$bean2["HIGHLIGHT"]?>', '<?=$bean2["LOWLIGHT"]?>');
+                                                                                    add_feedback_column('feedback-kr-<?=$index?>', '<?=$bean2["ID"]?>', '<?=$bean2["EMP_NM"]?>', '<?=$bean2["CONTENT"]?>',  '<?=$bean2["HIGHLIGHT"]?>', '<?=$bean2["LOWLIGHT"]?>');
                                                                                 });
 																			</script>
 
@@ -271,8 +279,8 @@
                                                         <?php
                                                             $index = 1;
                                                             foreach($myarr['IDEA'] as $key=>$bean){
-                                                                if(sizeof($myarr['IDEA'][$key]) == 0)
-                                                                    continue;
+                                                                // if(sizeof($myarr['IDEA'][$key]) == 0)
+                                                                //     continue;
                                                                 ?>
                                                                 
                                                                 <tbody id="idea-kr-<?=$index?>">
@@ -287,7 +295,7 @@
 																			?>
 																			<script>
 																			$(document).ready(function(){
-																				add_idea_column('idea-kr-<?=$index?>', '<?=$bean2["EMP_NM"]?>', '<?=$bean2["TO_DO_CONTENT"]?>',  '<?=$bean2["IDEA_CONTENT"]?>');
+																				add_idea_column('idea-kr-<?=$index?>', '<?=$bean2["ID"]?>', '<?=$bean2["OKR_KEYS_ID"]?>','<?=$bean2["EMPY_NO"]?>', '<?=$bean2["EMP_NM"]?>', '<?=$bean2['TODO_ID']?>','<?=$bean2["TO_DO_CONTENT"]?>',  '<?=$bean2["IDEA_CONTENT"]?>');
 																			});
 																			</script>
 
@@ -296,6 +304,14 @@
 																		?>
                                                                 																															
                                                                 </tbody>
+
+                                                                <tr>
+                                                                    <td colspan="4" style="text-align:center; ">
+                                                                        <button type="button" class="btn btn-success" id="btn1" onclick="add_new_idea_column('idea-kr-<?=$index?>', '<?=$key?>')">+</button>
+                                                                        <button type="button" class="btn btn-danger" id="btn1" onclick="remove_column('idea-kr-<?=$index?>')">-</button>
+                                                                    </td>
+                                                                </tr>
+
                                                                 <?php
                                                                 $index++;
                                                             }
@@ -312,10 +328,10 @@
                                                         </tr>
 
                                                         <?php
-                                                            $index = 1;
+                                                            $index = 1;                                                                
                                                             foreach($myarr['PLAN'] as $key=>$bean){
-                                                                    if(sizeof($myarr['PLAN'][$key]) == 0)
-                                                                        continue;
+                                                                    // if(sizeof($myarr['PLAN'][$key]) == 0)
+                                                                    //     continue;
                                                                 ?>
                                                                 
                                                                 <tbody id="plan-kr-<?=$index?>">
@@ -330,7 +346,7 @@
 																			?>
 																			<script>
 																			$(document).ready(function(){
-																				add_plan_column('plan-kr-<?=$index?>', '<?=$bean2["EMP_NM"]?>', '<?=$bean2["CONTENT"]?>');
+																				add_plan_column('plan-kr-<?=$index?>', '<?=$bean2["ID"]?>','<?=$bean2["EMPY_NO"]?>','<?=$bean2["EMP_NM"]?>', '<?=$bean2["CONTENT"]?>');
 																			});
 																			</script>
 
@@ -339,6 +355,14 @@
 																		?>
                                                                 																															
                                                                 </tbody>
+
+                                                                <tr>
+                                                                    <td colspan="4" style="text-align:center; ">
+                                                                        <button type="button" class="btn btn-success" id="btn1" onclick="add_new_plan_column('plan-kr-<?=$index?>', <?=$key?>)">+</button>
+                                                                        <button type="button" class="btn btn-danger" id="btn1" onclick="remove_column('plan-kr-<?=$index?>')">-</button>
+                                                                    </td>
+                                                                 </tr>
+
                                                                 <?php
                                                                 $index++;
                                                             }
@@ -353,6 +377,7 @@
                             </div>
                         </div>
                     </div>
+                </form>    
 			</div>
 
 			<!-- end:: Body -->
@@ -382,6 +407,7 @@
 
 <!-- 스프린트.js-->
 <script>
+
     function test(){
         document.getElementById('sprint-sticky-button').click();
     }
@@ -434,54 +460,332 @@
 
 
 
-    function add_feedback_column(b, manager, task, high, low){
+    function add_feedback_column(b, id, manager, task, high, low){
 		var a = $('#' + b + '-head').attr('rowspan');
         $('#' + b + '-head').attr('rowspan', a+2);
 
-		var html = "<tr class='separator'><td rowspan='2' style='text-align:center'>" + manager + "</td><td rowspan='2'>" + task +
-                "</td><td>" + high + "</td></tr>" +  
-                "<tr><td>" + low + "</td></tr>";
+		var html =
+                "<tr class='separator' value='old'><td rowspan='2' style='text-align:center'>" + manager + "</td><td rowspan='2'>" + task +
+                "<input type='hidden' name='feed-id[]' value='"+ id +"'></input>"+
+                "</td><td><textarea name='feed-high[]' rows='3' col='30' style='width:100%;' placeholder='high)'>" + high + "</textarea></td></tr>" +  
+                "<tr><td><textarea name='feed-low[]' rows='3' col='30' style='width:100%' placeholder='low)'>" + low + "</textarea></td></tr>";
 
 
 
 		$('#' + b).append(html);
 	}
 
-	function add_idea_column(b, manager, strategy, idea){
+
+    //todolist 셀렉트박스에 append를 하기위해 있는 인덱스...
+    var idea_i=0;
+
+    //사원 리스트
+    var arr = [];
+    <?php
+        foreach($myarr['EMP_LIST'] as $key => $bean){
+
+            ?>
+                arr[<?=$key?>] = {"EMP_NO" : '<?=$bean['EMP_NO']?>', "EMP_NM" : '<?=$bean['EMP_NM']?>'}
+            <?php
+        }
+    ?>
+
+	function add_idea_column(b, id, kr_id, manager_no, manager, todo_id, strategy, idea){
 		var a = $('#' + b + '-head').attr('rowspan');
         $('#' + b + '-head').attr('rowspan', a+2);
 
-		var html = "<tr class='separator'>" +
-						"<td style='text-align:center'>" + manager + "</td>" +
+        // console.log(arr);
 
-						"<td>" + strategy + "</td>" +
+		var html = `<tr class='separator' value="old" oncontextmenu="remove_idea_column(event, this)">
+                        <td>
+                            <input type='hidden' name='idea-delete[]' value='N'></input>
+                            <input type='hidden' name='idea-id[]' value='`+id+`'></input>
+                            <input type='hidden' name='idea-kr[]' value='`+kr_id+`'></input>
+                            <select id="`+b+'-head'+`" name="idea-name[]" onchange="this.value=this.options[this.selectedIndex].value; change_child(this)">
+                                <option value="">선택</option>`;
 
-						"<td>" + idea + "</td>" +
-					"</tr>";
+        for(let i=0; i<arr.length; i++){
+            if(arr[i]['EMP_NO'] == manager_no){
+                html = html.concat(`<option selected value=`+arr[i]['EMP_NO']+`>`+arr[i]['EMP_NM']+`</option>`)
+            }
 
-		$('#' + b).append(html);
+            else
+                html = html.concat(`<option value=`+arr[i]['EMP_NO']+`>`+arr[i]['EMP_NM']+`</option>`);
+        }
+
+
+
+
+        var html2 =
+                            `
+                            </select>
+                            
+                        </td>
+
+                        <td id='div_chk' value="123">
+                            <select id="idea-todo-` + idea_i+ `" name="idea-todo[]" style='width: 100%;' onchange='this.value=this.options[this.selectedIndex].value;'>
+                                <option value="">=== 선택 ===</option>
+                            </select>
+                        </td>
+
+                        <td><textarea name='idea-content[]' rows='3' col='30' style='width:100%' placeholder='[아이디어]'>`+idea+`</textarea></td>
+                    </tr>`;
+
+        html = html.concat(html2);
+
+		var child = $('#' + b).append(html);
+
+        // console.log(child);
+
+        $.ajax({
+            type : 'POST',
+            url : '/Sprint_Meet_Controller/get_to_do_list',
+            cache : false,
+            data : {"KR_ID": kr_id, "EMP_NO": manager_no},
+            async: false,
+            success : function( data ){
+                
+                const result = jQuery.parseJSON(data);
+                var temp = '';
+
+                for (let i = 0; i < result['TODO'].length; i++) {
+
+                    if(temp != result['TODO'][i]['INIT_CONTENT']){
+                        temp = result['TODO'][i]['INIT_CONTENT'];
+                        $("#idea-todo-" + idea_i).append("<optgroup label='"+temp+"'>");
+                    }
+
+                    if(result['TODO'][i]['ID'] == todo_id)
+                        $("#idea-todo-" + idea_i).append("<option selected value='"+result['TODO'][i]['ID']+"'>"+result['TODO'][i]['CONTENT']+"</option>");
+                    else
+                    $("#idea-todo-" + idea_i).append("<option value='"+result['TODO'][i]['ID']+"'>"+result['TODO'][i]['CONTENT']+"</option>");
+                }
+                idea_i++;
+            },
+            error : function( jqxhr , status , error ){
+                // console.log( jqxhr , status , error );
+            }
+        });
+
 	}
 
-	function add_plan_column(b, manager, task){
+	function add_plan_column(b, id, manager_no, manager, task){
 		var a = $('#' + b + '-head').attr('rowspan');
         $('#' + b + '-head').attr('rowspan', a+2);
 
-		var html = "<tr class='separator'>" +
-						"<td style='text-align:center'>" + manager + "</td>" +
+		var html = `<tr class='separator' value="old" oncontextmenu="remove_plan_column(event, this)">
+                        <td>
+                            <input type='hidden' name='plan-delete[]' value='N'></input>
+                            <input type="hidden" name='plan-id[]' value='`+id+`'></input>
+                            <select name='plan-name[]' onchange="this.value=this.options[this.selectedIndex].value;">
+                                <option value="">=== 선택 ===</option>`;
+
+        for(let i=0; i<arr.length; i++){
+            if(arr[i]['EMP_NO'] == manager_no){
+                html = html.concat(`<option selected value=`+arr[i]['EMP_NO']+`>`+arr[i]['EMP_NM']+`</option>`)
+            }
+
+            else
+                html = html.concat(`<option value=`+arr[i]['EMP_NO']+`>`+arr[i]['EMP_NM']+`</option>`);
+        }
+
+        var html2 = `
+                            </select>
+                        </td>
                                 
-						"<td colspan='2'>" + task + "</td>" +
-					"</tr>";
+                        <td colspan='2'><textarea name='plan-content[]' rows='3' col='30' style='width:100%' placeholder='[할일]'>`+task+`</textarea></td>
+                    </tr>`;
+
+        html = html.concat(html2)
 
 		$('#' + b).append(html);
 	}
+
+    function add_new_idea_column(b, c){
+
+        var a = $('#' + b + '-head').attr('rowspan');
+        $('#' + b + '-head').attr('rowspan', a+2);
+
+        console.log(c);
+
+        var html = `<tr class='separator' value="new">
+                        <td>
+                            <input type='hidden' name='idea-new-kr[]' value='`+c+`'></input>
+                            <select id="`+b+'-head'+`" name="idea-new-name[]"onchange="this.value=this.options[this.selectedIndex].value; change_child(this)">
+                                <option value="">선택</option>
+                                <?php
+                                    foreach($myarr['EMP_LIST'] as $key => $bean){
+                                        ?>
+                                        <option value="<?=$bean['EMP_NO']?>"><?=$bean['EMP_NM']?></option>
+                                        <?php
+                                    }
+                                ?>
+                            </select>
+                            
+                        </td>
+
+                        <td id='div_chk' value="123">
+                            <select name="idea-new-todo[]" style='width: 100%;' onchange='this.value=this.options[this.selectedIndex].value;'>
+                                <option value="">=== 선택 ===</option>
+                            </select>
+                        </td>
+
+                        <td><textarea name='idea-new-content[]' rows='3' col='30' style='width:100%' placeholder='[아이디어]'></textarea></td></td>
+                    </tr>`;
+
+        $('#' + b).append(html);
+    }
+
+    function add_new_plan_column(b, c){
+		var a = $('#' + b + '-head').attr('rowspan');
+        $('#' + b + '-head').attr('rowspan', a+2);
+
+		var html = `<tr class='separator' value="new">
+                        <input type='hidden' name='plan-new-kr[]' value='`+c+`'></input>
+                        <td>
+                            <select name='plan-new-name[]' onchange="this.value=this.options[this.selectedIndex].value;">
+                                <option value="">=== 선택 ===</option>
+                                <?php
+                                    foreach($myarr['EMP_LIST'] as $key => $bean){
+                                        ?>
+                                        <option value="<?=$bean['EMP_NO']?>"><?=$bean['EMP_NM']?></option>
+                                        <?php
+                                    }
+                                ?>
+                            </select>
+                        </td>
+                                
+                        <td colspan='2'><textarea name='plan-new-content[]' rows='3' col='30' style='width:100%' placeholder='[할일]'></textarea></td>
+                    </tr>`;
+
+		$('#' + b).append(html);
+	}
+
+
+    function remove_column(b){
+        var table = document.getElementById(b);
+        // console.log($(table.lastChild).attr("value"));
+
+        if($(table.lastChild).attr("value")=="new")
+            table.deleteRow(-1);
+        
+        else if($(table.lastChild).attr("value")=="old")
+            alert("기존 컬럼입니다.");
+    }
+
+
+    // 셀렉트박스 관련 함수 
+    function change_child(element) {
+
+        var kr_id = element.previousSibling.previousSibling.value;
+        // console.log(kr_id);
+
+        var child = element.parentNode.nextSibling.nextSibling
+
+        child.firstChild.remove();
+        child.innerHTML =  "<select name='idea-new-todo[]' style='width: 100%;' onchange='this.value=this.options[this.selectedIndex].value;'>" +
+                            "<option value=''>=== 선택 ===</option>"+
+                            "</select>";
+
+        $.ajax({
+            type : 'POST',
+            url : '/Sprint_Meet_Controller/get_to_do_list',
+            cache : false,
+            data : {"KR_ID": kr_id, "EMP_NO": element.value},
+            async: false,
+            success : function( data ){
+                
+                const result = jQuery.parseJSON(data);
+                var temp = '';
+
+                for (let i = 0; i < result['TODO'].length; i++) {
+
+                    if(temp != result['TODO'][i]['INIT_CONTENT']){
+                        temp = result['TODO'][i]['INIT_CONTENT'];
+                        $(child.firstChild).append("<optgroup label='"+temp+"'>");
+                    }
+
+                    $(child.firstChild).append("<option value='"+result['TODO'][i]['ID']+"'>"+result['TODO'][i]['CONTENT']+"</option>");
+                }
+
+            },
+            error : function( jqxhr , status , error ){
+                // console.log( jqxhr , status , error );
+            }
+        });
+    }
+
+    //기존 아이디어 컬럼삭제
+    function remove_idea_column(event, element){
+        event.preventDefault();
+        var temp = $(element).find('[name="idea-delete[]"]').attr('value');
+
+        //삭제취소
+        if(temp == 'Y') {
+            $(element).find('[name="idea-delete[]"]').attr('value', 'N');
+
+            $(element).find('select').attr("disabled", false);
+            $(element).find('textarea').attr("disabled", false);
+
+            $(element).css('background', 'none');
+            $(element).css('opacity', '1');
+        }
+        
+        //삭제
+        else if(temp == 'N') {
+            $(element).find('[name="idea-delete[]"]').attr('value', 'Y');
+
+            $(element).find('select').attr("disabled", true);
+            $(element).find('textarea').attr("disabled", true);
+
+            $(element).css('background', 'repeating-linear-gradient(45deg, #444, #444 10px, #888 0, #888 20px)');
+            $(element).css('opacity', '0.5');
+        }
+    }
+
+    //기존 플랜 컬럼 삭제
+    function remove_plan_column(event, element){
+        event.preventDefault();
+        var temp = $(element).find('[name="plan-delete[]"]').attr('value');
+
+        //삭제취소
+        if(temp == 'Y') {
+            $(element).find('[name="plan-delete[]"]').attr('value', 'N');
+
+            $(element).find('select').attr("disabled", false);
+            $(element).find('textarea').attr("disabled", false);
+
+            $(element).css('background', 'none');
+            $(element).css('opacity', '1');
+        }
+        
+        //삭제
+        else if(temp == 'N') {
+            $(element).find('[name="plan-delete[]"]').attr('value', 'Y');
+
+            $(element).find('select').attr("disabled", true);
+            $(element).find('textarea').attr("disabled", true);
+
+            $(element).css('background', 'repeating-linear-gradient(45deg, #444, #444 10px, #888 0, #888 20px)');
+            $(element).css('opacity', '0.5');
+        }
+    }
+
+    //disable 된것들 풀어주는 함수(post 안되니깐)
+    function submit_function(){
+        $(document).find('select').attr("disabled", false);
+        $(document).find('textarea').attr("disabled", false);
+    }
 
      //Sprint Meeting 메뉴 활성화
-     elements = document.getElementsByClassName('m-menu__item--active');
+    elements = document.getElementsByClassName('m-menu__item--active');
         for (var i = 0; i < elements.length; i++) {
             elements[i].classList.remove('m-menu__item--active');
         }
 
-        document.getElementById('sprint_left_menu').classList.add('m-menu__item--active');
+    document.getElementById('sprint_left_menu').classList.add('m-menu__item--active');
+
+ 
 
 
 </script>
