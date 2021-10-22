@@ -722,4 +722,32 @@ class Sprint_Meet_Model extends Model
         $stmt = sqlsrv_query($this->dbconn, $query);
     }
 
+    public function delete_spr_mst($id){
+        $query = "
+                    DELETE FROM [dbo].[SPR_MEET_FEED]
+                           WHERE SPR_MEET_ID = ".$id."
+
+
+                    DELETE FROM [dbo].[SPR_MEET_IDEA]
+                           WHERE SPR_MEET_ID = ".$id."
+
+
+                    DELETE FROM DBO.SPR_MEET_FEED
+                           FROM	DBO.SPR_MEET_PLAN AS PN WITH(NOLOCK)
+                                   INNER JOIN
+                                   DBO.SPR_MEET_FEED AS FD WITH(NOLOCK)
+                                   ON	PN.ID = FD.SPR_MEET_PLAN_ID
+                           
+                           WHERE PN.SPR_MEET_ID = ".$id."
+                    
+                    DELETE FROM DBO.SPR_MEET_PLAN
+                           WHERE SPR_MEET_ID = ".$id."
+
+                    DELETE FROM [dbo].[SPR_MEET_MST]
+                           WHERE ID = ".$id."
+                    ";
+
+        $stmt = sqlsrv_query($this->dbconn, $query);
+    }
+
 }

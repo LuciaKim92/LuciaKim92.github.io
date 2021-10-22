@@ -200,7 +200,7 @@ class Sprint_Meet_Controller extends BaseController
         $this->session_setting();
 		$this->Model = new Sprint_Meet_Model;
 
-        //예외처리필요
+        //예외처리필요 현재는 그냥 최근꺼 수정하기로 보냄 
         if($id == null){
             $id = $this->Model->search_last_spr();
         }
@@ -311,6 +311,18 @@ class Sprint_Meet_Controller extends BaseController
         $myarr = $this->Model->search_todo($_POST['KR_ID'], $_POST['EMP_NO']);
 
         echo json_encode($myarr);
+    }
+
+
+    //회의록 삭제
+    public function spr_delete($id=null){
+
+        if($id==null){
+            return;
+        }
+
+        $this->Model = new Sprint_Meet_Model;
+        $this->Model->delete_spr_mst($id);
     }
 
 
