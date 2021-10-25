@@ -748,6 +748,8 @@ class Sprint_Meet_Model extends Model
                     ";
 
         $stmt = sqlsrv_query($this->dbconn, $query);
+
+        return $stmt;
     }
 
 }
