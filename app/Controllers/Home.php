@@ -77,6 +77,7 @@ class Home extends BaseController
 
         $assign['admin_names'] = $data['EMP_NM'];
 		$assign['team_cd'] = $data['DEPT_CD'];
+		$assign['emp_no'] = $data['EMP_NO'];
 		$assign['emp_email'] = $data['EMP_EMAIL'];
 
 		//팀코드로 검색
@@ -108,11 +109,23 @@ class Home extends BaseController
 		$this->session->set($assign);
 	}
 
-
 	public function sprint_list()
 	{
 		$this->session_setting();
-		return view("/sprint/sprint_list.php");
+		$layoutModel = new LayoutModel();
+		$sprintMeetModel = new Sprint_Meet_Model;
+
+		$temp = $layoutModel->GetDeptCode($_SESSION['team_cd']);
+
+		if ($temp['CHIEF_EMP_NO'] == $_SESSION['emp_no']) {
+			$data = $sprintMeetModel->get_sub_depts($_SESSION['team_cd']);
+		} else {
+			$data = null;
+		}
+
+		$result['SUB_DEPTS'] = $data;
+
+		return view("/sprint/sprint_list.php", $result);
 	}
 
 	// sprint meeting 회의록 작성

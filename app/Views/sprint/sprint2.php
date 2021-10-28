@@ -9,7 +9,7 @@
     <!-- 제이쿼리 -->
     <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 
-	<link rel="stylesheet" type="text/css" href="/App.css" />
+	<link rel="stylesheet" type="text/css" href="/css/App.css" />
 	<!-- <link rel="stylesheet"
   		  href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
   		  integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
@@ -104,7 +104,11 @@
                         </li>
 
                         <li class="m-nav-sticky__item" data-toggle="m-tooltip" title="" data-placement="left" data-original-title="수정하기">
-                            <a href="/home/sprint"><i class="la la-pencil-square"></i></a>
+                            <a href="/Sprint_Meet_Controller/spr_edit/<?=$myarr['SPR_MEET_ID']?>"><i class="la la-pencil-square"></i></a>
+                        </li>
+
+                        <li class="m-nav-sticky__item" data-toggle="m-tooltip" title="" data-placement="left" data-original-title="삭제하기">
+                            <a href="javascript:confirm_delete();"><i class="la la-trash"></i></a>
                         </li>
 
                         <li class="m-nav-sticky__item" data-toggle="m-tooltip" title="" data-placement="left" data-original-title="목록으로">
@@ -205,12 +209,13 @@
                                                         <tr style="background-color:#dae8fc">
                                                             <th scope="col" class="disable" id="table-head">KR</th>
                                                             <th scope="col" class="disable" id="table-head">담당자</th>
-                                                            <th scope="col" class="disable" style="width:40%">지난주 한 일</th>
-                                                            <th scope="col" style="width:100%">피드백</th>
+                                                            <th scope="col" class="disable" style="width:40%">지난주 계획</th>
+                                                            <th scope="col" style="width:100%">결과 및 피드백</th>
                                                         </tr>
 
                                                         <?php
                                                             $i=0;
+                                                            $index = 1;
 
                                                             foreach($myarr['FEED'] as $key=>$bean){
 
@@ -230,10 +235,10 @@
                                                                 }
                                                                 ?>
                                                                 
-                                                                <tbody id="feedback-kr-<?=$key+1?>">
+                                                                <tbody id="feedback-kr-<?=$index?>">
                                                                     <tr>
-                                                                        <th class="KR" id="feedback-kr-<?=$key+1?>-head" rowspan="6">
-                                                                            Key Result <?=$key+1?>
+                                                                        <th class="KR" id="feedback-kr-<?=$index?>-head" rowspan="6">
+                                                                            Key Result <?=$index?>
                                                                         </th>   
                                                                     </tr>
 
@@ -242,7 +247,7 @@
 																			?>
 																			<script>
                                                                                 $(document).ready(function(){
-                                                                                    add_feedback_column('feedback-kr-<?=$key+1?>', '<?=$bean2["EMP_NM"]?>', '<?=$bean2["CONTENT"]?>',  '<?=$bean2["HIGHLIGHT"]?>', '<?=$bean2["LOWLIGHT"]?>');
+                                                                                    add_feedback_column('feedback-kr-<?=$index?>', '<?=$bean2["EMP_NM"]?>', '<?=$bean2["CONTENT"]?>',  '<?=$bean2["HIGHLIGHT"]?>', '<?=$bean2["LOWLIGHT"]?>');
                                                                                 });
 																			</script>
 
@@ -253,6 +258,7 @@
                                                                 </tbody>
 
                                                                 <?php
+                                                                $index++;
                                                             }
                                                         ?>
                                                     </tbody>
@@ -267,15 +273,16 @@
                                                         </tr>
 														
                                                         <?php
+                                                            $index = 1;
                                                             foreach($myarr['IDEA'] as $key=>$bean){
                                                                 if(sizeof($myarr['IDEA'][$key]) == 0)
                                                                     continue;
                                                                 ?>
                                                                 
-                                                                <tbody id="idea-kr-<?=$key+1?>">
+                                                                <tbody id="idea-kr-<?=$index?>">
                                                                     <tr>
-                                                                        <th class="KR" id="idea-kr-<?=$key+1?>-head" rowspan="6">
-                                                                            Key Result <?=$key+1?>
+                                                                        <th class="KR" id="idea-kr-<?=$index?>-head" rowspan="6">
+                                                                            Key Result <?=$index?>
                                                                         </th>   
                                                                     </tr>
 
@@ -284,7 +291,7 @@
 																			?>
 																			<script>
 																			$(document).ready(function(){
-																				add_idea_column('idea-kr-<?=$key+1?>', '<?=$bean2["EMP_NM"]?>', '<?=$bean2["TO_DO_CONTENT"]?>',  '<?=$bean2["IDEA_CONTENT"]?>');
+																				add_idea_column('idea-kr-<?=$index?>', '<?=$bean2["EMP_NM"]?>', '<?=$bean2["TO_DO_CONTENT"]?>',  '<?=$bean2["IDEA_CONTENT"]?>');
 																			});
 																			</script>
 
@@ -294,6 +301,7 @@
                                                                 																															
                                                                 </tbody>
                                                                 <?php
+                                                                $index++;
                                                             }
                                                         ?>
                                                     </tbody>
@@ -308,15 +316,16 @@
                                                         </tr>
 
                                                         <?php
+                                                            $index = 1;
                                                             foreach($myarr['PLAN'] as $key=>$bean){
                                                                     if(sizeof($myarr['PLAN'][$key]) == 0)
                                                                         continue;
                                                                 ?>
                                                                 
-                                                                <tbody id="plan-kr-<?=$key+1?>">
+                                                                <tbody id="plan-kr-<?=$index?>">
                                                                     <tr>
-                                                                        <th class="KR" id="plan-kr-<?=$key+1?>-head" rowspan="6">
-                                                                            Key Result <?=$key+1?>
+                                                                        <th class="KR" id="plan-kr-<?=$index?>-head" rowspan="6">
+                                                                            Key Result <?=$index?>
                                                                         </th>   
                                                                     </tr>
 
@@ -325,7 +334,7 @@
 																			?>
 																			<script>
 																			$(document).ready(function(){
-																				add_plan_column('plan-kr-<?=$key+1?>', '<?=$bean2["EMP_NM"]?>', '<?=$bean2["CONTENT"]?>');
+																				add_plan_column('plan-kr-<?=$index?>', '<?=$bean2["EMP_NM"]?>', '<?=$bean2["CONTENT"]?>');
 																			});
 																			</script>
 
@@ -335,6 +344,7 @@
                                                                 																															
                                                                 </tbody>
                                                                 <?php
+                                                                $index++;
                                                             }
                                                         ?>
 
@@ -469,8 +479,17 @@
 		$('#' + b).append(html);
 	}
 
+    function confirm_delete(){
+        if(confirm("회의록을 정말 삭제하시겠습니까?\n(연동된 내용이 전부 삭제됩니다)")){
+            location.href="/Sprint_Meet_Controller/spr_delete/<?=$myarr['SPR_MEET_ID']?>/<?=$myarr['MEET_DT']?>";
+        }
+
+        else
+            return;
+    }
+
      //Sprint Meeting 메뉴 활성화
-     elements = document.getElementsByClassName('m-menu__item--active');
+    elements = document.getElementsByClassName('m-menu__item--active');
         for (var i = 0; i < elements.length; i++) {
             elements[i].classList.remove('m-menu__item--active');
         }
