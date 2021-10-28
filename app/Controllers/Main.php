@@ -5,13 +5,16 @@ use App\Models\DashBoardModel;
 use App\Models\LayoutModel;
 use App\Models\Sprint_Meet_Model;
 
-class Home extends BaseController
+class Main extends BaseController
 {
 	public function index()
 	{
-		/*
+		$this->session = \Config\Services::session();
+		
 		//return view('comment.php');
-		$this->session_setting();
+		if(!isset($_SESSION['emp_no'])){
+			$this->session_setting();
+		}
 		$layoutModel = new LayoutModel();
 
         //echo $model->getLastQuery();
@@ -20,6 +23,8 @@ class Home extends BaseController
 		$krList = array();     // 배열 생성
 
 		$max = 0;
+
+
 
 		$comp = array(
 			//"name" => $layoutModel->
@@ -40,8 +45,13 @@ class Home extends BaseController
 			"compKrListCnt"=>count($layoutModel->GetKeyResult($_SESSION['team_cd'], '7'))
 		);
 
-		//krList에서 상태 : 진행중, 상태 : 완료 인것 분류하기
+		foreach($team['krList'] as $key => $val){
+			$initiatives = $layoutModel->GetInitiative($_SESSION['emp_no'],'0');
+		}
+		$team['initiatives'] = $initiatives;
+		//print_r($team['initiatives']);
 
+		//krList에서 상태 : 진행중, 상태 : 완료 인것 분류하기
 
 
 		//이거 있는 이유 :  원래 MAX에 맞춰서 규격 맞추려고함
@@ -65,8 +75,8 @@ class Home extends BaseController
 		);
 
 		$mydata['dashBoardData'] = $dashBoardData;
-		*/
-		$this->response->redirect("/main");
+
+		return view("index.php", $mydata);
 	}
 	public function session_setting(){
 		$this->response = \Config\Services::response();
@@ -78,6 +88,7 @@ class Home extends BaseController
         $assign['admin_names'] = $data['EMP_NM'];
 		$assign['team_cd'] = $data['DEPT_CD'];
 		$assign['emp_email'] = $data['EMP_EMAIL'];
+		$assign['emp_no'] = $data['EMP_NO'];
 
 		//팀코드로 검색
 		$temp = $layoutModel->GetDeptCode($assign['team_cd']);
@@ -94,6 +105,7 @@ class Home extends BaseController
 		//회사코드로 검색
 		$temp = $layoutModel->GetDeptCode($assign['comp_cd']);
 		$assign['comp_nm'] =  $temp['DEPT_NM'];
+
 
 		//++ 추가해야 할 사항 : 부문에만 속한사람, 회사에만 속한사람 분류 어떻게 할 지 생각하기
 

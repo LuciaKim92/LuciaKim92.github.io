@@ -347,23 +347,13 @@
 					</div>
 				</div>
 
-				<!-- 관리자 버튼 누를 시 활성화 되는 창-->
-				<div id ="newCFRMenu" class="fixed-bottom bg-dark text-center" style="display : none; position: fixed; bottom: 80px; right: 75px; left : auto; width : 200px">
-					<div class = "text-light add-menu" style="background-color : #7957ad" onclick = "newInitiative();">
-						Initiatives 등록
-					</div>
-
-					<div class = "text-light add-menu" style="background-color : #31859c" onclick = "newCFR();">
-						CFR Meeting 요청
-					</div>
-				</div>
 
 			</header>
 			<script>
 				document.getElementById('loginID').innerText = "<?=$_SESSION['admin_names']?>";
 				//홈으로가기
 				function goHome(){
-					document.location = '/home/dashboard';
+					document.location = '/main';
 				}
 				//관리자 로그인 alert, 수락시 이동
 				var check = $("#newCFRBtn");

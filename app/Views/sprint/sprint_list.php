@@ -125,6 +125,15 @@
 	<script src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js" crossorigin></script>
 	<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
 	<script src="/App.js" charset="utf-8"></script>
+    <script>
+        //Sprint Meeting 메뉴 활성화
+        elements = document.getElementsByClassName('m-menu__item--active');
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].classList.remove('m-menu__item--active');
+            }
+        document.getElementById('sprint_left_menu').classList.add('m-menu__item--active');
+
+    </script>
 </body>
 
 </html>

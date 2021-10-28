@@ -5,69 +5,45 @@ use App\Models\DashBoardModel;
 use App\Models\LayoutModel;
 use App\Models\Sprint_Meet_Model;
 
-class Home extends BaseController
+class FileController extends BaseController
 {
 	public function index()
 	{
-		/*
-		//return view('comment.php');
-		$this->session_setting();
-		$layoutModel = new LayoutModel();
-
-        //echo $model->getLastQuery();
-        //print_r($data['OBJECTIVE']);
-		//$data = getDashBoardData();
-		$krList = array();     // 배열 생성
-
-		$max = 0;
-
-		$comp = array(
-			//"name" => $layoutModel->
-			"obj" => $layoutModel->GetObjective($_SESSION['comp_cd'])['OBJECTIVE'],
-			"krList" => $layoutModel->GetKeyResult($_SESSION['comp_cd'], '0'),
-			"compKrListCnt"=>count($layoutModel->GetKeyResult($_SESSION['comp_cd'], '7'))
-		);
-
-		$dept = array(
-			"obj" => $layoutModel->GetObjective($_SESSION['dept_cd'])['OBJECTIVE'],
-			"krList" => $layoutModel->GetKeyResult($_SESSION['dept_cd'], '0'),
-			"compKrListCnt"=>count($layoutModel->GetKeyResult($_SESSION['dept_cd'], '7'))
-		);
-
-		$team = array(
-			"obj" => $layoutModel->GetObjective($_SESSION['team_cd'])['OBJECTIVE'],
-			"krList" => $layoutModel->GetKeyResult($_SESSION['team_cd'], '0'),
-			"compKrListCnt"=>count($layoutModel->GetKeyResult($_SESSION['team_cd'], '7'))
-		);
-
-		//krList에서 상태 : 진행중, 상태 : 완료 인것 분류하기
-
-
-
-		//이거 있는 이유 :  원래 MAX에 맞춰서 규격 맞추려고함
-		$cnt = array(
-			count($comp['krList']), count($dept['krList'], count($team['krList']))
-		);
-
-
-		foreach ($cnt as $value){
-			if($max < $value)
-				$max = $value;
-		}
-
-
-		$dashBoardData = array(
-			"comp" => $comp,
-			"dept" => $dept,
-			"team" => $team,
-			"max" => $max
-
-		);
-
-		$mydata['dashBoardData'] = $dashBoardData;
-		*/
-		$this->response->redirect("/main");
+		return view("/fileTest/file.php");
 	}
+    public function fileUpload(){
+        
+
+        $file = $this->request->getFile("test_file");
+        $fileInfo = []; // (2)
+        if ($file != null) { // (3)
+            if (!$file->isValid()) { // (4)
+                $errorString = $file->getErrorString(); // (5)
+                $errorCode = $file->getError(); // (6)
+
+                $fileInfo['hasError'] = true; // (7)
+                $fileInfo['errorString'] = $errorString;
+                $fileInfo['errorCode'] = $errorCode;
+
+            } else {  // (8)
+                $fileInfo['hasError'] = false;
+                if ($file->hasMoved() === false) {  // (9)                
+                    $fileInfo['mimeType'] = $file->getMimeType();  // (10)
+
+                    $savedPath = $file->store(); // (11)
+
+                    $fileInfo['savedPath'] = $savedPath;
+                    $fileInfo['clientName'] = $file->getClientName(); // (12)
+                    $fileInfo['name'] = $file->getName(); // (13)
+                    $fileInfo['clientMimeType'] = $file->getClientMimeType(); // (14)
+                    $fileInfo['clientExtention'] = $file->getClientExtension(); // (15)
+                    $fileInfo['guessExtention'] = $file->guessExtension(); // (16)
+                }
+            }
+        }
+        var_dump($fileInfo);
+        
+    }
 	public function session_setting(){
 		$this->response = \Config\Services::response();
 		$this->session = \Config\Services::session();
@@ -78,6 +54,7 @@ class Home extends BaseController
         $assign['admin_names'] = $data['EMP_NM'];
 		$assign['team_cd'] = $data['DEPT_CD'];
 		$assign['emp_email'] = $data['EMP_EMAIL'];
+		$assign['emp_no'] = $data['EMP_NO'];
 
 		//팀코드로 검색
 		$temp = $layoutModel->GetDeptCode($assign['team_cd']);
@@ -94,6 +71,7 @@ class Home extends BaseController
 		//회사코드로 검색
 		$temp = $layoutModel->GetDeptCode($assign['comp_cd']);
 		$assign['comp_nm'] =  $temp['DEPT_NM'];
+
 
 		//++ 추가해야 할 사항 : 부문에만 속한사람, 회사에만 속한사람 분류 어떻게 할 지 생각하기
 
