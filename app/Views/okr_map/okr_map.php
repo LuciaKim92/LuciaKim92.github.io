@@ -89,7 +89,7 @@
                     </div>
 
                     <div class="col-md-4" id="child-1">
-                        <div class="collapse card-child">
+                        <div class="collapse show card-child">
                             <div id="card-child-1" class="card-body" style="padding:0px;">
 
                                 <script>
@@ -160,32 +160,23 @@
 <!-- okr_map 스크립트 -->
 <script>
 
-    // 토글용 변수들
-    var toggle_child2 = false;
-    var last_dept_cd2 = '';
-
-    var toggle_child3 = false;
-    var last_dept_cd3 = '';
-
-    // 초기화
     function reset(){
-
-        $(".col-md-3").attr("class", "col-md-4");
-        $("#child-3").css("display", "none");
+        if($(".col-md-3").attr("class") == 'col-md-3'){
+            $(".col-md-3").attr("class", "col-md-4");
+            $("#child-3").css("display", "none");
+        }
         
-        toggle_child2 = false;
-        toggle_child3 = false;
-        last_dept_cd2 = '';
-        last_dept_cd3 = '';
     }
     
+    var toggle_child2 = false;
+    var last_dept_cd2 = '';
 
     function test1(dept_cd){
         // 모바일 생각해야됨..........
         window.scrollTo(0,0);
         reset();
         ajax_get_team(dept_cd, '#card-child-2');
-        $("#card-child-1").hide().prepend($("#"+dept_cd)).fadeIn(1000);
+        $("#card-child-1").hide().prepend($("#"+dept_cd)).fadeIn(500);
 
         if(toggle_child2 == false){
             $("#card-child-2").css("display", "inherit");
@@ -208,6 +199,8 @@
                 
     }
 
+    var toggle_child3 = false;
+    var last_dept_cd3 = '';
 
     function test2(dept_cd){
 
