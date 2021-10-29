@@ -165,7 +165,7 @@
             $(".col-md-3").attr("class", "col-md-4");
             $("#child-3").css("display", "none");
         }
-        
+        toggle_child3 = false;
     }
     
     var toggle_child2 = false;
