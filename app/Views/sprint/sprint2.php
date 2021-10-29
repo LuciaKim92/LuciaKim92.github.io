@@ -275,8 +275,10 @@
                                                         <?php
                                                             $index = 1;
                                                             foreach($myarr['IDEA'] as $key=>$bean){
-                                                                if(sizeof($myarr['IDEA'][$key]) == 0)
+                                                                if(sizeof($myarr['IDEA'][$key]) == 0){
+                                                                    $index++;
                                                                     continue;
+                                                                }
                                                                 ?>
                                                                 
                                                                 <tbody id="idea-kr-<?=$index?>">
@@ -318,8 +320,10 @@
                                                         <?php
                                                             $index = 1;
                                                             foreach($myarr['PLAN'] as $key=>$bean){
-                                                                    if(sizeof($myarr['PLAN'][$key]) == 0)
+                                                                    if(sizeof($myarr['PLAN'][$key]) == 0){
+                                                                        $index++;
                                                                         continue;
+                                                                    }
                                                                 ?>
                                                                 
                                                                 <tbody id="plan-kr-<?=$index?>">

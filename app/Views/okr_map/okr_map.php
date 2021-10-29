@@ -57,79 +57,105 @@
 
                 <!-- 시작하는부분 -->
                 <div class="m-content">
+                
+                    <div class="row" style="padding-left:15px;">
+                        <select name="year" id="year-select">
+                            <script>
+                                for(var i=1988; i<=2099; i++){
+                                    $("#year-select").append("<option value="+i+">"+i+"년</option>");
+                                }
 
-                <div class="row">
+                            </script>
+                        </select>
 
-                    <div class="col-md-4" id="parent">
-                        <div><a class="card-link" data-toggle="collapse" data-parent="#card-parent" onclick="reset()" href=".card-child"><h4>대원씨티에스</h4></a></div>
-                        <div id="card-parent">
-                            <div class="card">
-                                <div class="card-header">
-                                    <div>Objective</div>
-                                    <hr>
-                                    <span>지속 가능한 1조 기업 기반 완성 "축적을 통한 Scale-Up"</span>
-                                
-                                </div>
+                        &nbsp;&nbsp;
 
-                                <div class="card-header" style="text-align:center;">
-                                    <a class="card-link" data-toggle="collapse" data-parent="#card-parent" href="#card-element-534736">Key Results</a>
-                                </div>
-                                <div id="card-element-534736" class="collapse">
-                                    <div class="card-body">
-                                        <div style="text-align:center; text-decoration: underline;"><h4>Key Results</h4></div>
-                                        <ol style="padding: 0px 0px 0px 10px">
-                                            <li></li>
-                                            <li></li>
-                                            <li></li>
-                                        </ol>
+                        <select name="quarter" id="qtr-select">
+                            <option value="1">1분기</option>
+                            <option value="2">2분기</option>
+                            <option value="3">3분기</option>
+                            <option value="4">4분기</option>
+                        </select>
+
+                        &nbsp;&nbsp;
+
+                        <button type="button" onclick="refresh()">조회</button>
+                    </div>
+
+                    <br>
+
+                    <div class="row">
+
+                        <div class="col-md-4" id="parent">
+                            <div><a class="card-link" data-toggle="collapse" data-parent="#card-parent" onclick="reset()" href=".card-child"><h4>대원씨티에스</h4></a></div>
+                            <div id="card-parent">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div>Objective</div>
+                                        <hr>
+                                        <span>지속 가능한 1조 기업 기반 완성 "축적을 통한 Scale-Up"</span>
+                                    
+                                    </div>
+
+                                    <div class="card-header" style="text-align:center;">
+                                        <a class="card-link" data-toggle="collapse" data-parent="#card-parent" href="#card-element-534736">Key Results</a>
+                                    </div>
+                                    <div id="card-element-534736" class="collapse">
+                                        <div class="card-body">
+                                            <div style="text-align:center; text-decoration: underline;"><h4>Key Results</h4></div>
+                                            <ol style="padding: 0px 0px 0px 10px">
+                                                <li></li>
+                                                <li></li>
+                                                <li></li>
+                                            </ol>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="col-md-4" id="child-1">
-                        <div class="collapse show card-child">
-                            <div id="card-child-1" class="card-body" style="padding:0px;">
+                        <div class="col-md-4" id="child-1">
+                            <div class="collapse show card-child">
+                                <div id="card-child-1" class="card-body" style="padding:0px;">
 
-                                <script>
-                                    window.onload = function(){
-                                        <?php
-                                            foreach($team_arr as $key => $bean){
-                                                ?>
-                                                add_column('#card-child-1' , '<?=$bean["DEPT_CD"]?>', '<?=$bean["DEPT_NM"]?>', '<?=$bean["OBJECTIVE_ID"]?>','<?=$bean["OBJECTIVE"]?>', '<?=$bean["IS_UP_DEPT"]?>');
+                                    <script>
+                                        window.onload = function(){
+                                            <?php
+                                                foreach($team_arr as $key => $bean){
+                                                    ?>
+                                                    add_column('#card-child-1' , '<?=$bean["DEPT_CD"]?>', '<?=$bean["DEPT_NM"]?>', '<?=$bean["OBJECTIVE_ID"]?>','<?=$bean["OBJECTIVE"]?>', '<?=$bean["IS_UP_DEPT"]?>');
 
-                                                <?php
-                                            }
-                                        ?>
-                                    }
-                                </script>                      
-                                
+                                                    <?php
+                                                }
+                                            ?>
+                                        }
+                                    </script>                      
+                                    
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-4" id="child-2">
+                            <div class="collapse show card-child">
+                                <div id="card-child-2" class="card-body" style="padding:0px;">
+
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-3" id="child-3" style="display:none;">
+                            <div class="collapse show card-child" style="width:100%">
+                                <div id="card-child-3" class="card-body" style="padding:0px;">
+
+                                    
+                                </div>
                             </div>
                         </div>
 
                     </div>
-
-                    <div class="col-md-4" id="child-2">
-                        <div class="collapse show card-child">
-                            <div id="card-child-2" class="card-body" style="padding:0px;">
-
-                                
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-md-4" id="child-3" style="display:none;">
-                        <div class="collapse show card-child">
-                            <div id="card-child-3" class="card-body" style="padding:0px;">
-
-                                
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
 
                 </div>
                 <!-- 끝나는 부분 -->
@@ -159,6 +185,30 @@
 
 <!-- okr_map 스크립트 -->
 <script>
+
+    $( document ).ready(function() {
+        var year = document.getElementById("year-select");
+        var qtr = document.getElementById("qtr-select");
+
+        for(var i=0; i<year.length; i++){
+            if(year[i].value== '<?=$YEAR?>'){
+                year[i].selected = true;
+            }
+        }
+
+        for(var i=0; i<qtr.length; i++){
+            if(qtr[i].value== '<?=$QTR?>'){
+                qtr[i].selected = true;
+            }
+        }
+    });
+
+    function refresh(){
+        var year = document.getElementById('year-select').value;
+        var qtr = document.getElementById('qtr-select').value;
+        location.href = "/OKR_MAP_Controller/index/" + year + "/" + qtr;
+    }
+
 
     function reset(){
         if($(".col-md-3").attr("class") == 'col-md-3'){
@@ -237,7 +287,7 @@
             type : 'POST',
             url : '/OKR_MAP_Controller/get_team',
             cache : false,
-            data : {"DEPT_UP_CD": dept_cd},
+            data : {"DEPT_UP_CD": dept_cd, "YEAR": <?=$YEAR?>, "QTR" : <?=$QTR?>},
             async: false,
             success : function( data ){
             

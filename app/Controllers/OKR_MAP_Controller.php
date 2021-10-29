@@ -18,15 +18,23 @@ class OKR_MAP_Controller extends BaseController
         $this->session->set($user_data);
     }
 
-    public function index(){
+    public function index($YEAR = null, $QTR = null){
         $this->session_setting();
         $this->Model = new OKR_MAP_Model;
+        date_default_timezone_set('Asia/Seoul');
+
+        if($YEAR == null || $QTR == null){
+            $YEAR = date("Y", time());
+            $QTR = ceil(date("m") / 3);
+        }
 
         $team_arr = array();
 
-        $team_arr = $this->Model->return_first_team();
+        $team_arr = $this->Model->return_first_team($YEAR, $QTR);
 
         $mydata['team_arr'] = $team_arr;
+        $mydata['YEAR'] = $YEAR;
+        $mydata['QTR'] = $QTR;
 
         return view('/okr_map/okr_map.php', $mydata);
     }
@@ -44,7 +52,7 @@ class OKR_MAP_Controller extends BaseController
     public function get_team(){
         $this->Model = new OKR_MAP_Model;
 
-        $team_arr = $this->Model->return_second_team($_POST['DEPT_UP_CD']);
+        $team_arr = $this->Model->return_second_team($_POST['DEPT_UP_CD'], $_POST['YEAR'], $_POST['QTR']);
 
         echo json_encode($team_arr);
     }
