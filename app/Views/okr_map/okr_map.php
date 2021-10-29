@@ -89,7 +89,7 @@
                     </div>
 
                     <div class="col-md-4" id="child-1">
-                        <div class="collapse show card-child">
+                        <div class="collapse card-child">
                             <div id="card-child-1" class="card-body" style="padding:0px;">
 
                                 <script>
