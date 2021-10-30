@@ -16,6 +16,8 @@
 
 		<!-- Objective Div / Key Result Bar css파일 불러오기-->
 		<link rel="stylesheet" type="text/css" href="/assets/css/dashboard.css">
+		<!-- Objective Div / Key Result Bar css파일 불러오기-->
+		<link rel="stylesheet" type="text/css" href="/assets/css/initiativeToolModal.css">
 
 		<!--begin::Global Theme Styles -->
 		<link href="/assets/vendors/base/vendors.bundle.css" rel="stylesheet" type="text/css" />
@@ -34,3 +36,11 @@
 
 		<!--end::Page Vendors Styles -->
 		<link rel="shortcut icon" href="/assets/icon/dwcts_logo.png" />
+
+		<!-- JS -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.min.js"></script>
+
+
+		<!-- Pagination -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.css"/>

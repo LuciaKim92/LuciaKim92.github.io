@@ -9,7 +9,7 @@
     <!-- 제이쿼리 -->
     <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 
-	<link rel="stylesheet" type="text/css" href="/App.css" />
+	<link rel="stylesheet" type="text/css" href="/css/App.css" />
 	<!-- <link rel="stylesheet"
   		  href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
   		  integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
@@ -100,16 +100,16 @@
                         </li>
 
                         <li class="m-nav-sticky__item" data-toggle="m-tooltip" title="" data-placement="left" data-original-title="저장하기">
-                            <a href="#" target="_blank"><i class="la la-save"></i></a>
+                            <a href="javascript:confirm_save();"><i class="la la-save"></i></a>
                         </li>
+
                         <li class="m-nav-sticky__item" data-toggle="m-tooltip" title="" data-placement="left" data-original-title="목록으로">
                             <a href="/home/sprint_list" ><i class="la la-list"></i></a>
                         </li>
                     </ul>
 
 
-                <form name="sprint_form" action="/Sprint_Meet_Controller/spr_save" method="post">    
-                    <input id="submit" type="submit"></input>
+                <form id="frm" name="sprint_form" action="/Sprint_Meet_Controller/spr_save" method="post">    
 					<div class="m-content">
                         <div class="row">
                             <div class="col-xl-12">
@@ -198,8 +198,8 @@
                                                         <tr style="background-color:#dae8fc">
                                                             <th scope="col" class="disable" id="table-head">KR</th>
                                                             <th scope="col" class="disable" id="table-head">담당자</th>
-                                                            <th scope="col" class="disable" style="width:40%">지난주 한 일</th>
-                                                            <th scope="col" style="width:100%">피드백</th>
+                                                            <th scope="col" class="disable" style="width:40%">지난주 계획</th>
+                                                            <th scope="col" style="width:100%">결과 및 피드백</th>
                                                         </tr>
                                                         
                                                         <!-- 추가해야됨 -->
@@ -214,9 +214,6 @@
                                                                         if($i == sizeof($myarr['KR'])){
                                                                             ?>
                                                                             <tr>
-                                                                                <input type="hidden" name="feed-plan[]" value="none"></input>
-                                                                                <input type="hidden" name="feed-high[]" value="none"></input>
-                                                                                <input type="hidden" name="feed-low[]" value="none"></input>
                                                                                 <th colspan="4">데이터가 없습니다.</th>
                                                                             </tr>    
                                                                             <?php                                                                        
@@ -559,6 +556,17 @@
                 // console.log( jqxhr , status , error );
             }
         });
+    }
+
+
+    //수정 회의록 저장확인
+    function confirm_save(){
+        if(confirm("회의록 작성을 완료 하시겠습니까?")){
+            document.getElementById('frm').submit();
+        }
+
+        else
+            return;
     }
 
      //Sprint Meeting 메뉴 활성화

@@ -9,7 +9,7 @@
     <!-- 제이쿼리 -->
     <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 
-	<link rel="stylesheet" type="text/css" href="/App.css" />
+	<link rel="stylesheet" type="text/css" href="/css/App.css" />
 	<!-- <link rel="stylesheet"
   		  href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
   		  integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
@@ -209,8 +209,8 @@
                                                         <tr style="background-color:#dae8fc">
                                                             <th scope="col" class="disable" id="table-head">KR</th>
                                                             <th scope="col" class="disable" id="table-head">담당자</th>
-                                                            <th scope="col" class="disable" style="width:40%">지난주 한 일</th>
-                                                            <th scope="col" style="width:100%">피드백</th>
+                                                            <th scope="col" class="disable" style="width:40%">지난주 계획</th>
+                                                            <th scope="col" style="width:100%">결과 및 피드백</th>
                                                         </tr>
 
                                                         <?php
@@ -275,8 +275,10 @@
                                                         <?php
                                                             $index = 1;
                                                             foreach($myarr['IDEA'] as $key=>$bean){
-                                                                if(sizeof($myarr['IDEA'][$key]) == 0)
+                                                                if(sizeof($myarr['IDEA'][$key]) == 0){
+                                                                    $index++;
                                                                     continue;
+                                                                }
                                                                 ?>
                                                                 
                                                                 <tbody id="idea-kr-<?=$index?>">
@@ -318,8 +320,10 @@
                                                         <?php
                                                             $index = 1;
                                                             foreach($myarr['PLAN'] as $key=>$bean){
-                                                                    if(sizeof($myarr['PLAN'][$key]) == 0)
+                                                                    if(sizeof($myarr['PLAN'][$key]) == 0){
+                                                                        $index++;
                                                                         continue;
+                                                                    }
                                                                 ?>
                                                                 
                                                                 <tbody id="plan-kr-<?=$index?>">
@@ -480,8 +484,8 @@
 	}
 
     function confirm_delete(){
-        if(confirm("회의록을 정말 삭제하시겠습니까?")){
-            location.href="/Sprint_Meet_Controller/spr_delete/<?=$myarr['SPR_MEET_ID']?>";
+        if(confirm("회의록을 정말 삭제하시겠습니까?\n(연동된 내용이 전부 삭제됩니다)")){
+            location.href="/Sprint_Meet_Controller/spr_delete/<?=$myarr['SPR_MEET_ID']?>/<?=$myarr['MEET_DT']?>";
         }
 
         else

@@ -67,6 +67,14 @@ class LayoutModel extends Model{
         return $query->getRowArray();
         
     }
+
+    public function GetInitiative($empy_no,$proc_st){
+        //DB연결
+        $okr_db = \Config\Database::connect('okrdb');
+        $query = $okr_db->query("SELECT DISTINCT ID,OKR_KEYS_ID,EMPY_NO,CONTENT,CONF_TP,PROC_ST FROM OKR_INIT_MST WHERE PROC_ST ='".$proc_st."' AND EMPY_NO = '".$empy_no."';");
+        return $query->getResultArray();
+
+    }
     
 
 }

@@ -15,7 +15,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.9.2/jquery.ui.position.js" integrity="sha512-vBR2rismjmjzdH54bB2Gx+xSe/17U0iHpJ1gkyucuqlTeq+Q8zwL8aJDIfhQtnWMVbEKMzF00pmFjc9IPjzR7w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 
-	<link rel="stylesheet" type="text/css" href="/App.css" />
+	<link rel="stylesheet" type="text/css" href="/css/App.css" />
 	<!-- <link rel="stylesheet"
   		  href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
   		  integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
@@ -46,7 +46,7 @@
 					<div class="m-subheader ">
 						<div class="d-flex align-items-center">
 							<div class="mr-auto">
-								<h3 class="m-subheader__title ">Sprint Meeting 회의록</h3>
+								<h3 class="m-subheader__title ">Sprint Meeting 회의록 수정</h3>
 							</div>
                             
                             <div>
@@ -109,16 +109,23 @@
                             <a href="/Sprint_Meet_Controller/spr_create"><i class="la la-plus-circle"></i></a>
                         </li>
 
+                        <li class="m-nav-sticky__item" data-toggle="m-tooltip" title="" data-placement="left" data-original-title="저장하기">
+                            <a href="javascript:confirm_save();"><i class="la la-save"></i></a>
+                        </li>
+
+                        <li class="m-nav-sticky__item" data-toggle="m-tooltip" title="" data-placement="left" data-original-title="삭제하기">
+                            <a href="javascript:confirm_delete();"><i class="la la-trash"></i></a>
+                        </li>
+
                         <li class="m-nav-sticky__item" data-toggle="m-tooltip" title="" data-placement="left" data-original-title="목록으로">
                             <a href="/home/sprint_list"><i class="la la-list"></i></a>
                         </li>
                     </ul>
 
                 <!-- 폼 시작 -->
-                <form name="sprint_form" action="/Sprint_Meet_Controller/spr_edit_save" method="post" onsubmit="submit_function()">
+                <form id="frm" name="sprint_form" action="/Sprint_Meet_Controller/spr_edit_save" method="post" onsubmit="submit_function()">
 
                     <input type="hidden" name="SPR_MEET_ID" value="<?=$myarr['SPR_MEET_ID']?>"></input>
-                    <input id="submit" type="submit";></input>
 					<div class="m-content">
                         <div class="row">
                             <div class="col-xl-12">
@@ -213,8 +220,8 @@
                                                         <tr style="background-color:#dae8fc">
                                                             <th scope="col" class="disable" id="table-head">KR</th>
                                                             <th scope="col" class="disable" id="table-head">담당자</th>
-                                                            <th scope="col" class="disable" style="width:40%">지난주 한 일</th>
-                                                            <th scope="col" style="width:100%">피드백</th>
+                                                            <th scope="col" class="disable" style="width:40%">지난주 계획</th>
+                                                            <th scope="col" style="width:100%">결과 및 피드백</th>
                                                         </tr>
 
                                                         <?php
@@ -775,6 +782,27 @@
     function submit_function(){
         $(document).find('select').attr("disabled", false);
         $(document).find('textarea').attr("disabled", false);
+    }
+
+    //회의록 삭제확인
+    function confirm_delete(){
+        if(confirm("회의록을 정말 삭제하시겠습니까?\n(연동된 내용이 전부 삭제됩니다)")){
+            location.href="/Sprint_Meet_Controller/spr_delete/<?=$myarr['SPR_MEET_ID']?>/<?=$myarr['MEET_DT']?>";
+        }
+
+        else
+            return;
+    }
+
+    //수정 회의록 저장확인
+    function confirm_save(){
+        if(confirm("수정을 완료 하시겠습니까?")){
+            submit_function();
+            document.getElementById('frm').submit();
+        }
+
+        else
+            return;
     }
 
      //Sprint Meeting 메뉴 활성화

@@ -235,6 +235,22 @@
                     ReactDOM.unmountComponentAtNode(document.getElementById('root'));
                 }
 
+<<<<<<< HEAD
+	<script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+	<script src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js" crossorigin></script>
+	<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+	<script src="/App.js" charset="utf-8"></script>
+    <script>
+        //Sprint Meeting 메뉴 활성화
+        elements = document.getElementsByClassName('m-menu__item--active');
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].classList.remove('m-menu__item--active');
+            }
+        document.getElementById('sprint_left_menu').classList.add('m-menu__item--active');
+
+    </script>
+</body>
+=======
                 //입력 값 가져오기
                 var formData = new FormData();
                 formData.append('DWGP_CD', $("select[name=comp]").val());
@@ -243,6 +259,7 @@
                 formData.append('DATE_TP', $("#date_tp").val());
                 formData.append('ST_DT', $("#st_dt").val());
                 formData.append('ED_DT', $("#ed_dt").val());
+>>>>>>> 56f99fd30bd03ffd3d7759a430457a4a39ab6093
 
                 $.ajax({
                     type : 'POST',

@@ -544,7 +544,7 @@
 															<span class="okr-badge m-badge m-badge--success"><?=$dashBoardData['comp']['compKrListCnt']?></span>완료
 														</span>
 														<span class="m-widget24__change">
-															<span class = "funnel" onclick = "goInitiativeTool();"><span class="okr-badge m-badge m-badge--warning"> 2</span>펀넬</span>
+															<span class = "funnel" onclick = "goFunnel();"><span class="okr-badge m-badge m-badge--warning"> 2</span>펀넬</span>
 														</span>
 													</div>
 												</div>
@@ -594,7 +594,7 @@
 															<span class="okr-badge m-badge m-badge--success"><?=$dashBoardData['dept']['compKrListCnt']?></span>완료
 														</span>
 														<span class="m-widget24__change">
-															<span class = "funnel" onclick = "goInitiativeTool();"><span class="okr-badge m-badge m-badge--warning"> 2</span>펀넬</span>
+															<span class = "funnel" onclick = "goFunnel();"><span class="okr-badge m-badge m-badge--warning"> 2</span>펀넬</span>
 														</span>
 													</div>
 												</div>
@@ -623,7 +623,7 @@
 															Key Results
 														</p>
 													</div>
-													<form id="form" action="/InitiativeController/view" method="post">
+													<form id="form" action="/InitiativeController/view" method="get">
 													<input type="hidden" id="id" name="id" value="">
 													<div id = "team-kr-div" class ="keyresult-content-div" style = "border-color : #558ed5">
 														<ol class="dash-kr-ol">
@@ -648,8 +648,8 @@
 														<span class="m-widget24__change">
 															<span class="okr-badge m-badge m-badge--success"><?=$dashBoardData['team']['compKrListCnt']?></span>완료
 														</span>
-														<span class="m-widget24__change">
-															<span class = "funnel" onclick = "goInitiativeTool();"><span class="okr-badge m-badge m-badge--warning"> 2</span>펀넬</span>
+														<span class="m-widget24__change" data-toggle="modal" data-target="#initiative-view-modal">
+															<span class = "funnel"><span class="okr-badge m-badge m-badge--warning"> 2</span>펀넬</span>
 														</span>
 													</div>
 												</div>
@@ -660,117 +660,13 @@
 							</div>
 							
 						</div>
+
+						<!-- Button to trigger modal -->
+						<a id="myModalLink" href="/initiativeController" role="button" class="btn">Launch demo modal</a>
+															
+
 						<!--제목 + 상세 넣은거 끝-->
 
-						<!-- title만 들어간거 : 구분 bar 존재--
-						<div class="m-portlet  m-portlet--unair">
-							<div class="m-portlet__head">
-								<div class="m-portlet__head-caption">
-									<div class="m-portlet__head-title">
-										<h3 class="m-portlet__head-text">
-											OKR<br>
-										</h3>
-										
-										<p>
-		  									OKR 현황을 나타냅니다.
-										</p>
-									</div>
-								</div>
-							</div>
-							<div class="m-portlet__body  m-portlet__body--no-padding">
-								<div class="row m-row--no-padding m-row--col-separator-xl">
-									<div class="col-md-12 col-lg-6 col-xl-4">
-
-										<!- begin::Total Profit--
-										<div class="m-widget24">
-											<div class="m-widget24__item">
-												<h4 class="m-widget24__title">
-													대원씨티에스
-												</h4><br>
-												<span class="m-widget24__desc">
-													All Customs Value
-												</span>
-												<span class="m-widget24__stats m--font-brand">
-													$18M
-												</span>
-												<div class="m--space-10"></div>
-												<div class="progress m-progress--sm">
-													<div class="progress-bar m--bg-brand" role="progressbar" style="width: 78%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-												</div>
-												<span class="m-widget24__change">
-													Change
-												</span>
-												<span class="m-widget24__number">
-													78%
-												</span>
-											</div>
-										</div>
-
-										<!-end::Total Profit--
-									</div>
-									<div class="col-md-12 col-lg-6 col-xl-4">
-
-										<!-begin::New Feedbacks--
-										<div class="m-widget24">
-											<div class="m-widget24__item">
-												<h4 class="m-widget24__title">
-													경영기획부문
-												</h4><br>
-												<span class="m-widget24__desc">
-													Customer Review
-												</span>
-												<span class="m-widget24__stats m--font-info">
-													1349
-												</span>
-												<div class="m--space-10"></div>
-												<div class="progress m-progress--sm">
-													<div class="progress-bar m--bg-info" role="progressbar" style="width: 84%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-												</div>
-												<span class="m-widget24__change">
-													Change
-												</span>
-												<span class="m-widget24__number">
-													84%
-												</span>
-											</div>
-										</div>
-
-										<!-end::New Feedbacks--
-									</div>
-									<div class="col-md-12 col-lg-6 col-xl-4">
-
-										<!-begin::New Orders--
-										<div class="m-widget24">
-											<div class="m-widget24__item">
-												<h4 class="m-widget24__title">
-													OKR 추진팀
-												</h4><br>
-												<span class="m-widget24__desc">
-													Fresh Order Amount
-												</span>
-												<span class="m-widget24__stats m--font-danger">
-													567
-												</span>
-												<div class="m--space-10"></div>
-												<div class="progress m-progress--sm">
-													<div class="progress-bar m--bg-danger" role="progressbar" style="width: 69%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-												</div>
-												<span class="m-widget24__change">
-													Change
-												</span>
-												<span class="m-widget24__number">
-													69%
-												</span>
-											</div>
-										</div>
-
-										<!-end::New Orders--
-									</div>
-
-								</div>
-							</div>
-						</div>
-						<!- 제목만 있게 하는거 끝-->
 
 						<!--Begin::Section-->
 						<div class="row">
@@ -2852,14 +2748,19 @@
 		
 		<!--Float Button 누를 시 활성화 되는 창-->
 		<div id ="newCFRMenu" class="fixed-bottom bg-dark text-center" style="display : none; position: fixed; bottom: 80px; right: 75px; left : auto; width : 200px">
-			<div class = "text-light add-menu" style="background-color : #7957ad" onclick = "newInitiative();">
-		  		Initiatives 등록
+			<div class = "text-light add-menu" style="background-color : #7957ad" data-toggle="modal" data-target="#initiative-write-modal">
+				Initiatives 등록
 			</div>
-
 			<div class = "text-light add-menu" style="background-color : #31859c" onclick = "newCFR();">
 		  		CFR Meeting 요청
 			</div>
 		</div>
+		
+		<?php
+			$mydata['id'] = "100027";
+			echo view('/initiative/viewModal.php',$mydata);
+			echo view('/initiative/writeModal.php');
+		?>
 
 		
 		<!-- begin::Scroll Top [맨위로 버튼]
@@ -2903,6 +2804,7 @@
 
 
 		<script>
+
 			// CFR 연필버튼 눌렀을 때 창 뜨게하기
 			var check = $("#newCFRBtn");
 			check.click(function(){
@@ -2931,15 +2833,15 @@
 				$("#team-kr-div").toggle();
 			};
 
-			//goInitiative Tool로 이동
-			function goInitiativeTool(){
-				if(confirm("OOO의 OOOOOO로 이동하시겠습니까?")) document.location = '/initiative';
+			//Funnel로 이동
+			function goFunnel(){
+				if(confirm("OOO의 OOOOOO로 이동하시겠습니까?")) document.location = '/initiativeController/view';
 			}
-
+			/*
 			function newInitiative(){
 				if(confirm("Initiative 작성창으로 이동하시겠습니까?")) document.location = '/initiative/write';
 			}
-			
+			*/
 			function newCFR(){
 				if(confirm("CFR Meeting 작성창으로 이동하시겠습니까?")) document.location = '/cfr/write';
 			}
@@ -2975,6 +2877,10 @@
 
 				}
 			}
+
+			
+
+			
 			
 
 			

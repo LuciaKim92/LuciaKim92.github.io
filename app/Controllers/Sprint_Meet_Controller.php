@@ -108,12 +108,17 @@ class Sprint_Meet_Controller extends BaseController
             $myarr = $this->Model->create_spr($date2);
 
             $myarr['EMP_LIST'] = $this->Model->get_emp_list($_SESSION['emp_no']);
+
+            foreach($myarr['BOOKMARK']  as $key => $bean){
+                $myarr['BOOKMARK'][$key]['MEET_DT'] = date("Y-m-d", strtotime($bean['MEET_DT']));
+            }
     
     
             $data = $_SESSION;
             
             $mydata['myarr'] = $myarr;
             $mydata['MEET_DT'] = $date;
+
     
             return view('/sprint/sprint.php', $mydata);
         }
@@ -135,16 +140,6 @@ class Sprint_Meet_Controller extends BaseController
         $this->session_setting();
         $this->Model = new Sprint_Meet_Model;
 
-        // ['OKR_OBJT_ID']
-        // ['DWGP_CD']
-        // ['DEPT_CD']
-        // ['MEET_DT']
-        // ['feed-plan'], ['feed-high'], ['feed-low']                       스프린트미팅마스터는 생성후에...
-        // ['idea-kr'], ['idea-name'], ['idea-todo'], ['idea-content']      스프린트미팅마스터는 생성후에...
-        // ['plan-kr'], ['plan-name'], ['plan-content']                     스프린트미팅마스터는 생성후에...
-        // 만들어야할 컬럼
-        // 스프린트미팅 마스터 -> 스프린트미팅 피드백 -> 스프린트미팅 아이디어 -> 스프린트미팅 계획
-
         $arr = array();
         $feed_arr = array();
         $idea_arr = array();
@@ -152,26 +147,32 @@ class Sprint_Meet_Controller extends BaseController
         
         $_POST['MEET_DT'] = str_replace("-", "", $_POST['MEET_DT']);
 
-        for($i=0; $i < sizeof($_POST['feed-plan']); $i++){
-            array_push($feed_arr, [   'feed-plan' => $_POST['feed-plan'][$i]
-                                    , 'feed-high' => $_POST['feed-high'][$i]
-                                    , 'feed-low'  => $_POST['feed-low'][$i] 
-                                ]);
+        if(isset($_POST['feed-plan'])){
+            for($i=0; $i < sizeof($_POST['feed-plan']); $i++){
+                array_push($feed_arr, [   'feed-plan' => $_POST['feed-plan'][$i]
+                                        , 'feed-high' => $_POST['feed-high'][$i]
+                                        , 'feed-low'  => $_POST['feed-low'][$i] 
+                                    ]);
+            }
         }
 
-        for($i=0; $i < sizeof($_POST['idea-kr']); $i++){
-            array_push($idea_arr, [   'idea-kr'      => $_POST['idea-kr'][$i]
-                                    , 'idea-name'    => $_POST['idea-name'][$i]
-                                    , 'idea-todo'    => $_POST['idea-todo'][$i] 
-                                    , 'idea-content' => $_POST['idea-content'][$i]
-                                ]);
+        if(isset($_POST['idea-kr'])){
+            for($i=0; $i < sizeof($_POST['idea-kr']); $i++){
+                array_push($idea_arr, [   'idea-kr'      => $_POST['idea-kr'][$i]
+                                        , 'idea-name'    => $_POST['idea-name'][$i]
+                                        , 'idea-todo'    => $_POST['idea-todo'][$i] 
+                                        , 'idea-content' => $_POST['idea-content'][$i]
+                                    ]);
+            }
         }
 
-        for($i=0; $i < sizeof($_POST['plan-kr']); $i++){
-            array_push($plan_arr, [   'plan-kr'       => $_POST['plan-kr'][$i]
-                                    , 'plan-name'     => $_POST['plan-name'][$i]
-                                    , 'plan-content'  => $_POST['plan-content'][$i] 
-                                ]);
+        if(isset($_POST['plan-kr'])){
+            for($i=0; $i < sizeof($_POST['plan-kr']); $i++){
+                array_push($plan_arr, [   'plan-kr'       => $_POST['plan-kr'][$i]
+                                        , 'plan-name'     => $_POST['plan-name'][$i]
+                                        , 'plan-content'  => $_POST['plan-content'][$i] 
+                                    ]);
+            }
         }
 
         $arr['CREATE_BY']   = $_SESSION['admin_names'];
@@ -187,8 +188,6 @@ class Sprint_Meet_Controller extends BaseController
 
         $arr['SPR_MEET_ID'] = $this->Model->insert_spr_meet_mst($arr);
         $this->Model->insert_spr_content($arr);
-
-        // $this->spr_main_id($arr['SPR_MEET_ID']);
         $this->response->redirect("/Sprint_Meet_Controller/spr_main_id/".$arr['SPR_MEET_ID']);
         // VAR_DUMP($_POST);
     }
@@ -315,14 +314,18 @@ class Sprint_Meet_Controller extends BaseController
 
 
     //회의록 삭제
-    public function spr_delete($id=null){
+    public function spr_delete($id, $date){
 
-        if($id==null){
+        $this->Model = new Sprint_Meet_Model;
+
+        if($this->Model->delete_spr_mst($id) == false){
+            //에러메세지...
+            echo "<script>alert('삭제할수없습니다.');</script>";
             return;
         }
 
-        $this->Model = new Sprint_Meet_Model;
-        $this->Model->delete_spr_mst($id);
+        else
+            $this->response->redirect("/Sprint_Meet_Controller/spr_create/".$date);
     }
 
 

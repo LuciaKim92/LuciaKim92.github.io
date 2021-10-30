@@ -12,60 +12,101 @@ class InitiativeModel extends Model{
         parent::__construct();
     }
 
-    public function GetObjective($dept_CD)
+    public function SetProgress($st,$id)
     {
         //$this->db = \Config\Database::connect();
         $okr_db = \Config\Database::connect('okrdb');
         //$cts_db = \Config\Database::connect('ctsdb');
-
-        $builder = $okr_db->table('OKR_OBJT_MST');
-        $builder->select('*');
-        $builder->where('DEPT_CD', $dept_CD);
-        $query  = $builder->get();
-        return $query->getRowArray();
+        $query = 
+                "
+                    UPDATE 
+                    OKR_INIT_MST
+                    SET PROC_ST = ?
+                    WHERE ID = ?;
+                ";
+        $okr_db->query($query, array($st,$id));
+        //return $query->getRowArray();
         //새로운 소스 끝
         //ci4 db by lcs 210405 끝
     }
 
-    public function GetNavBarData()
-    {
-        //$this->db = \Config\Database::connect();
-        //$okr_db = \Config\Database::connect('okrdb');
-        $cts_db = \Config\Database::connect('ctsdb');
+    public function getInitiativeList(){
+        $okr_db = \Config\Database::connect('okrdb');
+        $query = 
+                "
+                    SELECT 
+                            ID
+                        ,   OKR_KEYS_ID
+                        ,   EMPY_NO
+                        ,   CONTENT
+                        ,   CONF_TP
+                        ,   PROC_ST 
+                    FROM OKR_INIT_MST 
+                    WHERE OKR_KEYS_ID = ?
+                    AND EMPY_NO = ?
+                    AND PROC_ST = ?;
+                ";
+        $result = $okr_db->query($query, array($_GET['okrKey'],$_GET['emp_no'], '0'));
+        return $result->getResultArray();
+    }
 
-        $builder = $cts_db->table('EMP_MST');
-        $builder->select('*');
-        $builder->where('EMP_EMAIL', 'youjin.lee@computer.co.kr');
-        $query  = $builder->get();
-
-        return $query->getRowArray();
-        //새로운 소스 끝
-        //ci4 db by lcs 210405 끝
+    public function getTodoList(){
+        $okr_db = \Config\Database::connect('okrdb');
+        $query = 
+                "
+                    SELECT 
+                            ID
+                        ,   CONTENT
+                    FROM OKR_TODO_MST 
+                    WHERE OKR_INIT_ID = ?
+                ;";
+        $result = $okr_db->query($query, array($_GET['initKey']));
+        return $result->getResultArray();
     }
     
-    public function GetKeyResult($dept_CD, $dept_ST){
+    public function saveInitiative(){
         $okr_db = \Config\Database::connect('okrdb');
-        $builder = $okr_db->table('OKR_KEYS_MST');
-        $builder->select('*');
-        $builder->where('DEPT_CD', $dept_CD);
-        $builder->where('PROC_ST', $dept_ST);
-        $query  = $builder->get();
-        //print_r($query->getResult());
-        return $query->getResultArray();
-
+        $query = 
+                "
+                    INSERT INTO OKR_INIT_MST
+                            (CREATE_ON
+                            ,CREATE_BY
+                            ,CREATE_ID
+                            ,OKR_KEYS_ID
+                            ,EMPY_NO
+                            ,CONTENT
+                            ,CONF_TP)
+                    
+                    
+                    VALUES
+                        (GETDATE()
+                        , ?
+                        ,'123123'
+                        , ?
+                        , ?
+                        , ?
+                        , ?
+                        );
+                ";
+        $okr_db->query($query, array($_POST['create_by'], $_POST['okr_keys_id'], $_POST['empy_no'], $_POST['content'], $_POST['conf_tp']));
+        $id = $this->getInitID($_POST['content']);
+        print_r($id);
+        return $id; 
+        //$okr_db->query($query, array($_GET['initKey']));
+        //return $result->getResultArray();
     }
 
-    public function GetDeptCode($dept_CD){
-        //DB 연결
-        $cts_db = \Config\Database::connect('ctsdb');
-        
-        $builder = $cts_db->table('DEPT_MAP');
-        $builder->select('*');
-        $builder->where('DEPT_CD',$dept_CD);
-        $builder->where('BEND_DT','29991231');
-        $query = $builder->get();
-        return $query->getRowArray();
-        
+    public function getInitID($content){
+        $okr_db = \Config\Database::connect('okrdb');
+        $query = 
+                "
+                    SELECT 
+                            ID
+                    FROM OKR_INIT_MST 
+                    WHERE content = ?
+                ;";
+        $result = $okr_db->query($query, array($content));
+        print_r($result->getRowArray());
     }
     
 
