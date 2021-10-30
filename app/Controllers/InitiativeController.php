@@ -6,20 +6,22 @@ use App\Models\LayoutModel;
 use App\Models\Sprint_Meet_Model;
 use App\Models\InitiativeModel;
 
-class InitiativeController extends BaseController{
+class InitiativeController extends BaseController {
+  
 	public function index()
 	{
         //echo 
         $mydata['id'] = $_POST['id'];
 		echo view("/initiative/write.php", $mydata);
-    }
+  }
     
-     public function View(){
-        $mydata['id'] = $_POST['id'];
-        $initiativeModel = new InitiativeModel();
- 
-		echo view("/initiative/view.php", $mydata);
-    }
+  public function View()
+  {
+      $mydata['id'] = $_POST['id'];
+      $initiativeModel = new InitiativeModel();
+
+    echo view("/initiative/view.php", $mydata);
+  }
    
 }
 

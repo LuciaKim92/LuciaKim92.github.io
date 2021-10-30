@@ -363,7 +363,7 @@
 				document.getElementById('loginID').innerText = "<?=$_SESSION['admin_names']?>";
 				//홈으로가기
 				function goHome(){
-					document.location = '/home/dashboard';
+					document.location = '/home';
 				}
 				//관리자 로그인 alert, 수락시 이동
 				var check = $("#newCFRBtn");

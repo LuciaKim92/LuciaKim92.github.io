@@ -82,16 +82,21 @@
                                                         <select class="form-control m-select2" id="m_select2_12_2" name="dept" data-placeholder="Square style" style="width: 40%;">
                                                             <option value="<?php echo($_SESSION['team_cd'])?>" selected><?php echo($_SESSION['team_nm'])?></option>
                                                             <?php          
-                                                                if($SUB_DEPTS != null) {       
-                                                                    foreach($SUB_DEPTS as $key => $bean){
-                                                                        if( $SUB_DEPTS[$key]['DEPT_TP'] == '3' ) {
+                                                                if(sizeof($DEPTS) != 0) {
+                                                                    foreach($DEPTS as $key => $bean){
+                                                                        if( $DEPTS[$key]['DEPT_TP'] == '3' ) {
                                                                     ?>
-                                                                    <option value="<?=$bean['DEPT_CD']?>">--<?=$bean['DEPT_NM']?></option>
+                                                                        <option value="<?=$bean['DEPT_CD']?>">--<?=$bean['DEPT_NM']?></option>
                                                                     <?php
                                                                         } else {
                                                                     ?>
-                                                                    <option value="<?=$bean['DEPT_CD']?>"><?=$bean['DEPT_NM']?></option>
+                                                                        <option value="<?=$bean['DEPT_CD']?>"><?=$bean['DEPT_NM']?></option>
                                                                     <?php
+                                                                            foreach($DEPTS['SUB_DEPTS'] as $key2 => $bean2) {
+                                                                    ?>
+                                                                            <option value="<?=$bean2['DEPT_CD']?>">--<?=$bean2['DEPT_NM']?></option>
+                                                                    <?php
+                                                                            }
                                                                         }
                                                                     }
                                                                 }
@@ -155,6 +160,7 @@
                                     </div>
                                 </div>
                                 <script>
+                                    //기간 설정
                                     var ed_date = new Date();
                                     document.getElementById('st_dt').valueAsDate = new Date();
                                     document.getElementById('ed_dt').valueAsDate = ed_date;
@@ -173,12 +179,12 @@
                                 </script>
 
                                 <div class="m-accordion__item m-accordion__item--info">
-                                    <div class="m-accordion__item-head" role="tab" id="m_accordion_5_item_2_head" data-toggle="collapse" href="#m_accordion_5_item_2_body" aria-expanded="true">
+                                    <div class="m-accordion__item-head collapsed" role="tab" id="m_accordion_5_item_2_head" data-toggle="collapse" href="#m_accordion_5_item_2_body" aria-expanded="false">
                                         <span class="m-accordion__item-icon"><i class="fas fa-poll-h"></i></span>
                                         <span class="m-accordion__item-title">조회 결과</span>
                                         <span class="m-accordion__item-mode"></span>
                                     </div>
-                                    <div class="m-accordion__item-body collapse show" id="m_accordion_5_item_2_body" class=" " role="tabpanel" aria-labelledby="m_accordion_5_item_2_head" data-parent="#m_accordion_5">
+                                    <div class="m-accordion__item-body collapse" id="m_accordion_5_item_2_body" class=" " role="tabpanel" aria-labelledby="m_accordion_5_item_2_head" data-parent="#m_accordion_5">
                                         <div class="p-0 m-accordion__item-content">
                                             <div id="root"></div>
                                         </div>
@@ -217,11 +223,13 @@
                 setDate('d', 0);
                 $("#option1").parent().addClass("active");
                 $("#option1").parent().siblings().removeClass("active");
+
+                $('#m_accordion_5_item_2_head').addClass('collapsed');
+                $('#m_accordion_5_item_2_body').removeClass('show');
                 ReactDOM.unmountComponentAtNode(document.getElementById('root'));
             }
 
             function searchSprMeet() {
-
                 //기존 데이터 삭제
                 if($('#root').children().length != 0) {
                     ReactDOM.unmountComponentAtNode(document.getElementById('root'));
@@ -244,11 +252,14 @@
                     processData: false,
                     success : function(res){
                         //console.log(res);
+                        $('#m_accordion_5_item_2_head').removeClass('collapsed');
+                        $('#m_accordion_5_item_2_body').addClass('show');
+
                         var data = JSON.parse(res);
                         ReactDOM.render(React.createElement(App, {fields: data}, null), document.getElementById('root'));
                     },
-                    error : function( jqxhr , status , error ){
-                        //console.log( jqxhr , status , error );
+                    error : function(jqxhr, status, error){
+                        //console.log(jqxhr, status, error);
                     }
                 });
             }
