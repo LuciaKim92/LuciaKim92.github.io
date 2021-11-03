@@ -229,13 +229,6 @@
                 ReactDOM.unmountComponentAtNode(document.getElementById('root'));
             }
 
-            function searchSprMeet() {
-                //기존 데이터 삭제
-                if($('#root').children().length != 0) {
-                    ReactDOM.unmountComponentAtNode(document.getElementById('root'));
-                }
-            }
-
             //Sprint Meeting 메뉴 활성화
             elements = document.getElementsByClassName('m-menu__item--active');
             for (var i = 0; i < elements.length; i++) {
@@ -243,33 +236,40 @@
             }
             document.getElementById('sprint_left_menu').classList.add('m-menu__item--active');
 
-            //입력 값 가져오기
-            var formData = new FormData();
-            formData.append('DWGP_CD', $("select[name=comp]").val());
-            formData.append('DEPT_CD', $("select[name=dept]").val());
-            formData.append('FIND_TXT', $("#find_txt").val());
-            formData.append('DATE_TP', $("#date_tp").val());
-            formData.append('ST_DT', $("#st_dt").val());
-            formData.append('ED_DT', $("#ed_dt").val());
-
-            $.ajax({
-                type : 'POST',
-                url : '/Sprint_Meet_Controller/get_spr_meet_list',
-                data : formData,
-                contentType: false,
-                processData: false,
-                success : function(res){
-                    //console.log(res);
-                    $('#m_accordion_5_item_2_head').removeClass('collapsed');
-                    $('#m_accordion_5_item_2_body').addClass('show');
-
-                    var data = JSON.parse(res);
-                    ReactDOM.render(React.createElement(App, {fields: data}, null), document.getElementById('root'));
-                },
-                error : function(jqxhr, status, error){
-                    //console.log(jqxhr, status, error);
+            function searchSprMeet() {
+                //기존 데이터 삭제
+                if($('#root').children().length != 0) {
+                    ReactDOM.unmountComponentAtNode(document.getElementById('root'));
                 }
-            });
+
+                //입력 값 가져오기
+                var formData = new FormData();
+                formData.append('DWGP_CD', $("select[name=comp]").val());
+                formData.append('DEPT_CD', $("select[name=dept]").val());
+                formData.append('FIND_TXT', $("#find_txt").val());
+                formData.append('DATE_TP', $("#date_tp").val());
+                formData.append('ST_DT', $("#st_dt").val());
+                formData.append('ED_DT', $("#ed_dt").val());
+
+                $.ajax({
+                    type : 'POST',
+                    url : '/Sprint_Meet_Controller/get_spr_meet_list',
+                    data : formData,
+                    contentType: false,
+                    processData: false,
+                    success : function(res){
+                        //console.log(res);
+                        $('#m_accordion_5_item_2_head').removeClass('collapsed');
+                        $('#m_accordion_5_item_2_body').addClass('show');
+
+                        var data = JSON.parse(res);
+                        ReactDOM.render(React.createElement(App, {fields: data}, null), document.getElementById('root'));
+                    },
+                    error : function(jqxhr, status, error){
+                        //console.log(jqxhr, status, error);
+                    }
+                });
+            }
         </script>
         <script src="https://unpkg.com/react/umd/react.development.js" crossorigin></script>
         <script src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js" crossorigin></script>
