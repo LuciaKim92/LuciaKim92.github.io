@@ -167,48 +167,7 @@
                                 <hr>
                                 <!-- Initiative Tool 댓글들 시작   -->
                                 <div id = "init-view-reply-div" style ="overflow:auto; height : 200px">
-                                    <!-- 댓글 한칸 start -->
-                                    <div class = "initiative-comment" style="margin-left : 5px; border-radius : 10px; margin : 5px; border : solid 0.1em; ">
-                                        <div class="이름과프로필">
-                                            <div class="float-right" id="test-date" style ="margin-right: 10px;">
-                                                asd
-                                            </div>
-                                            <i class="flaticon-profile-1" style = "margin-left : 5px"></i>
-                                            <span>유진</span>
-                                        </div>
-                                        <div class="내용">
-                                            <span>유진유진유진유진유진</span>
-                                        </div>
-                                    </div>
-                                    <!-- 댓글 한 칸 end -->
-                                    <!-- 댓글 한칸 start -->
-                                    <div class = "initiative-comment" style="margin-left : 5px; border-radius : 10px; margin : 5px; border : solid 0.1em; ">
-                                        <div class="이름과프로필">
-                                            <div class="float-right" style ="margin-right: 10px;">
-                                                asd
-                                            </div>
-                                            <i class="flaticon-profile-1" style = "margin-left : 5px"></i>
-                                            <span><?=$_SESSION['emp_no']?></span>
-                                        </div>
-                                        <div class="내용">
-                                            <span>유진유진유진유진유진</span>
-                                        </div>
-                                    </div>
-                                    <!-- 댓글 한 칸 end -->
-                                    <!-- 댓글 한칸 start -->
-                                    <div class = "initiative-comment" style="margin-left : 5px; border-radius : 10px; margin : 5px; border : solid 0.1em; ">
-                                        <div class="이름과프로필">
-                                            <div class="float-right" style ="margin-right: 10px;">
-                                                asd
-                                            </div>
-                                            <i class="flaticon-profile-1" style = "margin-left : 5px"></i>
-                                            <span><?=$id?></span>
-                                        </div>
-                                        <div class="내용">
-                                            <span>유진유진유진유진유진</span>
-                                        </div>
-                                    </div>
-                                    <!-- 댓글 한 칸 end -->
+
 
                                    
                                 <!-- 댓글들 END -->
