@@ -271,9 +271,9 @@
                 });
             }
         </script>
-        <script src="https://unpkg.com/react/umd/react.development.js" crossorigin></script>
+        <script src="https://unpkg.com/react/umd/react.production.min.js" crossorigin></script>
         <script src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js" crossorigin></script>
-        <script src="https://unpkg.com/react-dom/umd/react-dom.development.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom/umd/react-dom.production.min.js" crossorigin></script>
         <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
         <script>var Alert = ReactBootstrap.Alert;</script>
         <script type="text/babel" src="/src/App.js" charset="utf-8"></script>
