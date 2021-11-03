@@ -471,6 +471,7 @@
         $("#modal-init-select-view").change(function() {
             $("#todo-view-more-comp").html("");
             $("#todo-view-more-proc").html("");
+            $("#init-view-reply-div").html("");
             var initID = $("#modal-init-select-view option:selected").val();
             setInitViewReply(initID)
             $.ajax({
