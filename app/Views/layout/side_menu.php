@@ -15,10 +15,10 @@
 								<i class="m-menu__section-icon flaticon-more-v2"></i>
 							</li>
 							<!--OKR MAP 메뉴 [okr_map_left_menu]-->
-							<li id = "okr_map_left_menu" class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1"><a href="./OKR_MAP_Controller" class="m-menu__link "><span class="m-menu__item-here"></span><span class="m-menu__link-text"><img src="/assets/icon/okr_map_icon.png" height="15" width="15">&nbsp;&nbsp;OKR Map</span></a></li>
+							<li id = "okr_map_left_menu" class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1"><a href="/OKR_MAP_Controller" class="m-menu__link "><span class="m-menu__item-here"></span><span class="m-menu__link-text"><img src="/assets/icon/okr_map_icon.png" height="15" width="15">&nbsp;&nbsp;OKR Map</span></a></li>
 							
 							<!--CFR Meeting 메뉴 [cfr_left_menu]-->
-							<li id = "cfr_left_menu" class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1"><a href="./cfr" class="m-menu__link "><span class="m-menu__item-here"></span><span class="m-menu__link-title"> <span
+							<li id = "cfr_left_menu" class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1"><a href="/cfr" class="m-menu__link "><span class="m-menu__item-here"></span><span class="m-menu__link-title"> <span
 										 class="m-menu__link-wrap"> <span class="m-menu__link-text"><img src="/assets/icon/cfr_meeting_icon.png" height="15" width="15">&nbsp;&nbsp;CFR Meeting</span> <span class="m-menu__link-badge"><span class="m-badge m-badge--danger">2</span></span> </span></span></a></li>
 							
 							<!--Sprint Meeting 메뉴 [sprint_left_menu] -->
