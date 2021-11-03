@@ -56,16 +56,18 @@
                 </div>
 
 
-                <!-- 편집창 모달 -->
+                <!-- o 편집창 모달 -->
                 <div class="modal fade" id="modal-container-357980" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				    <div class="modal-dialog modal-dialog-centered" role="document" id="mymodal">
                     </div>
                 </div>
 
-                <!-- 편집창 모달 -->
+                <!-- kr 편집창 모달 -->
                 <div class="modal fade" id="modal-container-357981" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				    <div class="modal-dialog modal-dialog-centered" role="document" id="mymodal2">
-                    </div>
+                    <form name="kr_form" id="kr_form">
+                        <div class="modal-dialog modal-dialog-centered" role="document" id="mymodal2">
+                        </div>
+                    </form>
                 </div>
 
                 <!-- 시작하는부분 -->
@@ -355,8 +357,8 @@
         var myfunction;
         var html;
 
-        if(objective == null || objective == 'null')
-            objective_temp = 'Objective가 등록되지 않았습니다.';
+        if(objective == null ||objective == 'null')
+            objective_temp = '';
         else
             objective_temp = objective;
 
@@ -575,12 +577,13 @@
                         </div>
                         <div class="modal-body">
                             <input id="edit_okr_hidden" type="hidden" value="`+temp_objective_id+`"></input>
-                            <textarea id="edit_okr" col="50" rows="4" style="width:100%; overflow:hidden; resize: none;" onKeyUp="javascript:fnChkByte(this,'200')">`+temp_objective+`</textarea>
+                            <textarea class="form-control" id="edit_okr" col="50" rows="4" style="width:100%; overflow:hidden; resize: none;" onKeyUp="javascript:fnChkByte(this,'200')">`+temp_objective+`</textarea>
+                            <br>
                             <span id="byteInfo">0</span> / 200bytes
                         </div>
                         <div class="modal-footer">
                             
-                            <button type="button" class="btn btn-primary" onclick="okr_edit('`+dept_cd+`', '`+ dwgp_cd +`')">
+                            <button type="button" class="btn btn-primary" onclick="objective_edit('`+dept_cd+`', '`+ dwgp_cd +`')">
                                 Save changes
                             </button> 
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -595,32 +598,48 @@
     //Modal Creator
     function edit_kr_modal(objective_id, dept_cd){
 
-        var my123 = document.querySelector("#card-" + dept_cd + "-element > div > ol").childNodes;
+        $("#mymodal2").empty();
+
+        var my123 = new Array();
+
+        if(document.querySelector("#card-" + dept_cd + "-element > div > ol") != null)
+            my123 = document.querySelector("#card-" + dept_cd + "-element > div > ol").childNodes;
+
 
         var html = `
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="myModalLabel">
-                                Objective 수정
+                                KR 수정
                             </h5> 
                             <button type="button" class="close" data-dismiss="modal">
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-body" style="text-align:center">
+                            <div id="add_here">
+                                <input name="objective_id" type="hidden" value="`+ objective_id +`"></input>
+                                <input name="dept_cd" type="hidden" value="`+ dept_cd +`"></input>
                     `;
 
         for(var i=0;i<my123.length;i++){
-            html = html.concat(`<input name="kr-id[]" type='hidden' value='`+ my123[i].id +`'></input>`);
-            html = html.concat(`<textarea name="kr-content[]" col="50" rows="4" style="width:100%; overflow:hidden; resize: none;" >`+my123[i].innerText+`</textarea>`);
+            html = html.concat(`<div class="input-group">
+                                    <input name="kr-id[]" type='hidden' value='`+ my123[i].id +`'></input>
+                                    <textarea class="form-control" name="kr-content[]" col="50" rows="4" style="overflow:auto; resize: none;" >`+my123[i].innerText+`</textarea>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button" style="color:red">삭제</button>
+                                    </div>
+                                </div><br>`);
+
         }
 
         var html2 = `
-                            <span id="byteInfo">0</span> / 200bytes
+                            </div>
+                            <button class="btn btn-primary" type="button" onclick="kr_add_column()" >+</button>
                         </div>
                         <div class="modal-footer">
                             
-                            <button type="button" class="btn btn-primary" onclick="">
+                            <button type="button" class="btn btn-primary" onclick="kr_edit()">
                                 Save changes
                             </button> 
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -674,7 +693,7 @@
         }
     }
 
-    function okr_edit(dept_cd, dwgp_cd){
+    function objective_edit(dept_cd, dwgp_cd){
         // console.log($("#edit_okr_hidden").val());
         // console.log($("#edit_okr").val());
 
@@ -701,6 +720,39 @@
                 // console.log( jqxhr , status , error );
             }
         });
+    }
+
+    function kr_edit(){
+
+        var queryString = $("form[name=kr_form]").serialize();
+    
+        $.ajax({
+            type : 'POST',
+            url : '/OKR_MAP_Controller/edit_KR',
+            cache : false,
+            dataType: 'json',
+            data : queryString,
+            async: false,
+            success : function( data ){
+                console.log(data);
+
+            },
+            error : function( jqxhr , status , error ){
+                // console.log( jqxhr , status , error );
+            }
+        });
+    }
+
+    function kr_add_column(){
+ 
+        var html = `<div class="input-group">
+                        <input name="kr-id[]" type='hidden' value=''></input>
+                        <textarea class="form-control" name="kr-content[]" col="50" rows="4" style="overflow:auto; resize: none;" ></textarea>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" style="color:red">삭제</button>
+                        </div>
+                    </div><br>`
+        $("#add_here").append(html);
     }
 
     //OKR_MAP 메뉴 활성화

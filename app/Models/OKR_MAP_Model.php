@@ -202,4 +202,49 @@ class OKR_MAP_Model extends Model
         $stmt = sqlsrv_query($this->dbconn, $query);
     }
 
+    // KR등록수정삭제
+    public function edit_kr($arr, $create_by, $create_id, $objective_id, $dept_cd){
+
+        $query = '';
+
+        foreach($arr as $key => $bean){
+            
+            // update
+            if($bean['ID'] != NULL){
+
+            }
+
+            // create
+            else if($bean['CONTENT'] != NULL){
+                    $temp = "
+                            INSERT INTO [dbo].[OKR_KEYS_MST]
+                                ([CREATE_ON]
+                                ,[CREATE_BY]
+                                ,[CREATE_ID]
+                                ,[OKR_OBJT_ID]
+                                ,[CONTENT]
+                                ,[PROC_RAT]
+                                ,[PROC_ST]
+                                ,[DEPT_CD])
+                            VALUES
+                                (GETDATE()
+                                ,'".$create_by."'
+                                ,".$create_id."
+                                ,".$objective_id."
+                                ,'".$bean['CONTENT']."'
+                                ,50.00000
+                                ,'0'
+                                ,'".$dept_cd."')
+                        ";
+        
+                    $query = $query.$temp;
+
+            }
+        }
+
+        $stmt = sqlsrv_query($this->dbconn, $query);
+
+        return $query;
+    }
+
 }

@@ -73,5 +73,24 @@ class OKR_MAP_Controller extends BaseController
         }
     }
 
+    public function edit_KR(){
+        $this->session_setting();
+        $this->Model = new OKR_MAP_Model;
+
+        $arr = array();
+
+        $result = '';
+
+        for($i=0; $i<sizeof($_POST['kr-id']); $i++){
+            $arr[$i]['ID'] = $_POST['kr-id'][$i];
+            $arr[$i]['CONTENT'] = $_POST['kr-content'][$i];
+        };
+
+        $temp = $this->Model->edit_kr($arr, $_SESSION['admin_names'], $_SESSION['admin_ids'], $_POST['objective_id'], $_POST['dept_cd']);
+        
+        return $temp;
+
+    }
+
 }
 ?>
