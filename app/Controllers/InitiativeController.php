@@ -28,20 +28,10 @@ class InitiativeController extends BaseController{
         echo view("/initiative/viewModal.php");
         //echo view("/initiative/test.php");
     }
-    public function SetProgress(){
-        print_r($_GET['emp_no']);
-        $emp_no = $_GET['emp_no'];
-        $id = $_GET['id'];
-        $st = $_GET['st'];
-        if($st = 'o'){
-            $post_st = '7';
-        }
-        else if($st = 'x'){
-            $post_st = '0';
-        }
+    public function setProgressAjax(){
         $initiativeModel = new InitiativeModel();
-        $initiativeModel->SetProgress($post_st,$id);
-        $this->response->redirect("/main");
+        $id = $initiativeModel->setProgress();
+        echo json_encode($id);
             
     }
 
@@ -62,6 +52,74 @@ class InitiativeController extends BaseController{
         $id = $initiativeModel->saveInitiative();
         echo json_encode($id);
     }
+
+    public function saveToDoAjax(){
+        $initiativeModel = new InitiativeModel();
+        $cnt = count($_POST['content']);
+        $i = 0;
+        foreach($_POST['content'] as $key => $bean){
+            $id[$i] = $initiativeModel->saveToDo($bean);
+            $i++;
+        }
+        echo json_encode($id);
+    }
+    
+
+    
+    public function getInitConfTPAjax(){
+        $initiativeModel = new InitiativeModel();
+        $id = $initiativeModel->getInitConfTP();
+        echo json_encode($id);
+    }
+
+    public function updateConfTPAjax(){
+        $initiativeModel = new InitiativeModel();
+        $id = $initiativeModel->updateConfTP();
+        echo json_encode($id);
+    }
+    
+    public function setTodoListProcSTAjax(){
+        $initiativeModel = new InitiativeModel();
+        $id = $initiativeModel->setTodoListProcST();
+        echo json_encode($id);
+    }
+
+    public function getKRAjax(){
+        $initiativeModel = new InitiativeModel();
+        $id = $initiativeModel->getKR();
+        echo json_encode($id);
+    }
+
+    public function getInitiativeProcSTAjax(){
+        $initiativeModel = new InitiativeModel();
+        $proc = $initiativeModel->getInitiativeProcST();
+        echo json_encode($proc);
+    }
+
+    public function updateStickerMemoAjax(){
+        $initiativeModel = new InitiativeModel();
+        $id = $initiativeModel->updateStickerMemo();
+        echo json_encode($id);
+    }
+
+    public function getStickerMemoAjax(){
+        $initiativeModel = new InitiativeModel();
+        $notes = $initiativeModel->getStickerMemo();
+        echo json_encode($notes);
+    }
+
+    public function saveInitViewReplyAjax(){
+        $initiativeModel = new InitiativeModel();
+        $res = $initiativeModel->saveInitViewReply();
+        echo json_encode($res);
+    }
+    
+    public function getInitViewReplyAjax(){
+        $initiativeModel = new InitiativeModel();
+        $res = $initiativeModel->getInitViewReply();
+        echo json_encode($res);
+    }
+
    
 }
 
