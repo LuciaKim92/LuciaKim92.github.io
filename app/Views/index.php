@@ -633,7 +633,7 @@
 																foreach($dashBoardData['team']['krList'] as $key => $bean){
 																	$id[$i-1]=$bean['ID'];
 																?>								
-																<li class ="dash-kr-li" id = "dash-kr-li-team-<?=$i?>" onclick = "openInitiative('<?=$bean['ID']?>','<?=$bean['CONTENT']?>');"><?=$bean['CONTENT']?></li>
+																<li class ="dash-kr-li" id = "dash-kr-li-team-<?=$i?>" onclick ="setViewInitiativeToolKR(<?=$bean['ID']?>)"><?=$bean['CONTENT']?></li>
 																<?php
 																	$i = $i + 1;
 																}
@@ -2748,7 +2748,7 @@
 		
 		<!--Float Button 누를 시 활성화 되는 창-->
 		<div id ="newCFRMenu" class="fixed-bottom bg-dark text-center" style="display : none; position: fixed; bottom: 80px; right: 75px; left : auto; width : 200px">
-			<div class = "text-light add-menu" style="background-color : #7957ad" data-toggle="modal" data-target="#initiative-write-modal">
+			<div class = "text-light add-menu" style="background-color : #7957ad" onclick = "openWriteModal();">
 				Initiatives 등록
 			</div>
 			<div class = "text-light add-menu" style="background-color : #31859c" onclick = "newCFR();">
@@ -2859,7 +2859,9 @@
 			function openInitiative(id, content){
 				<?php 	//$mydata['id'] = "<script>document.write(".id.")</script>"; ?>
 				$("#id").val(id);
-				if(confirm("["+ content + "] 해당 내용의 Initiative Tool로 이동하시겠습니까?")){
+				//열겠냐 하지말고 걍 열리게하기
+
+				if(confirm("["+ content + "] 해당 내용의 Initiative Tool을 열겠습니까?")){
 					
 					$("#form").submit();
 					//document.location = '/InitiativeController?id='+id;
@@ -2877,6 +2879,8 @@
 
 				}
 			}
+
+
 
 			
 

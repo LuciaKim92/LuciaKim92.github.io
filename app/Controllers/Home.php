@@ -68,7 +68,9 @@ class Home extends BaseController
 		*/
 		$this->response->redirect("/main");
 	}
-	public function session_setting(){
+
+	public function session_setting()
+	{
 		$this->response = \Config\Services::response();
 		$this->session = \Config\Services::session();
 		$layoutModel = new LayoutModel();
@@ -117,15 +119,18 @@ class Home extends BaseController
 
 		$temp = $layoutModel->GetDeptCode($_SESSION['team_cd']);
 
-		if ($temp['CHIEF_EMP_NO'] == $_SESSION['emp_no']) {
-			$data = $sprintMeetModel->get_sub_depts($_SESSION['team_cd']);
+		if ($temp['DEPT_TP'] == '1' && $temp['CHIEF_EMP_NO'] == $_SESSION['emp_no']) {
+			$data['DEPTS'] = $sprintMeetModel->get_sub_depts($_SESSION['team_cd']);
+			foreach ($data as $key => $bean) {
+				$data['DEPTS'][$key]['SUB_DEPTS'] = $sprintMeetModel->get_sub_depts($data['DEPTS'][$key]['DEPT_CD']);
+			}
+		} else if ($temp['DEPT_TP'] == '2' && $temp['CHIEF_EMP_NO'] == $_SESSION['emp_no']) {
+			$data['DEPTS'] = $sprintMeetModel->get_sub_depts($_SESSION['team_cd']);
 		} else {
-			$data = null;
+			$data['DEPTS'] = [];
 		}
 
-		$result['SUB_DEPTS'] = $data;
-
-		return view("/sprint/sprint_list.php", $result);
+		return view("/sprint/sprint_list.php", $data);
 	}
 
 	// sprint meeting 회의록 작성
@@ -165,8 +170,6 @@ class Home extends BaseController
 
 		return view('/sprint/sprint2.php', $mydata);
 	}
-
-
 
 }
 
