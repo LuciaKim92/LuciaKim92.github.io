@@ -18,7 +18,7 @@ class OKR_MAP_Model extends Model
     }
 
     // OKR 바꿔야함 나중에해 분기랑 이어 조건도...
-    public function return_first_team(){
+    public function return_first_team($YEAR=null, $QTR=null){
         $query = "
                     SELECT A.DEPT_CD, A.DEPT_NM, B.ID OBJECTIVE_ID, B.OBJECTIVE,
                            CASE WHEN EXISTS(SELECT * FROM DWCTS.DBO.DEPT_MST WHERE DEPT_UP_CD = A.DEPT_CD) THEN 'Y' ELSE 'N' END IS_UP_DEPT
@@ -36,8 +36,8 @@ class OKR_MAP_Model extends Model
                         ) AS A
                         LEFT OUTER JOIN DWOKR.DBO.OKR_OBJT_MST AS B
                         ON A.DEPT_CD = B.DEPT_CD
-                        AND B.OKR_YEAR = '2021'
-                        AND B.OKR_QTR IS NULL
+                        AND B.OKR_YEAR = '".$YEAR."'
+                        AND B.OKR_QTR = '".$QTR."'
                         AND B.PROC_ST NOT IN ('8','9')  
                 
 
@@ -86,7 +86,7 @@ class OKR_MAP_Model extends Model
     }
 
     //분기랑 이어 설정
-    public function return_second_team($DEPT_UP_CD){
+    public function return_second_team($DEPT_UP_CD, $YEAR=null, $QTR=null){
 
         $team_arr = array();
 
@@ -99,8 +99,8 @@ class OKR_MAP_Model extends Model
                             LEFT OUTER JOIN 
                             DWOKR.DBO.OKR_OBJT_MST AS B
                             ON A.DEPT_CD = B.DEPT_CD
-                            AND B.OKR_YEAR = '2021'
-                            AND B.OKR_QTR IS NULL
+                            AND B.OKR_YEAR = '".$YEAR."'
+                            AND B.OKR_QTR = '".$QTR."'
                             AND B.PROC_ST NOT IN ('8','9') 
                     
                     WHERE	A.DEPT_UP_CD = '".$DEPT_UP_CD."' AND A.USE_YN = 'Y' 

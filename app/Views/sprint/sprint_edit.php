@@ -797,6 +797,7 @@
     //수정 회의록 저장확인
     function confirm_save(){
         if(confirm("수정을 완료 하시겠습니까?")){
+            submit_function();
             document.getElementById('frm').submit();
         }
 
