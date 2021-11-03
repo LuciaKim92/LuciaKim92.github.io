@@ -55,6 +55,19 @@
                     </div>
                 </div>
 
+
+                <!-- 편집창 모달 -->
+                <div class="modal fade" id="modal-container-357980" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				    <div class="modal-dialog modal-dialog-centered" role="document" id="mymodal">
+                    </div>
+                </div>
+
+                <!-- 편집창 모달 -->
+                <div class="modal fade" id="modal-container-357981" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				    <div class="modal-dialog modal-dialog-centered" role="document" id="mymodal2">
+                    </div>
+                </div>
+
                 <!-- 시작하는부분 -->
                 <div class="m-content">
                 
@@ -93,7 +106,19 @@
                                     <div class="card-header">
                                         <div>Objective</div>
                                         <hr>
-                                        <span>지속 가능한 1조 기업 기반 완성 "축적을 통한 Scale-Up"</span>
+                                        <span>
+                                            <?php 
+                                                if($DWCTS['OBJECTIVE'] != null){
+                                                ?>
+                                                    <span><?=$DWCTS['OBJECTIVE']?></span>
+                                                
+                                            <?php
+                                                }
+                                                else
+                                                ?>
+                                                    <span>Objective가 등록되지 않았습니다.</span>   
+
+                                        </span>
                                     
                                     </div>
 
@@ -103,11 +128,30 @@
                                     <div id="card-element-534736" class="collapse">
                                         <div class="card-body">
                                             <div style="text-align:center; text-decoration: underline;"><h4>Key Results</h4></div>
-                                            <ol style="padding: 0px 0px 0px 10px">
-                                                <li></li>
-                                                <li></li>
-                                                <li></li>
-                                            </ol>
+                                                <?php
+                                                    if($DWCTS['KR'] == null){
+                                                        ?>
+                                                        <div style="text-align:center; margin-top:10px;">KR이 등록되지 않았습니다.</div>
+
+                                                        <?php
+                                                    }
+
+                                                    else {
+                                                        ?>
+                                                        <ol style="padding: 10px 0px 0px 20px">
+                                                        <?php
+                                                        foreach($DWCTS['KR'] as $key => $bean){
+                                                            ?>
+                                                            <li style='margin:10px 0px 10px 0px'><?=$bean['KR_CONTENT']?></li>
+
+                                                            <?php
+                                                        }
+                                                        ?>
+                                                        </ol>
+                                                        <?php
+                                                    }
+                                                ?>
+
                                         </div>
                                     </div>
                                 </div>
@@ -123,7 +167,7 @@
                                             <?php
                                                 foreach($team_arr as $key => $bean){
                                                     ?>
-                                                    add_column('#card-child-1' , '<?=$bean["DEPT_CD"]?>', '<?=$bean["DEPT_NM"]?>', '<?=$bean["OBJECTIVE_ID"]?>','<?=$bean["OBJECTIVE"]?>', '<?=$bean["IS_UP_DEPT"]?>');
+                                                    add_column('#card-child-1' , '<?=$bean["DEPT_CD"]?>', '<?=$bean["DEPT_NM"]?>', '<?=$bean["OBJECTIVE_ID"]?>','<?=$bean["OBJECTIVE"]?>', '<?=$bean["IS_UP_DEPT"]?>', '<?=$bean["DWGP_CD"]?>');
 
                                                     <?php
                                                 }
@@ -294,7 +338,7 @@
                 const result = jQuery.parseJSON(data);
                 $(card_id).empty();
                 for(var i=0; i < result.length; i++){
-                    add_column(card_id , result[i]['DEPT_CD'], result[i]['DEPT_NM'], result[i]['OBJECTIVE_ID'], result[i]['OBJECTIVE'], result[i]['IS_UP_DEPT']);
+                    add_column(card_id , result[i]['DEPT_CD'], result[i]['DEPT_NM'], result[i]['OBJECTIVE_ID'], result[i]['OBJECTIVE'], result[i]['IS_UP_DEPT'], result[i]['DWGP_CD']);
                 }
             },
             error : function( jqxhr , status , error ){
@@ -304,13 +348,14 @@
 
     }
 
-    function add_column(card_id ,dept_cd, dept_nm, objective_id, objective, is_up_dept){
+    function add_column(card_id ,dept_cd, dept_nm, objective_id, objective, is_up_dept, dwgp_cd){
 
         var objective_temp;
         var myhref;
         var myfunction;
+        var html;
 
-        if(objective == '' || objective == null)
+        if(objective == null || objective == 'null')
             objective_temp = 'Objective가 등록되지 않았습니다.';
         else
             objective_temp = objective;
@@ -328,16 +373,37 @@
             myfunction = "#";
         }
 
-
+        // 작업중
         if(is_up_dept == 'Y'){
-            var html = `
+            html = `
                     <div id="`+dept_cd+`">
                         <div><a class="card-link" data-toggle="collapse" data-parent="#card-`+dept_cd+`" href=`+myhref+` onclick="`+myfunction+`" ><h4> `+dept_nm+` </h4></a></div>
 
                         <div id="card-`+dept_cd+`">
                             <div class="card">
                                 <div class="card-header">
-                                    <div>Objective</div>
+
+                                    <div class="m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" m-dropdown-toggle="click" aria-expanded="true" style="width:100%">
+                                        <span>Objective</span>
+                                        <a href="#" class="m-portlet__nav-link m-dropdown__toggle btn m-btn m-btn--link" style="float:right; padding:0px">
+                                            <i class="la la-ellipsis-h"></i>
+                                        </a>
+                                        <div class="m-dropdown__wrapper" style="z-index: 101; width:auto; height:auto;">
+                                            <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust" style="left: auto; right: 29.5px;"></span>
+                                            <div class="m-dropdown__inner">
+                                                <div class="m-dropdown__body" style="padding:5px">
+                                                    <div class="m-dropdown__content">
+                                                        <ul class="m-nav">
+                                                            <li class="m-nav__item">
+                                                                <a id="modal-357980" onclick="edit_objective_modal('`+objective_id+`','`+objective+`', '` +dept_cd+ `','`+ dwgp_cd +`')" href="#modal-container-357980" role="button" class="btn" data-toggle="modal">편집</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <hr>
                                     <span>`+objective_temp+`</span>
                                 </div>
@@ -347,20 +413,61 @@
                                 </div>
                                 <div id="card-`+ dept_cd +`-element" class="collapse">
                                     <div class="card-body">
-                                        <div style="text-align:center; text-decoration: underline;"><h4>Key Results</h4></div>
+
+                                        <div class="m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" m-dropdown-toggle="click" aria-expanded="true" style="width:100%">
+                                            <div style="text-align:center; text-decoration: underline;"><h4>Key Results</h4></div>
+                                            <a href="#" class="m-portlet__nav-link m-dropdown__toggle btn m-btn m-btn--link" style="float:right; padding:0px">
+                                                <i class="la la-ellipsis-h"></i>
+                                            </a>
+                                            <div class="m-dropdown__wrapper" style="z-index: 101; width:auto; height:auto;">
+                                                <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust" style="left: auto; right: 29.5px;"></span>
+                                                <div class="m-dropdown__inner">
+                                                    <div class="m-dropdown__body" style="padding:5px">
+                                                        <div class="m-dropdown__content">
+                                                            <ul class="m-nav">
+                                                                <li class="m-nav__item">
+                                                                    <a id="modal-357981" onclick="edit_kr_modal('`+objective_id+`','`+dept_cd+`')" href="#modal-container-357981" role="button" class="btn" data-toggle="modal">편집</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>  
                     `;
 
         }
 
         else{
-            var html = `
+            html = `
                     <div id="`+dept_cd+`">
                         <div><h4> `+dept_nm+` </h4></div>
 
                         <div id="card-`+dept_cd+`">
                             <div class="card">
                                 <div class="card-header">
-                                    <div>Objective</div>
+
+                                    <div class="m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" m-dropdown-toggle="click" aria-expanded="true" style="width:100%">
+                                        <span>Objective</span>
+                                        <a href="#" class="m-portlet__nav-link m-dropdown__toggle btn m-btn m-btn--link" style="float:right; padding:0px">
+                                            <i class="la la-ellipsis-h"></i>
+                                        </a>
+                                        <div class="m-dropdown__wrapper" style="z-index: 101; width:auto; height:auto;">
+                                            <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust" style="left: auto; right: 29.5px;"></span>
+                                            <div class="m-dropdown__inner">
+                                                <div class="m-dropdown__body" style="padding:5px">
+                                                    <div class="m-dropdown__content">
+                                                        <ul class="m-nav">
+                                                            <li class="m-nav__item">
+                                                                <a id="modal-357980" onclick="edit_objective_modal('`+objective_id+`','`+objective+`', '` +dept_cd+ `','`+ dwgp_cd +`')" href="#modal-container-357980" role="button" class="btn" data-toggle="modal">편집</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <hr>
                                     <span>`+objective_temp+`</span>
                                 </div>
@@ -370,7 +477,27 @@
                                 </div>
                                 <div id="card-`+ dept_cd +`-element" class="collapse">
                                     <div class="card-body">
-                                        <div style="text-align:center; text-decoration: underline;"><h4>Key Results</h4></div>
+                    
+                                        <div class="m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" m-dropdown-toggle="click" aria-expanded="true" style="width:100%">
+                                            <div style="text-align:center; text-decoration: underline;"><h4>Key Results</h4></div>
+                                            <a href="#" class="m-portlet__nav-link m-dropdown__toggle btn m-btn m-btn--link" style="float:right; padding:0px">
+                                                <i class="la la-ellipsis-h"></i>
+                                            </a>
+                                            <div class="m-dropdown__wrapper" style="z-index: 101; width:auto; height:auto;">
+                                                <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust" style="left: auto; right: 29.5px;"></span>
+                                                <div class="m-dropdown__inner">
+                                                    <div class="m-dropdown__body" style="padding:5px">
+                                                        <div class="m-dropdown__content">
+                                                            <ul class="m-nav">
+                                                                <li class="m-nav__item">
+                                                                    <a id="modal-357981" onclick="edit_kr_modal('`+objective_id+`','`+dept_cd+`')" href="#modal-container-357981" role="button" class="btn" data-toggle="modal">편집</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>        
                     `;
         }
 
@@ -399,18 +526,16 @@
                     for(var i=0; i < result.length; i++){
                     // console.log(result[i]['ID']);
                     // console.log(result[i]['CONTENT']);
-                    html = html.concat("<li style='margin:10px 0px 10px 0px'>"+ result[i]['CONTENT'] + "</li>");
+                    html = html.concat("<li id='"+ result[i]['ID'] +"' style='margin:10px 0px 10px 0px' >"+ result[i]['CONTENT'] + "</li>");
                     }
                     html = html.concat('</ol>');
 
                 }
-
-                else
-                    html = html.concat('<div style="text-align:center; margin-top:10px;">KR가 등록되지 않았습니다.</div>');
+                
 
             },
             error : function( jqxhr , status , error ){
-                html = html.concat('<div style="text-align:center; margin-top:10px;">KR가 등록되지 않았습니다.</div>');
+
             }
         });
 
@@ -418,6 +543,179 @@
         $(card_id).append(html);
 
     }
+
+    //Modal Creator
+    function edit_objective_modal(objective_id, objective, dept_cd, dwgp_cd){
+        
+        //왠지모를 오류때문에..
+        var temp_objective;
+        var temp_objective_id;
+
+        if(objective == 'null')
+            temp_objective = '';
+        
+        else
+            temp_objective = objective;
+
+        if(objective_id == 'null')
+            temp_objective_id = '';
+        
+        else
+            temp_objective_id = objective_id;
+ 
+        var html = `
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="myModalLabel">
+                                Objective 수정
+                            </h5> 
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <input id="edit_okr_hidden" type="hidden" value="`+temp_objective_id+`"></input>
+                            <textarea id="edit_okr" col="50" rows="4" style="width:100%; overflow:hidden; resize: none;" onKeyUp="javascript:fnChkByte(this,'200')">`+temp_objective+`</textarea>
+                            <span id="byteInfo">0</span> / 200bytes
+                        </div>
+                        <div class="modal-footer">
+                            
+                            <button type="button" class="btn btn-primary" onclick="okr_edit('`+dept_cd+`', '`+ dwgp_cd +`')">
+                                Save changes
+                            </button> 
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                    `;
+        $("#mymodal").html(html);
+    }
+
+    //Modal Creator
+    function edit_kr_modal(objective_id, dept_cd){
+
+        var my123 = document.querySelector("#card-" + dept_cd + "-element > div > ol").childNodes;
+
+        var html = `
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="myModalLabel">
+                                Objective 수정
+                            </h5> 
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                    `;
+
+        for(var i=0;i<my123.length;i++){
+            html = html.concat(`<input name="kr-id[]" type='hidden' value='`+ my123[i].id +`'></input>`);
+            html = html.concat(`<textarea name="kr-content[]" col="50" rows="4" style="width:100%; overflow:hidden; resize: none;" >`+my123[i].innerText+`</textarea>`);
+        }
+
+        var html2 = `
+                            <span id="byteInfo">0</span> / 200bytes
+                        </div>
+                        <div class="modal-footer">
+                            
+                            <button type="button" class="btn btn-primary" onclick="">
+                                Save changes
+                            </button> 
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                    `;
+
+        html = html.concat(html2);
+
+        $("#mymodal2").html(html);
+    }
+
+    // Byte 수 체크 제한
+    function fnChkByte(obj, maxByte)
+    {
+        var str = obj.value;
+        var str_len = str.length;
+
+
+        var rbyte = 0;
+        var rlen = 0;
+        var one_char = "";
+        var str2 = "";
+
+
+        for(var i=0; i<str_len; i++)
+        {
+            one_char = str.charAt(i);
+            if(escape(one_char).length > 4) {
+                rbyte += 2;                                         //한글2Byte
+            }else{
+                rbyte++;                                            //영문 등 나머지 1Byte
+            }
+            if(rbyte <= maxByte){
+                rlen = i+1;                                          //return할 문자열 갯수
+            }
+        }
+        if(rbyte > maxByte)
+        {
+            // alert("한글 "+(maxByte/2)+"자 / 영문 "+maxByte+"자를 초과 입력할 수 없습니다.");
+            alert("최대 " + maxByte + "byte를 초과할 수 없습니다.")
+            str2 = str.substr(0,rlen);                                  //문자열 자르기
+            obj.value = str2;
+            fnChkByte(obj, maxByte);
+        }
+        else
+        {
+            document.getElementById('byteInfo').innerText = rbyte;
+        }
+    }
+
+    function okr_edit(dept_cd, dwgp_cd){
+        // console.log($("#edit_okr_hidden").val());
+        // console.log($("#edit_okr").val());
+
+        var objective_id = $("#edit_okr_hidden").val();
+        var objective = $("#edit_okr").val();
+
+        $.ajax({
+            type : 'POST',
+            url : '/OKR_MAP_Controller/edit_OKR',
+            cache : false,
+            data : {"OBJECTIVE_ID": objective_id,
+                     "OBJECTIVE": objective, 
+                     "DEPT_CD": dept_cd,
+                     "DWGP_CD": dwgp_cd,
+                     "YEAR": <?=$YEAR?>,
+                     "QTR": <?=$QTR?>},
+            async: false,
+            success : function( data ){
+                window.location.reload();
+                // console.log(data);
+
+            },
+            error : function( jqxhr , status , error ){
+                // console.log( jqxhr , status , error );
+            }
+        });
+    }
+
+    //OKR_MAP 메뉴 활성화
+
+    elements = document.getElementsByClassName('m-menu__item--active');
+
+    for (var i = 0; i < elements.length; i++) {
+
+        elements[i].classList.remove('m-menu__item--active');
+
+    }
+
+
+
+    document.getElementById('okr_map_left_menu').classList.add('m-menu__item--active');
 
 
 </script>

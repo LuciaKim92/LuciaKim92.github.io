@@ -103,7 +103,7 @@
 #table-head{width:10%}
 
 
-@media (max-width: 767.98px) {
+/* @media (max-width: 767.98px) {
 
     #sprint-content-container{
         padding: 0px;
@@ -128,4 +128,4 @@
     .separator{
         border-top:2px solid grey;
     }
-  }
+  } */

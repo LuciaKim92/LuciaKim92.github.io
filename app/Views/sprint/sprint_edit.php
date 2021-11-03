@@ -813,9 +813,6 @@
 
     document.getElementById('sprint_left_menu').classList.add('m-menu__item--active');
 
- 
-
-
 </script>
 
 </html>

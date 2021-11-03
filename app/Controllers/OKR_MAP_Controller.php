@@ -10,7 +10,7 @@ class OKR_MAP_Controller extends BaseController
         $this->response = \Config\Services::response();
         $this->session = \Config\Services::session();
         $user_data = array(
-            "admin_ids" => 123123,
+            "admin_ids" => '123123',
             "admin_names" => '이유진',
             "emp_no" => 'P221002',
             "logged_in" => TRUE
@@ -28,11 +28,8 @@ class OKR_MAP_Controller extends BaseController
             $QTR = ceil(date("m") / 3);
         }
 
-        $team_arr = array();
-
-        $team_arr = $this->Model->return_first_team($YEAR, $QTR);
-
-        $mydata['team_arr'] = $team_arr;
+        $mydata['DWCTS'] = $this->Model->return_dwcts($YEAR, $QTR);
+        $mydata['team_arr'] = $this->Model->return_first_team($YEAR, $QTR);
         $mydata['YEAR'] = $YEAR;
         $mydata['QTR'] = $QTR;
 
@@ -55,6 +52,25 @@ class OKR_MAP_Controller extends BaseController
         $team_arr = $this->Model->return_second_team($_POST['DEPT_UP_CD'], $_POST['YEAR'], $_POST['QTR']);
 
         echo json_encode($team_arr);
+    }
+
+
+    // ajax UPDATE_BY, UPDATE_ID 추가해야됨 (SESSION에서 받아와야ㅏㅁ)
+    public function edit_OKR(){
+        $this->session_setting();
+        $this->Model = new OKR_MAP_Model;
+
+        if($_POST['OBJECTIVE_ID'] == null){
+            $temp = $this->Model->create_objective($_POST['DEPT_CD'], $_POST['DWGP_CD'], $_POST['OBJECTIVE'], 
+                                            $_SESSION['admin_ids'], $_SESSION['admin_names'], $_SESSION['emp_no'],
+                                            $_POST['YEAR'], $_POST['QTR']);
+            return $temp;
+        }
+
+        else{
+            $result = $this->Model->update_objective($_POST['OBJECTIVE_ID'], $_POST['OBJECTIVE'],
+                                           $_SESSION['admin_ids'], $_SESSION['admin_names']);
+        }
     }
 
 }

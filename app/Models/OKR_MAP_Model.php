@@ -17,10 +17,44 @@ class OKR_MAP_Model extends Model
         $this->dbconn = sqlsrv_connect($this->serverName, $this->connectionOptions); 
     }
 
-    // OKR 바꿔야함 나중에해 분기랑 이어 조건도...
-    public function return_first_team($YEAR=null, $QTR=null){
+    
+    //대원씨티에스... 이렇게 여러번 하면 좋지 않지만 방법이 없으므로 그냥 분리
+    public function return_dwcts($YEAR, $QTR){
         $query = "
-                    SELECT A.DEPT_CD, A.DEPT_NM, B.ID OBJECTIVE_ID, B.OBJECTIVE,
+                    SELECT A.DEPT_CD, A.DWGP_CD, A.DEPT_NM, B.ID OBJECTIVE_ID, B.OBJECTIVE, C.ID KR_ID, C.CONTENT KR_CONTENT
+                    FROM	DWCTS.DBO.DEPT_MST AS A
+                    LEFT OUTER JOIN DBO.OKR_OBJT_MST AS B
+                    ON A.DEPT_CD = B.DEPT_CD
+                    AND B.OKR_YEAR = '".$YEAR."'
+                    AND B.OKR_QTR = '".$QTR."'
+                    AND B.PROC_ST NOT IN ('8','9')
+                    LEFT OUTER JOIN DBO.OKR_KEYS_MST AS C
+                    ON B.ID = C.OKR_OBJT_ID
+                    AND C.PROC_ST NOT IN ('8', '9')
+                    WHERE A.DEPT_CD = 'MD00000002'
+                ";
+
+        $stmt = sqlsrv_query($this->dbconn, $query);
+        $arr = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+
+        $kr_arr = array();
+        
+        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
+        {
+            array_push($kr_arr, ['KR_ID' => $row['KR_ID'], 'KR_CONTENT' => $row['KR_CONTENT']]);
+        }
+
+        $arr['KR'] = $kr_arr;
+
+        return $arr;
+    
+    }
+
+
+    // 대원씨티에스 밑
+    public function return_first_team($YEAR, $QTR){
+        $query = "
+                    SELECT A.DEPT_CD, A.DWGP_CD, A.DEPT_NM, B.ID OBJECTIVE_ID, B.OBJECTIVE,
                            CASE WHEN EXISTS(SELECT * FROM DWCTS.DBO.DEPT_MST WHERE DEPT_UP_CD = A.DEPT_CD) THEN 'Y' ELSE 'N' END IS_UP_DEPT
                     FROM
                         (
@@ -51,7 +85,7 @@ class OKR_MAP_Model extends Model
 
         while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
         {
-            array_push($team_arr, ['DEPT_CD' => $row['DEPT_CD'], 'DEPT_NM' => $row['DEPT_NM'], 
+            array_push($team_arr, ['DEPT_CD' => $row['DEPT_CD'], 'DWGP_CD' => $row['DWGP_CD'],'DEPT_NM' => $row['DEPT_NM'], 
                                    'OBJECTIVE_ID' => $row['OBJECTIVE_ID'], 'OBJECTIVE' => $row['OBJECTIVE'], 
                                    'IS_UP_DEPT' => $row['IS_UP_DEPT']]);
         }
@@ -92,15 +126,15 @@ class OKR_MAP_Model extends Model
 
         $query = "
 
-                    SELECT A.DEPT_CD, A.DEPT_NM, B.ID OBJECTIVE_ID, B.OBJECTIVE, B.OKR_YEAR, B.OKR_QTR, 
+                    SELECT A.DEPT_CD, A.DWGP_CD, A.DEPT_NM, B.ID OBJECTIVE_ID, B.OBJECTIVE, B.OKR_YEAR, B.OKR_QTR, 
                            CASE WHEN EXISTS(SELECT * FROM DWCTS.DBO.DEPT_MST WHERE DEPT_UP_CD = A.DEPT_CD) THEN 'Y' ELSE 'N' END IS_UP_DEPT
                     FROM 
                             DWCTS.DBO.DEPT_MST AS A
                             LEFT OUTER JOIN 
                             DWOKR.DBO.OKR_OBJT_MST AS B
                             ON A.DEPT_CD = B.DEPT_CD
-                            AND B.OKR_YEAR = '".$YEAR."'
-                            AND B.OKR_QTR = '".$QTR."'
+                            AND B.OKR_YEAR = ".$YEAR."
+                            AND B.OKR_QTR = ".$QTR."
                             AND B.PROC_ST NOT IN ('8','9') 
                     
                     WHERE	A.DEPT_UP_CD = '".$DEPT_UP_CD."' AND A.USE_YN = 'Y' 
@@ -113,13 +147,59 @@ class OKR_MAP_Model extends Model
 
         while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
         {
-            array_push($team_arr, ['DEPT_CD' => $row['DEPT_CD'], 'DEPT_NM' => $row['DEPT_NM'], 
+            array_push($team_arr, ['DEPT_CD' => $row['DEPT_CD'], 'DWGP_CD' => $row['DWGP_CD'], 'DEPT_NM' => $row['DEPT_NM'], 
                                    'OBJECTIVE_ID' => $row['OBJECTIVE_ID'], 'OBJECTIVE' => $row['OBJECTIVE'],
                                    'IS_UP_DEPT' => $row['IS_UP_DEPT']]);
         }
 
         return $team_arr;
 
+    }
+
+    public function update_objective($objective_id, $content, $update_id, $update_by){
+        
+        $query = "
+                    UPDATE [dbo].[OKR_OBJT_MST]
+                        SET 
+                            [UPDATE_ON] = GETDATE()
+                            ,[UPDATE_BY] = '".$update_by."'
+                            ,[UPDATE_ID] = ".$update_id."
+                            ,[OBJECTIVE] = '".$content."'
+                    WHERE ID = ".$objective_id."
+
+                ";
+
+        $stmt = sqlsrv_query($this->dbconn, $query);
+    }
+
+    public function create_objective($dept_cd, $dwgp_cd, $content, $create_id, $create_by, $empy_no, $year, $qtr){
+        
+        $query = "
+                    INSERT INTO [dbo].[OKR_OBJT_MST]
+                        ([CREATE_ON]
+                        ,[CREATE_BY]
+                        ,[CREATE_ID]
+                        ,[DWGP_CD]
+                        ,[DEPT_CD]
+                        ,[EMPY_NO]
+                        ,[OKR_YEAR]
+                        ,[OKR_QTR]
+                        ,[OBJECTIVE]
+                        ,[PROC_ST])
+                    VALUES
+                        (GETDATE()
+                        ,'".$create_by."'
+                        ,".$create_id."
+                        ,'".$dwgp_cd."'
+                        ,'".$dept_cd."'
+                        ,'".$empy_no."'
+                        ,".$year."
+                        ,".$qtr."
+                        ,'".$content."'
+                        ,'0')
+
+                    ";
+        $stmt = sqlsrv_query($this->dbconn, $query);
     }
 
 }
