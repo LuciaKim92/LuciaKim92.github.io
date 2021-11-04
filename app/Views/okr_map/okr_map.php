@@ -399,6 +399,11 @@
                                                             <li class="m-nav__item">
                                                                 <a id="modal-357980" onclick="edit_objective_modal('`+objective_id+`','`+objective+`', '` +dept_cd+ `','`+ dwgp_cd +`')" href="#modal-container-357980" role="button" class="btn" data-toggle="modal">편집</a>
                                                             </li>
+
+                                                            <li class="m-nav__item">
+                                                                <a href="javascript:confirm_delete_objective(`+ objective_id +`)" class="btn">삭제</a>
+                                                            </li>
+
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -528,7 +533,13 @@
                     for(var i=0; i < result.length; i++){
                     // console.log(result[i]['ID']);
                     // console.log(result[i]['CONTENT']);
-                    html = html.concat("<li id='"+ result[i]['ID'] +"' style='margin:10px 0px 10px 0px' >"+ result[i]['CONTENT'] + "</li>");
+                    // 진척율: `+ result[i]['PROC_RAT'] +`%
+                    html = html.concat(`<li class="show_proc" kr_id='`+ result[i]['ID'] +`' kr_proc='`+ result[i]['PROC_RAT'] +`' style='margin:10px 0px 10px 0px' onmouseover="MouseOn(this)" onMouseout="clearTimeout(timer); MouseOut(this)">`+ result[i]['CONTENT'] + `</li>
+                                        <div class="progress" style="display:none; position:relative; height:25px">
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="`+ result[i]['PROC_RAT'] +`" aria-valuemin="0" aria-valuemax="100" style="width:`+ result[i]['PROC_RAT'] +`%; font-size: 12px;">
+                                                진척율: `+ result[i]['PROC_RAT'] +`%
+                                            </div>
+                                        </div>`);
                     }
                     html = html.concat('</ol>');
 
@@ -603,7 +614,7 @@
         var my123 = new Array();
 
         if(document.querySelector("#card-" + dept_cd + "-element > div > ol") != null)
-            my123 = document.querySelector("#card-" + dept_cd + "-element > div > ol").childNodes;
+            my123 = document.querySelectorAll("#card-" + dept_cd + "-element > div > ol > li")
 
 
         var html = `
@@ -623,19 +634,32 @@
                     `;
 
         for(var i=0;i<my123.length;i++){
-            html = html.concat(`<div class="input-group">
-                                    <input name="kr-id[]" type='hidden' value='`+ my123[i].id +`'></input>
-                                    <textarea class="form-control" name="kr-content[]" col="50" rows="4" style="overflow:auto; resize: none;" >`+my123[i].innerText+`</textarea>
+            html = html.concat(`<div class="input-group" style="margin-top:10px">
+                                    <input name="kr-id[]" type='hidden' value='`+ $(my123[i]).attr('kr_id') +`'></input>
+                                    <textarea id="kr-content-`+$(my123[i]).attr('kr_id')+`" class="form-control" name="kr-content[]" col="50" rows="4" style="overflow:auto; resize: none;" >`+ $(my123[i]).text()+`</textarea>
                                     <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary" type="button" style="color:red">삭제</button>
+                                        <input id="kr-delete-`+$(my123[i]).attr('kr_id')+`" name="kr-delete[]" type='hidden' value='N'></input>
+                                        
+                                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:black"></button>
+                                        <div class="dropdown-menu">
+                                            <div class="input-group" style="margin-top:10px">
+                                                <div class="input-group-prepend" style="margin:5px 0px 5px 5px">
+                                                    <span class="input-group-text">진척율</span>
+                                                </div>
+
+                                                <input id="kr-proc-`+$(my123[i]).attr('kr_id')+`" class="form-control" name="kr-proc[]" type='text' style="margin:5px 5px 5px 0px" value='`+ $(my123[i]).attr('kr_proc') +`'></input>
+                                            </div>
+                                            <hr class="dropdown-divider">
+                                            <a id="kr-text-`+ $(my123[i]).attr('kr_id') +`" class="dropdown-item" href="javascript:delete_kr(`+ $(my123[i]).attr('kr_id') +`)">삭제</a>
+                                        </div>
                                     </div>
-                                </div><br>`);
+                                </div>`);
 
         }
 
         var html2 = `
                             </div>
-                            <button class="btn btn-primary" type="button" onclick="kr_add_column()" >+</button>
+                            <button class="btn btn-primary" type="button" onclick="kr_add_column()" style="margin-top:10px" >+</button>
                         </div>
                         <div class="modal-footer">
                             
@@ -734,8 +758,8 @@
             data : queryString,
             async: false,
             success : function( data ){
-                console.log(data);
-
+                window.location.reload();
+                // console.log(data);
             },
             error : function( jqxhr , status , error ){
                 // console.log( jqxhr , status , error );
@@ -745,15 +769,98 @@
 
     function kr_add_column(){
  
-        var html = `<div class="input-group">
-                        <input name="kr-id[]" type='hidden' value=''></input>
-                        <textarea class="form-control" name="kr-content[]" col="50" rows="4" style="overflow:auto; resize: none;" ></textarea>
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button" style="color:red">삭제</button>
-                        </div>
-                    </div><br>`
+        var html = `    <div class="input-group" style="margin-top:10px">
+                            <input name="kr-id[]" type='hidden' value=''></input>
+                            <textarea class="form-control" name="kr-content[]" col="50" rows="4" style="overflow:auto; resize: none;" ></textarea>
+                            <div class="input-group-append">
+                                <input name="kr-delete[]" type='hidden' value='N'></input>
+                                
+                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:black"></button>
+                                <div class="dropdown-menu">
+                                    <div class="input-group" style="margin-top:10px">
+                                        <div class="input-group-prepend" style="margin:5px 0px 5px 5px">
+                                            <span class="input-group-text">진척율</span>
+                                        </div>
+
+                                        <input class="form-control" name="kr-proc[]" type='text' style="margin:5px 5px 5px 0px" value='0'></input>
+                                    </div>
+                                    <hr class="dropdown-divider">
+                                    <a class="dropdown-item" onclick="delete_new_kr(this)">삭제</a>
+                                </div>
+                            </div>
+                        </div>`
+
+                    
         $("#add_here").append(html);
     }
+
+    function delete_kr(id){
+
+        if($('#kr-delete-'+id).val() == 'N'){
+            // console.log("삭제");
+            $('#kr-delete-'+id).val('Y')
+            $('#kr-text-'+id).text("취소");
+            $('#kr-content-' + id).attr("readonly", true);
+            $('#kr-content-' + id).css("background-color", "#d3d3d3");
+            $('#kr-proc-' + id).attr("readonly", true);
+            $('#kr-proc-' + id).css("background-color", "#d3d3d3");
+        }
+        
+        else{
+            // console.log("취소");
+            $('#kr-delete-'+id).val('N')
+            $('#kr-text-'+id).text("삭제");
+            $('#kr-content-' + id).removeAttr("readonly"); 
+            $('#kr-content-' + id).css("background-color", "white");
+            $('#kr-proc-' + id).removeAttr("readonly"); 
+            $('#kr-proc-' + id).css("background-color", "white");
+        }
+    }
+
+    //에러가 발생할수있음...
+    function delete_new_kr(e){
+        $(e).parent().parent().parent().remove();
+    }
+
+    //진척율 표시관련
+    function MouseOn(e){
+
+        timer=setTimeout(function(){
+                $(e).next().css("display", "");
+            }, 1000 * 1);
+    }
+
+    //진척율 표시관련
+    function MouseOut(e){
+        $(e).next().css("display", "none");
+    }
+
+    function confirm_delete_objective(objective_id){
+
+        if(objective_id == null){
+            return;
+        }
+
+        if(confirm("정말 삭제하시겠습니까?\n연동된 모든 내용이 삭제됩니다.")){
+            $.ajax({
+                type : 'POST',
+                url : '/OKR_MAP_Controller/delete_OKR',
+                cache : false,
+                data : {"ID": objective_id},
+                async: false,
+                success : function( data ){
+                    alert("성공적으로 삭제하였습니다.");
+                    window.location.reload();
+                },
+                error : function( jqxhr , status , error ){
+    
+                }
+            });           
+        }
+    }
+
+
+
 
     //OKR_MAP 메뉴 활성화
 

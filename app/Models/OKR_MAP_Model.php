@@ -112,7 +112,7 @@ class OKR_MAP_Model extends Model
 
         while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
         {
-            array_push($kr_arr, ['ID' => $row['ID'], 'CONTENT' => $row['CONTENT']]);
+            array_push($kr_arr, ['ID' => $row['ID'], 'CONTENT' => $row['CONTENT'], 'PROC_RAT' => round($row['PROC_RAT'])]);
         }
 
         return $kr_arr;
@@ -202,6 +202,31 @@ class OKR_MAP_Model extends Model
         $stmt = sqlsrv_query($this->dbconn, $query);
     }
 
+    // KR 상태도 변경
+    public function delete_objective($objective_id){
+
+        $query="";
+
+        $query = $query."
+                            UPDATE [dbo].[OKR_OBJT_MST]
+                                SET 
+                                    [PROC_ST] = '9'
+                            WHERE ID = ".$objective_id."
+
+                        ";
+
+
+        $query = $query."
+                            UPDATE [dbo].[OKR_KEYS_MST]
+                                SET
+                                    [PROC_ST] = '9'
+                            WHERE ID = ".$objective_id."
+                        ";
+
+        $stmt = sqlsrv_query($this->dbconn, $query);
+
+    }
+
     // KR등록수정삭제
     public function edit_kr($arr, $create_by, $create_id, $objective_id, $dept_cd){
 
@@ -210,8 +235,37 @@ class OKR_MAP_Model extends Model
         foreach($arr as $key => $bean){
             
             // update
+            // ,[PROC_RAT] = <PROC_RAT, decimal(17,5),>
+            // ,[PROC_ST] = <PROC_ST, char(1),>
             if($bean['ID'] != NULL){
 
+                if($bean['IS_DELETE'] == 'Y'){
+                    $temp = "
+                            UPDATE [dbo].[OKR_KEYS_MST]
+                                SET 
+                                 [UPDATE_ON] = GETDATE()
+                                ,[UPDATE_BY] = '".$create_by."'
+                                ,[UPDATE_ID] = ".$create_id."
+                                ,[PROC_ST] = '9'
+                            WHERE ID = ".$bean['ID']."
+                            ";
+                }
+
+                else{
+
+                    $temp = "
+                            UPDATE [dbo].[OKR_KEYS_MST]
+                                SET 
+                                [UPDATE_ON] = GETDATE()
+                                ,[UPDATE_BY] = '".$create_by."'
+                                ,[UPDATE_ID] = ".$create_id."
+                                ,[PROC_RAT] = ".$bean['PROC_RAT']."
+                                ,[CONTENT] = '".$bean['CONTENT']."'
+                            WHERE ID = ".$bean['ID']."
+                            ";
+                }
+
+                $query = $query.$temp;
             }
 
             // create
@@ -232,7 +286,7 @@ class OKR_MAP_Model extends Model
                                 ,".$create_id."
                                 ,".$objective_id."
                                 ,'".$bean['CONTENT']."'
-                                ,50.00000
+                                ,".$bean['PROC_RAT']."
                                 ,'0'
                                 ,'".$dept_cd."')
                         ";

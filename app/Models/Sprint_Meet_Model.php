@@ -274,7 +274,7 @@ class Sprint_Meet_Model extends Model
     }
 
     //회의록 작성시 자동 얼라인되는 것들 리턴
-    public function create_spr($DATE){
+    public function create_spr($DATE, $YEAR, $QTR){
 
         
         //최종적으로 리턴
@@ -287,12 +287,20 @@ class Sprint_Meet_Model extends Model
                         FROM DWCTS.dbo.EMP_MST A INNER JOIN DWCTS.dbo.DEPT_MST B ON A.DWGP_CD = B.DWGP_CD AND A.DEPT_CD = B.DEPT_CD 
                         WHERE A.EMP_NO = 'B221002') A INNER JOIN DWCTS.dbo.DEPT_MST B ON A.DEPT_UP_CD = B.DEPT_CD INNER JOIN OKR_OBJT_MST C ON A.DEPT_CD = C.DEPT_CD
         
-                    WHERE C.PROC_ST = '0' ";
+                    WHERE C.PROC_ST IN ('0', '1')
+                        AND C.OKR_YEAR = ".$YEAR."
+                        AND C.OKR_QTR = ".$QTR." 
+                ";
 
         $stmt = sqlsrv_query($this->dbconn, $query);
-        $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
 
         // 예외처리필요함 (모든부분에서)!
+
+        $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+
+        if($row == null){
+            return false;
+        }
 
 
         $result['DWGP_CD'] = $row['DWGP_CD'];

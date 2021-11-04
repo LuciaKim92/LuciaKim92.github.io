@@ -91,8 +91,17 @@ class Sprint_Meet_Controller extends BaseController
 
         date_default_timezone_set('Asia/Seoul');
         
-        if($date == NULL)
+        if($date == NULL){
             $date = date("Y-m-d");
+            $YEAR = date("Y", time());
+            $QTR = ceil(date("m") / 3);
+        }
+
+        else{
+            $YEAR = date("Y", strtotime($date));
+            $QTR = ceil(date("m", strtotime($date)) / 3);
+        }
+            
 
         //DB로 보낼꺼 이런형식 => 20211022
         $date2 = str_replace("-", "", $date);
@@ -105,7 +114,16 @@ class Sprint_Meet_Controller extends BaseController
 
         //회의록이 없는경우 (새로생성)
         if($spr_id == null){
-            $myarr = $this->Model->create_spr($date2);
+            $myarr = $this->Model->create_spr($date2, $YEAR, $QTR);
+
+            //Objective가 존재하지 않는 경우
+            if($myarr == false){
+                echo '<script type="text/javascript">'; 
+                echo 'alert("해당 년/분기에 Objective가 존재하지 않습니다.");';
+                echo 'window.location.href = history.back();';
+                echo '</script>';
+                return false;
+            }
 
             $myarr['EMP_LIST'] = $this->Model->get_emp_list($_SESSION['emp_no']);
 
