@@ -52,6 +52,7 @@ class InitiativeModel extends Model{
                 //                    AND PROC_ST = ?;
         $result = $okr_db->query($query, array($_GET['okrKey'],$_GET['emp_no']));
         return $result->getResultArray();
+        //list 전체뽑기
     }
 
     public function getTodoList(){
@@ -113,7 +114,7 @@ class InitiativeModel extends Model{
                     ORDER BY CREATE_ON DESC
                 ;";
         $result = $okr_db->query($query, array($content, $_POST['empy_no']));
-        return $result->getRowArray();        
+        return $result->getRowArray(); //한줄뽑기        
     }
     
     public function saveToDo($content){
@@ -335,11 +336,14 @@ class InitiativeModel extends Model{
         $query = 
                 "
                 SELECT 
+                    DWOKR.DBO.OKR_RPLY_MST.ID,
                     OKR_INIT_ID,
                     CONTENT,
+                    DWOKR.DBO.OKR_RPLY_MST.OKR_RPLY_ID,
                     DWOKR.DBO.OKR_RPLY_MST.CREATE_ON,
                     DWOKR.DBO.OKR_RPLY_MST.EMPY_NO,
-                    DBO.OKR_RPLY_MST.CREATE_BY
+                    DWOKR.DBO.OKR_RPLY_MST.CREATE_BY,
+                    NICE_YN
                 FROM 
                     DWOKR.DBO.OKR_RPLY_MST 
                 LEFT JOIN 
@@ -347,11 +351,111 @@ class InitiativeModel extends Model{
                 ON 
                     DWOKR.DBO.OKR_RPLY_MST.ID
                     = DWOKR.DBO.OKR_INIT_RPLY.OKR_RPLY_ID
+                LEFT JOIN
+                    DWOKR.DBO.OKR_RPLY_READ
+                ON 
+                    DWOKR.DBO.OKR_RPLY_MST.ID
+                    = DWOKR.DBO.OKR_RPLY_READ.OKR_RPLY_ID  
+                WHERE
+                    OKR_INIT_ID = ?
+                AND
+                    OKR_RPLY_READ.EMPY_NO = ?
+                ;";
+        $result = $okr_db->query($query, array($_POST['id'],$_POST['empy_no']));
+        return $result->getResultArray();
+    }
+    public function getInitMaker(){
+        $okr_db = \Config\Database::connect('okrdb');
+        $query = 
+                "
+                    SELECT EMP_NM
+                    FROM DWCTS.DBO.EMP_MST 
+                    WHERE EMP_NO = (SELECT EMPY_NO
+                                    FROM DWOKR.DBO.OKR_INIT_MST 
+                                    WHERE ID = ?)
+                ;";
+        $result = $okr_db->query($query, array($_POST['id']));
+        return $result->getRowArray();
+    }
+
+    public function saveInitReplyData(){
+        $okr_db = \Config\Database::connect('okrdb');
+        $query = 
+                "
+                    INSERT INTO OKR_RPLY_READ
+                            (CREATE_ON
+                            ,CREATE_BY
+                            ,CREATE_ID
+                            ,OKR_RPLY_ID
+                            ,EMPY_NO
+                            ,NICE_YN)
+                    
+                    
+                    VALUES
+                        (GETDATE()
+                        , ?
+                        ,'123123'
+                        , ?
+                        , ?
+                        , ?
+                        );
+                ";
+        $okr_db->query($query, array($_POST['create_by'],$_POST['id'], $_POST['empy_no'], 'n'));
+        return $_POST['id'];
+    }
+    
+    public function initReplyReadOK(){
+        $okr_db = \Config\Database::connect('okrdb');
+
+        $query = 
+                "
+                SELECT 
+                    OKR_INIT_ID,
+                    DWOKR.DBO.OKR_INIT_RPLY.OKR_RPLY_ID, 
+                    DWOKR.DBO.OKR_RPLY_READ.ID
+                FROM
+                    DWOKR.DBO.OKR_RPLY_READ
+                LEFT JOIN
+                    DWOKR.DBO.OKR_INIT_RPLY
+                ON
+                    DWOKR.DBO.OKR_INIT_RPLY.OKR_RPLY_ID
+                     = DWOKR.DBO.OKR_RPLY_READ.OKR_RPLY_ID
                 WHERE
                     OKR_INIT_ID = ?
                 ;";
         $result = $okr_db->query($query, array($_POST['id']));
         return $result->getResultArray();
+    }
+
+    public function saveLikeInitReply(){
+        $okr_db = \Config\Database::connect('okrdb');
+        $query = 
+                "
+                    UPDATE OKR_RPLY_READ
+                    SET 
+                    NICE_YN = ?,
+                    UPDATE_ON = GETDATE(),
+                    UPDATE_ID = '123123',
+                    UPDATE_BY = ?
+                    WHERE OKR_RPLY_ID = ?
+                    AND EMPY_NO = ?
+                ;";
+        $result = $okr_db->query($query, array($_POST['nice_yn'], $_POST['update_by'], $_POST['id'], $_POST['empy_no']));
+        return $_POST['id'];
+    }
+
+    public function getLikeCntInitReply(){
+        $okr_db = \Config\Database::connect('okrdb');
+        $query = 
+                "
+                    SELECT COUNT(NICE_YN) AS COUNT
+                    FROM OKR_RPLY_READ
+                    WHERE OKR_RPLY_ID = ?
+                    AND NICE_YN = 'Y'
+                    
+                ;";
+        $result = $okr_db->query($query, array($_POST['id']));
+        return $result->getRowArray();
     }
     
 

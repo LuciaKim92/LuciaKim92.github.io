@@ -6,9 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    
     <style>
         .deg{
             transform : rotate(180deg);
+        }
+        .hid{
+            visibility : hidden;
         }
         
     </style>
@@ -117,7 +121,7 @@
                                                     <div style="text-align : center; margin-left : 10%; width : 80% ;">
                                                         <span style="font-size : 15px; font-weight : bold">담당</span><br>
                                                         <i class="flaticon-profile-1"></i>
-                                                        <span>유진</span>
+                                                        <span id ="init-maker">유진</span>
                                                     </div>
                                                     <div style="margin : 5px;">
 
@@ -154,17 +158,21 @@
                                     <span style="font-size : 12px;  display : none">더 보기</span>
                                 </div>
                                 <!-- 댓글 입력 start -->
-                                <form>
-                                    <div style = "margin-top : 10px; margin-bottom : 50px">
+                                <form style="padding-bottom : 20px;">
+                                    <div style = "margin-top : 10px; ">
                                         <span style = "margin-left : 10px">댓글 입력</span>
-                                        <textarea id = "init-view-reply-textarea" class="form-control" placeholder="댓글을 입력하세요" style="resize: none; margin-left : 10%; border-radius : 5px; margin : 5px; border : solid 0.1em; height : 50px; width : 98%"></textarea>
+                                        <i id = "init-rply-file-btn" class="flaticon-tool-1 icon-xs float-right" onclick="writeInputFile();" style = "margin-right : 10px; cursor : pointer"></i>
+                                        <textarea id = "init-view-reply-textarea" class="form-control mentions" placeholder="댓글을 입력하세요" data-val-required="true" style="resize: none; margin-left : 10%; border-radius : 5px; margin : 5px; border : solid 0.1em; height : 50px; width : 98%"></textarea>
+                                        <input class ="hidden" id = "init-rply-input-file" type ="file" style=" margin-bottom : 0px; margin-left : 2%">
                                         <div class="float-right" style="text-align : center; margin-right : 5px;">
-                                            <button type="button" class="btn btn-info" style = "width : 50px; text-align: center; height : 30px; padding : 7px; border-radius : 3px" onclick = "saveInitViewReply();">등록</span>
+                                            <button type="button" class="btn btn-info" style = "width : 50px; text-align: center; height : 30px; padding : 7px; border-radius : 3px; margin-bottom : 20px;" onclick = "saveInitViewReply();">등록</button>
                                         </div>
+                                        <hr>
                                     </div>
+
                                 </form>
                                 <!-- 댓글 입력 end -->
-                                <hr>
+
                                 <!-- Initiative Tool 댓글들 시작   -->
                                 <div id = "init-view-reply-div" style ="overflow:auto; height : 200px">
 
@@ -215,7 +223,7 @@
                 INITIATIVE : <span id="sticker-memo-span" style="margin-left : 5px; font-size : 11px; color : #727272;">content</span></span>
             </div>
             <input type="hidden" id="sticker-memo-todo-id" value="">
-            <textarea id="sticker-memo-textarea" class="form-control" placeholder="스티커 메모" style="resize: none; border : 1px solid #c9c9c9; display : block; width : 100%; height : 140px; margin-left : 3%; margin-right : 2%; padding : 5px;" ></textarea>
+            <textarea id="sticker-memo-textarea" class="form-control" placeholder="스티커 메모" style="resize: none; border : 1px solid #c9c9c9; display : block; width : 100%; height : 140px; margin-left : 3%; margin-right : 5%; padding : 5px;" ></textarea>
             <button id = "todo-sticker-save" type="button" class="btn btn-warning float-right" style = "margin : 5px; border-radius : 3px; background-color : #9F9FFF; border-color : #9F9FFF; color : white; font-size : 12px; width : 20%; display : block" onclick ="saveStickerMemo('s');">등록</button>
             <button id = "todo-sticker-update" type="button" class="btn btn-warning float-right" style = "margin : 5px; border-radius : 3px; border-color : #9F9FFF; background-color : #9F9FFF; color : white; font-size : 12px; width : 20%; display : none" onclick ="updateStickerMemo();">수정</button>
             <button id = "todo-sticker-delete" type="button" class="btn btn-danger float-right" style = "margin : 5px; border-radius : 3px; color : white; font-size : 12px; width : 20%; display : none" onclick ="saveStickerMemo('d');">삭제</button>            
@@ -337,6 +345,8 @@
             $("#view-comp-hidden").val("none");
             $("#todo-view-more-comp").hide();
             $("#view-proc-hidden").val("block");
+            $("#init-maker").text("");
+            $("#init-view-reply-div").html("");
 
             $.ajax({
                 url:"/InitiativeController/getKRAjax",
@@ -387,6 +397,7 @@
                     alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
                 }
             });
+
 
              //상태 버튼 세팅[Initiative 진행/완료 여부]
              $.ajax({
@@ -473,7 +484,15 @@
             $("#todo-view-more-proc").html("");
             $("#init-view-reply-div").html("");
             var initID = $("#modal-init-select-view option:selected").val();
+            
+            //댓글 세팅
             setInitViewReply(initID)
+
+            //댓글 읽기 table 생성[댓글 전체의 읽음여부 파악 -> 없으면 저장]
+
+
+
+            // 진행/완료 여부 세팅
             $.ajax({
                 url:"/InitiativeController/getInitiativeProcSTAjax",
                 type:"get",
@@ -497,6 +516,8 @@
                 }
             });
 
+
+            //자신감 세팅
             $.ajax({
                 url:"/InitiativeController/getInitConfTPAjax",
                 type:"get",
@@ -518,7 +539,25 @@
                     $("#view-conf-span").text(str);
                 }
             });
+            
+            //담당자 세팅
+            $.ajax({
+                url:"/InitiativeController/getInitMakerAjax",
+                type:"post",
+                dataType:"json",
+                data:{
+                    id : initID
+                },
+                success:function(res){
+                    console.log("담당자: ");
+                    console.log(res);
+                    $("#init-maker").text(res.EMP_NM);
 
+                },
+                error:function(request,status,error){
+                    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                }
+            })
         
             
             
@@ -639,6 +678,10 @@
                 }
             //직접입력 : value만 세팅함
             var confStr = $("#view-conf-span").val();
+            if(initID == "n"){
+                alert("Initiative 선택 후 변경할 수 있습니다.");
+                return ;
+            }
             if(confStr != s){
                 if(confirm("자신감 : " + str +"\n변경하시겠습니까?")){
                     //직접입력 아닌 경우 : DB에 변경사항 바로 저장됨
@@ -667,27 +710,6 @@
                 }
             }
         }
-            
-        
-        //날짜 세팅
-        var dt;
-        dt = new Date();
-        date = dt.getFullYear() + "-";
-        if((dt.getMonth() + 1) < 10){
-            date += "0" + (dt.getMonth() + 1) + "-";
-        }
-        else{
-            date += (dt.getMonth() + 1) + "-";
-        }
-
-        if(dt.getDate() < 10){
-            date += "0" + dt.getDate();
-        }
-        else{
-            date += dt.getDate();
-        }
-        document.getElementById('test-date').innerText = date;
-
         
         function setProgress(a){
             var initID = $("#modal-init-select-view option:selected").val();
@@ -699,57 +721,157 @@
             var emp_no = '<?=$_SESSION['emp_no']?>' ;
             
             if(a != value){
-                if(a == '0'){
-                    text = "진행";
-                }
-                else if(a == '7'){
-                    text = "완료";
+                if(confirm("진행 상태를 변경하시겠습니까?")){
+                    
+                    if($("#modal-init-select-view option:selected").val() == 'n'){
+                        alert("Initiative 선택 후 변경할 수 있습니다.");
+                    }
+
+                    else if(a != value){
+
+                        if(a == '0'){
+                            text = "진행";
+                        }
+                        else if(a == '7'){
+                            text = "완료";
+                        }
+
+                        $.ajax({
+                            url:"/InitiativeController/setProgressAjax",
+                            type:"post",
+                            dataType:"json",
+                            data:{
+                                id : initID,
+                                proc_st : a,
+                                update_by : '<?=$_SESSION['admin_names']?>'
+                            },
+                            success:function(res){
+                                alert("진행 상태가 변경되었습니다.");
+                                $("#st-btn").val(a);
+                                $("#st-btn").text(text);
+                            },
+                            error:function(request,status,error){
+                                alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                            }
+                        });
+                    }
                 }
             }
+                
 
-            $.ajax({
-                url:"/InitiativeController/setProgressAjax",
-                type:"post",
-                dataType:"json",
-                data:{
-                    id : initID,
-                    proc_st : a,
-                    update_by : '<?=$_SESSION['admin_names']?>'
-                },
-                success:function(res){
-                    alert(text + "로 진행 상태가 변경되었습니다.");
-                    $("#st-btn").val(a);
-                    $("#st-btn").text(text);
-                },
-                error:function(request,status,error){
-                    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-                }
-            });
+            
             
         }
 
         
         //댓글 만들기
-        
-        function makeInitViewReply(n,name,content,date,id){
+        function makeInitViewReply(n,name,content,day,id,like){
+            console.log("makeInitViewReply에서 본 like");
+            console.log(like);
+
             var tmpStr = "";
-            tmpStr += `<div class = "initiative-comment" style="margin-left : 5px; border-radius : 10px; margin : 5px; border : solid 0.1em; ">`
-                                        + `<div class="이름과 프로필">`
-                                        + `<div class="float-right" id="test-date" style ="margin-right: 10px;">`
-                                        + date
-                                        + `</div>`
-                                        + `<i id = "init-reply-user-icon-`+n+`" class="flaticon-profile-1" style = "margin-left : 5px"></i>`
-                                        + `<span style="margin-left : 5px;">`+ name +`</span>`
-                                        +`</div>`
-                                        +`<input type="hidden" id = "init-reply-id-`+n+`" value = "`+id+`">`
-                                        +`<div>`
-                                        +`<span id = "init-reply-content-`+n+`">`+ content +`</span>`
+            tmpStr += `<div class = "initiative-comment" style="margin-left : 5px; border-radius : 10px; margin : 5px; border : solid 0.1em; width : 89%">`
+                                        + `<div>` //프로필, 이름, 날짜
+                                            + `<div class="float-right" id="test-date" style ="margin-right: 10px;">`//날짜[오른쪽 정렬]
+                                                + day
+                                            + `</div>` 
+                                        + `<i id = "init-reply-user-icon-`+n+`" class="flaticon-profile-1" style = "margin-left : 5px"></i>` //프로필
+                                        + `<span style="margin-left : 5px;">`+ name +`</span>`// 이름
+                                        +`</div>`//프로필, 이름, 날짜 끝
+                                        +`<input type="hidden" id = "init-reply-id-`+n+`" value = "`+id+`">` //reply ID 저장하려고 임시로 일단 둠
+                                        +`<div>`//좋아요 및 내용 표시
+                                            +`<div id = "init-reply-mention-div-`+n+`" style="display : none"></div>` //멘션때문에 임시로 둠
+                                            +`<span id = "init-reply-content-`+n+`">`+ content +`</span>` // 내용
+                                            + `<div class="float-right" id="test-date" style ="margin-right: 10px;">` //오른쪽 정렬 하트 2개
+                                                +`<span id = "likes-cnt-init-rply-`+n+`" style="margin-right : 10px;"></span>`//좋아요 수
+                                                +`<i id = "rply-blank-heart-`+n+`" class="far fa-heart red-color" style="display : inline;" onclick = "saveLikeInitReply(`+n+`,0);"></i>`
+                                                +`<i id = "rply-heart-`+n+`"class="fas fa-heart red-color" style="display : none;" onclick = "saveLikeInitReply(`+n+`,1);"></i>`
+                                            +`</div>`
                                         +`</div>`;
 
             $("#init-view-reply-div").prepend(tmpStr);
+            if(like == "Y"){
+                $("#rply-blank-heart-"+n).hide();
+                $("#rply-heart-"+n).show();
+            }
+            else if(like == "N"){
+                $("#rply-blank-heart-"+n).show();
+                $("#rply-heart-"+n).hide();
+            }
+            getLikeInitReply(n);
+            
 
         }
-        
+        //댓글 좋아요 수 표시
+        function getLikeInitReply(n){
+            var replyID = $("#init-reply-id-"+n).val();
+            $.ajax({
+                url:"/InitiativeController/getLikeCntInitReplyAjax",
+                type:"post",
+                dataType:"json",
+                data:{
+                    id : replyID,
+                },
+                success:function(res){
+                    console.log("댓글 좋아요 수 표시");
+                    console.log(res);
+                    $("#likes-cnt-init-rply-"+n).text(res.COUNT);
+                },
+                error:function(request,status,error){
+                    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                }
+            });
+
+        }
+
+        //댓글 좋아요 여부 변경
+        function saveLikeInitReply(n,chk){
+            var replyID = $("#init-reply-id-"+n).val();
+            console.log("좋아요 누른것의 ID");
+            console.log(replyID);
+            var str = ""
+            var tmp = "";
+            var tmpCnt;
+            if(chk == "0"){
+                $("#rply-heart-"+n).show();
+                $("#rply-blank-heart-"+n).hide();
+                tmp = "Y"
+                tmpCnt = parseInt($("#likes-cnt-init-rply-"+n).text()) + 1;
+                $("#likes-cnt-init-rply-"+n).text(tmpCnt);
+            }
+            else{
+                $("#rply-heart-"+n).hide();
+                $("#rply-blank-heart-"+n).show();
+                tmp = "N"
+                tmpCnt = parseInt($("#likes-cnt-init-rply-"+n).text()) - 1;
+                $("#likes-cnt-init-rply-"+n).text(tmpCnt);
+                str = "취소되었습니다.";
+            }
+            
+
+            $.ajax({
+                url:"/InitiativeController/saveLikeInitReplyAjax",
+                type:"post",
+                dataType:"json",
+                data:{
+                    nice_yn : tmp,
+                    update_by : '<?=$_SESSION['admin_names']?>',
+                    id : replyID,
+                    empy_no : '<?=$_SESSION['emp_no']?>'
+                },
+                success:function(res){
+                    console.log(res);
+                    if(str != "")
+                        alert(str);
+                        getLikeInitReply(n);
+                },
+                error:function(request,status,error){
+                    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                }
+            });
+
+            
+        }
         
         
 
@@ -757,6 +879,14 @@
         function saveInitViewReply(){
             var content = $("#init-view-reply-textarea").val();
             var initID = $("#modal-init-select-view option:selected").val();
+            var date;
+
+            if(initID == "n"){
+                alert("Initiative 선택 후 댓글을 입력할 수 있습니다.");
+                $("#init-view-reply-textarea").val("");
+                return ;
+            }
+
             $.ajax({
                 url:"/InitiativeController/saveInitViewReplyAjax",
                 type:"post",
@@ -768,10 +898,12 @@
                     id : initID
                 },
                 success:function(res){
+                    date = (res.CREATE_ON).split(".")[0];
                     $("#init-view-reply-textarea").val("");
                     alert("댓글이 저장되었습니다.");
                     console.log(res);
-                    makeInitViewReply(999,res.CREATE_BY,res.CONTENT,res.CREATE_ON,res.ID);
+                    makeInitViewReply(99999,res.CREATE_BY,res.CONTENT,date,res.ID,"n");
+                    saveInitReplyData(res.ID);
                 },
                 error:function(request,status,error){
                     alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -784,22 +916,150 @@
         //댓글 세팅하기
         function setInitViewReply(initID){
             console.log(initID);
+            var rplyID = new Array();
             
             $.ajax({
                 url:"/InitiativeController/getInitViewReplyAjax",
                 type:"post",
                 dataType:"json",
                 data:{
-                    id : initID
+                    id : initID,
+                    empy_no : '<?=$_SESSION['emp_no']?>'
                 },
                 success:function(res){
+                    var date;
                     var cnt = Object.keys(res).length;
                     console.log("댓글 세팅 res : ")
                     console.log(res);
                     console.log(cnt);
                     for(var i = 0; i < cnt; i++){
-                        makeInitViewReply(i,res[i].CREATE_BY,res[i].CONTENT,res[i].CREATE_ON,res[i].ID);
+                        rplyID[i] = res[i].ID;
+                        console.log()
+                        //만약 부른 댓글이 있으면 div 상자 보여지게하고, 내용 입력하기
+                        if(res[i].OKR_RPLY_ID == '0'){
+                            
+                        }
+                        date = (res[i].CREATE_ON).split(".")[0];
+                        console.log(date);
+                        makeInitViewReply(i,res[i].CREATE_BY,res[i].CONTENT,date,res[i].ID,res[i].NICE_YN);
+
                     }
+                    console.log("보내는 rply ID");
+                    console.log(rplyID);
+                    initReplyReadOK(rplyID);
+                },
+                error:function(request,status,error){
+                    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                }
+            });
+        }
+
+        //댓글 mention 후 회신
+        function initReplyMention(n){
+            
+
+
+        }
+
+        //스크롤 event : 댓글 읽기에 사용하기위함
+        /*
+        $('#initiative-view-modal').on("scroll",function(){
+            console.log("Scrolling");
+            console.log(document.documentElement.scrollTop);
+        });
+        */
+
+
+        //댓글 읽음 여부 판단 후 만들기
+        // select Init댓글ID where 지금 로그인 한 사람 emp_no = 댓글읽음의 emp_no and okr_init_id = 선택된 initiativeID => join : 댓글 ID
+        function initReplyReadOK(ary){
+            var initID = $("#modal-init-select-view option:selected").val();
+            var idList = new Array();
+            var savedIndex = new Array();
+            console.log("받는 rply ID");
+            console.log(ary);
+
+            //read 했는지 여부 불러오려고함
+            $.ajax({
+                url:"/InitiativeController/initReplyReadOKAjax",
+                type:"post",
+                dataType:"json",
+                data:{
+                    id : initID,
+                    create_by : '<?=$_SESSION['admin_names']?>',
+                    empy_no : '<?=$_SESSION['emp_no']?>',
+                },
+                success:function(res){
+                    console.log("댓글 읽음 저장 res : ")
+                    var cnt = Object.keys(res).length;
+                    console.log(res);
+                    console.log(cnt);
+                    if(cnt == 0){
+                        for(var i = 0; i < ary.length; i++){
+                            saveInitReplyData(ary[i]);
+                        }
+                    }
+                    else{
+                        var k = 0;
+                        for(var i = 0; i < ary.length; i++){
+                            for(var j = 0; j < cnt; j++){
+
+                                console.log("형변환");
+                                console.log(ary[i] == parseInt(res[j].OKR_RPLY_ID));
+                                console.log("형변환X");
+                                console.log(ary[i] == res[j].OKR_RPLY_ID)
+
+                                if(ary[i] == parseInt(res[j].OKR_RPLY_ID)){
+                                    console.log("페이지에 있는거");
+                                    console.log(ary[i]);
+                                    console.log("Ajax에서 가져온거");
+                                    console.log(res[j].OKR_RPLY_ID);
+                                    savedIndex[k] = i;
+                                    k++
+                                }
+                                else{
+                                    console.log("페이지에 있는거");
+                                    console.log(ary[i]);
+                                    console.log("Ajax에서 가져온거");
+                                    console.log(res[j].OKR_RPLY_ID);
+                                }
+                            }
+                        }
+                        var tmpCnt = k;
+                        var j = 0;
+                        for(var i = 0; i < k; i++){
+                            if(i == savedIndex[j]){
+                                j++
+                                continue;
+                            }
+                            else{
+                                saveInitReplyData(ary[i]);
+                            }
+                        }
+                    }
+                    console.log(res);
+                },
+                error:function(request,status,error){
+                    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                }
+            });
+        }
+
+        function saveInitReplyData(replyID){
+            $.ajax({
+                url:"/InitiativeController/saveInitReplyDataAjax",
+                type:"post",
+                dataType:"json",
+                data:{
+                    id : replyID,
+                    create_by : '<?=$_SESSION['admin_names']?>',
+                    empy_no : '<?=$_SESSION['emp_no']?>',
+                },
+                success:function(res){
+                    console.log("댓글 읽음 저장 res : ");
+                    console.log(res == "");
+                    console.log(res == null);
+                    console.log(res);
                 },
                 error:function(request,status,error){
                     alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -808,10 +1068,15 @@
         }
 
 
+        function writeInputFile(){
+            if($("#init-rply-input-file").hasClass("hid")){
+                $("#init-rply-input-file").removeClass("hid");
+            }
+            else{
+                $("#init-rply-input-file").addClass("hid");
+            }
+        }
         
-
-
-
-
+        
        
     </script>

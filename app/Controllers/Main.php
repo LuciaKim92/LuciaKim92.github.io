@@ -24,24 +24,28 @@ class Main extends BaseController
 
 		$max = 0;
 
+		date_default_timezone_set('Asia/Seoul');
+        $YEAR = date("Y", time());
+        $QTR = ceil(date("m") / 3);
+
 
 
 		$comp = array(
 			//"name" => $layoutModel->
 			"obj" => $layoutModel->GetObjective($_SESSION['comp_cd'])['OBJECTIVE'],
-			"krList" => $layoutModel->GetKeyResult($_SESSION['comp_cd'], '0'),
+			"krList" => $layoutModel->GetKeyResult($_SESSION['comp_cd'], '0', $YEAR, $QTR),
 			"compKrListCnt"=>count($layoutModel->GetKeyResult($_SESSION['comp_cd'], '7'))
 		);
 
 		$dept = array(
 			"obj" => $layoutModel->GetObjective($_SESSION['dept_cd'])['OBJECTIVE'],
-			"krList" => $layoutModel->GetKeyResult($_SESSION['dept_cd'], '0'),
+			"krList" => $layoutModel->GetKeyResult($_SESSION['dept_cd'], '0', $YEAR, $QTR),
 			"compKrListCnt"=>count($layoutModel->GetKeyResult($_SESSION['dept_cd'], '7'))
 		);
 
 		$team = array(
 			"obj" => $layoutModel->GetObjective($_SESSION['team_cd'])['OBJECTIVE'],
-			"krList" => $layoutModel->GetKeyResult($_SESSION['team_cd'], '0'),
+			"krList" => $layoutModel->GetKeyResult($_SESSION['team_cd'], '0', $YEAR, $QTR),
 			"compKrListCnt"=>count($layoutModel->GetKeyResult($_SESSION['team_cd'], '7'))
 		);
 
@@ -83,6 +87,10 @@ class Main extends BaseController
 		$this->session = \Config\Services::session();
 		$layoutModel = new LayoutModel();
 		$data = $layoutModel->GetNavBarData();
+
+		date_default_timezone_set('Asia/Seoul');
+        $YEAR = date("Y", time());
+        $QTR = ceil(date("m") / 3);
         //echo $model->getLastQuery();
 
         $assign['admin_names'] = $data['EMP_NM'];

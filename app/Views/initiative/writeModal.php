@@ -708,6 +708,12 @@
                     case "2" : str = "하"; break;
                     default : ; break;
                 }
+
+            if(initID == "n"){
+                alert("Initiative 선택 후 변경할 수 있습니다.");
+                return ;
+            }
+            
             //직접입력 : value만 세팅함
             var confStr = $("#write-conf-span").val();
             if(confStr != s){

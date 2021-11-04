@@ -38,6 +38,7 @@
     border : solid 0.2em; 
     display : none;
     font-size : 12px;
+    overflow : auto;
 }
 
 .funnel{
