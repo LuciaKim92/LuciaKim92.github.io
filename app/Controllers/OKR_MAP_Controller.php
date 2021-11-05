@@ -29,6 +29,9 @@ class OKR_MAP_Controller extends BaseController
         }
 
         $mydata['DWCTS'] = $this->Model->return_dwcts($YEAR, $QTR);
+        // foreach($mydata['DWCTS'] as $key => $bean){
+        //     echo $bean['DEPT_CD'];
+        // }
         $mydata['team_arr'] = $this->Model->return_first_team($YEAR, $QTR);
         $mydata['YEAR'] = $YEAR;
         $mydata['QTR'] = $QTR;
@@ -92,10 +95,8 @@ class OKR_MAP_Controller extends BaseController
             $arr[$i]['PROC_RAT'] = $_POST['kr-proc'][$i];
         };
 
-        $temp = $this->Model->edit_kr($arr, $_SESSION['admin_names'], $_SESSION['admin_ids'], $_POST['objective_id'], $_POST['dept_cd']);
-        
-        return $temp;
-
+        $this->Model->edit_kr($arr, $_SESSION['admin_names'], $_SESSION['admin_ids'], $_POST['objective_id'], $_POST['dept_cd']);
+ 
     }
 
 }

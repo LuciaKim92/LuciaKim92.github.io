@@ -102,62 +102,18 @@
                     <div class="row">
 
                         <div class="col-md-4" id="parent">
-                            <div><a class="card-link" data-toggle="collapse" data-parent="#card-parent" onclick="reset()" href=".card-child"><h4>대원씨티에스</h4></a></div>
-                            <div id="card-parent">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <div>Objective</div>
-                                        <hr>
-                                        <span>
-                                            <?php 
-                                                if($DWCTS['OBJECTIVE'] != null){
-                                                ?>
-                                                    <span><?=$DWCTS['OBJECTIVE']?></span>
-                                                
+                            <script>
+                                $(document).ready(function() {
+                                    <?php
+                                        foreach($DWCTS as $key => $bean){
+                                            ?>
+                                                add_column('#parent' , '<?=$bean["DEPT_CD"]?>', '<?=$bean["DEPT_NM"]?>', '<?=$bean["OBJECTIVE_ID"]?>','<?=$bean["OBJECTIVE"]?>', '<?=$bean["IS_UP_DEPT"]?>', '<?=$bean["DWGP_CD"]?>');
                                             <?php
-                                                }
-                                                else
-                                                ?>
-                                                    <span>Objective가 등록되지 않았습니다.</span>   
+                                        }
+                                    ?>
+                                })
+                            </script>
 
-                                        </span>
-                                    
-                                    </div>
-
-                                    <div class="card-header" style="text-align:center;">
-                                        <a class="card-link" data-toggle="collapse" data-parent="#card-parent" href="#card-element-534736">Key Results</a>
-                                    </div>
-                                    <div id="card-element-534736" class="collapse">
-                                        <div class="card-body">
-                                            <div style="text-align:center; text-decoration: underline;"><h4>Key Results</h4></div>
-                                                <?php
-                                                    if($DWCTS['KR'] == null){
-                                                        ?>
-                                                        <div style="text-align:center; margin-top:10px;">KR이 등록되지 않았습니다.</div>
-
-                                                        <?php
-                                                    }
-
-                                                    else {
-                                                        ?>
-                                                        <ol style="padding: 10px 0px 0px 20px">
-                                                        <?php
-                                                        foreach($DWCTS['KR'] as $key => $bean){
-                                                            ?>
-                                                            <li style='margin:10px 0px 10px 0px'><?=$bean['KR_CONTENT']?></li>
-
-                                                            <?php
-                                                        }
-                                                        ?>
-                                                        </ol>
-                                                        <?php
-                                                    }
-                                                ?>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
                         <div class="col-md-4" id="child-1">
@@ -165,7 +121,7 @@
                                 <div id="card-child-1" class="card-body" style="padding:0px;">
 
                                     <script>
-                                        window.onload = function(){
+                                        $(document).ready(function() {
                                             <?php
                                                 foreach($team_arr as $key => $bean){
                                                     ?>
@@ -174,7 +130,7 @@
                                                     <?php
                                                 }
                                             ?>
-                                        }
+                                        })
                                     </script>                      
                                     
                                 </div>
@@ -373,6 +329,10 @@
         else if(card_id == '#card-child-3'){
             myhref = "#";
             myfunction = "#";
+        }
+
+        else {
+            console.log("123123123");
         }
 
         // 작업중
@@ -754,15 +714,13 @@
             type : 'POST',
             url : '/OKR_MAP_Controller/edit_KR',
             cache : false,
-            dataType: 'json',
             data : queryString,
             async: false,
             success : function( data ){
                 window.location.reload();
-                // console.log(data);
             },
-            error : function( jqxhr , status , error ){
-                // console.log( jqxhr , status , error );
+            error : function( request , status , error ){
+                alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
             }
         });
     }

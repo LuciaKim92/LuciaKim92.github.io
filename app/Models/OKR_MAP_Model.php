@@ -21,30 +21,29 @@ class OKR_MAP_Model extends Model
     //대원씨티에스... 이렇게 여러번 하면 좋지 않지만 방법이 없으므로 그냥 분리
     public function return_dwcts($YEAR, $QTR){
         $query = "
-                    SELECT A.DEPT_CD, A.DWGP_CD, A.DEPT_NM, B.ID OBJECTIVE_ID, B.OBJECTIVE, C.ID KR_ID, C.CONTENT KR_CONTENT
+                    SELECT A.DEPT_CD, A.DWGP_CD, A.DEPT_NM, B.ID OBJECTIVE_ID, B.OBJECTIVE,
+                    CASE WHEN EXISTS(SELECT * FROM DWCTS.DBO.DEPT_MST WHERE DEPT_UP_CD = A.DEPT_CD) THEN 'Y' ELSE 'N' END IS_UP_DEPT
+
                     FROM	DWCTS.DBO.DEPT_MST AS A
                     LEFT OUTER JOIN DBO.OKR_OBJT_MST AS B
                     ON A.DEPT_CD = B.DEPT_CD
-                    AND B.OKR_YEAR = '".$YEAR."'
-                    AND B.OKR_QTR = '".$QTR."'
+                    AND B.OKR_YEAR = ".$YEAR."
+                    AND B.OKR_QTR = ".$QTR."
                     AND B.PROC_ST NOT IN ('8','9')
-                    LEFT OUTER JOIN DBO.OKR_KEYS_MST AS C
-                    ON B.ID = C.OKR_OBJT_ID
-                    AND C.PROC_ST NOT IN ('8', '9')
+                    
                     WHERE A.DEPT_CD = 'MD00000002'
                 ";
 
         $stmt = sqlsrv_query($this->dbconn, $query);
-        $arr = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
 
-        $kr_arr = array();
+        $arr = array();
         
         while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
         {
-            array_push($kr_arr, ['KR_ID' => $row['KR_ID'], 'KR_CONTENT' => $row['KR_CONTENT']]);
+            array_push($arr, ['DEPT_CD' => $row['DEPT_CD'], 'DWGP_CD' => $row['DWGP_CD'],'DEPT_NM' => $row['DEPT_NM'], 
+                                'OBJECTIVE_ID' => $row['OBJECTIVE_ID'], 'OBJECTIVE' => $row['OBJECTIVE'], 
+                                'IS_UP_DEPT' => $row['IS_UP_DEPT']]);
         }
-
-        $arr['KR'] = $kr_arr;
 
         return $arr;
     
@@ -227,7 +226,7 @@ class OKR_MAP_Model extends Model
 
     }
 
-    // KR등록수정삭제
+    // KR등록수정삭제 (삭제시 어떻게할지 생각해야함)
     public function edit_kr($arr, $create_by, $create_id, $objective_id, $dept_cd){
 
         $query = '';
@@ -297,8 +296,6 @@ class OKR_MAP_Model extends Model
         }
 
         $stmt = sqlsrv_query($this->dbconn, $query);
-
-        return $query;
     }
 
 }
