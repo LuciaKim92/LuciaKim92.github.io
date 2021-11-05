@@ -34,7 +34,7 @@ class OKR_MAP_Model extends Model
                     WHERE A.DEPT_CD = 'MD00000002'
                 ";
 
-        $stmt = sqlsrv_query($this->dbconn, $query);
+        $stmt = sqlsrv_query($this->dbconn, $query );
 
         $arr = array();
         
@@ -69,8 +69,8 @@ class OKR_MAP_Model extends Model
                         ) AS A
                         LEFT OUTER JOIN DWOKR.DBO.OKR_OBJT_MST AS B
                         ON A.DEPT_CD = B.DEPT_CD
-                        AND B.OKR_YEAR = '".$YEAR."'
-                        AND B.OKR_QTR = '".$QTR."'
+                        AND B.OKR_YEAR = ?
+                        AND B.OKR_QTR = ?
                         AND B.PROC_ST NOT IN ('8','9')  
                 
 
@@ -78,7 +78,7 @@ class OKR_MAP_Model extends Model
                 ";
 
         
-        $stmt = sqlsrv_query($this->dbconn, $query);
+        $stmt = sqlsrv_query($this->dbconn, $query, array($YEAR, $QTR));
         
         $team_arr = array();
 
@@ -104,10 +104,11 @@ class OKR_MAP_Model extends Model
         $query = "
                     SELECT * 
                     FROM OKR_KEYS_MST
-                    WHERE OKR_OBJT_ID = ".$OBJECTIVE_ID." AND PROC_ST NOT IN ('8', '9')
+                    WHERE OKR_OBJT_ID = ?
+                    AND PROC_ST NOT IN ('8', '9')
                  ";
         
-        $stmt = sqlsrv_query($this->dbconn, $query);
+        $stmt = sqlsrv_query($this->dbconn, $query, array($OBJECTIVE_ID));
 
         while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
         {
@@ -132,17 +133,17 @@ class OKR_MAP_Model extends Model
                             LEFT OUTER JOIN 
                             DWOKR.DBO.OKR_OBJT_MST AS B
                             ON A.DEPT_CD = B.DEPT_CD
-                            AND B.OKR_YEAR = ".$YEAR."
-                            AND B.OKR_QTR = ".$QTR."
+                            AND B.OKR_YEAR = ?
+                            AND B.OKR_QTR = ?
                             AND B.PROC_ST NOT IN ('8','9') 
                     
-                    WHERE	A.DEPT_UP_CD = '".$DEPT_UP_CD."' AND A.USE_YN = 'Y' 
+                    WHERE	A.DEPT_UP_CD = ? AND A.USE_YN = 'Y' 
                     
                     ORDER BY A.SORT_SEQ
 
                  ";
 
-        $stmt = sqlsrv_query($this->dbconn, $query);
+        $stmt = sqlsrv_query($this->dbconn, $query, array($YEAR, $QTR, $DEPT_UP_CD));
 
         while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
         {
@@ -161,16 +162,17 @@ class OKR_MAP_Model extends Model
                     UPDATE [dbo].[OKR_OBJT_MST]
                         SET 
                             [UPDATE_ON] = GETDATE()
-                            ,[UPDATE_BY] = '".$update_by."'
-                            ,[UPDATE_ID] = ".$update_id."
-                            ,[OBJECTIVE] = '".$content."'
-                    WHERE ID = ".$objective_id."
+                            ,[UPDATE_BY] = ?
+                            ,[UPDATE_ID] = ?
+                            ,[OBJECTIVE] = ?
+                    WHERE ID = ?
 
                 ";
 
-        $stmt = sqlsrv_query($this->dbconn, $query);
+        $stmt = sqlsrv_query($this->dbconn, $query, array($update_by, $update_id, $content, $objective_id));
     }
 
+    // 여기서부터 고쳐야함
     public function create_objective($dept_cd, $dwgp_cd, $content, $create_id, $create_by, $empy_no, $year, $qtr){
         
         $query = "

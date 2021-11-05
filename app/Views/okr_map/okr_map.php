@@ -10,6 +10,7 @@
     <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="/css/App.css" />
+    <link rel="stylesheet" type="text/css" href="/css/okr_map.css" />
 	<!-- <link rel="stylesheet"
   		  href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
   		  integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
@@ -58,22 +59,56 @@
 
                 <!-- o 편집창 모달 -->
                 <div class="modal fade" id="modal-container-357980" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				    <div class="modal-dialog modal-dialog-centered" role="document" id="mymodal">
+				    <div class="modal-dialog modal-dialog-centered modal-lg" role="document" id="mymodal">
                     </div>
                 </div>
 
                 <!-- kr 편집창 모달 -->
                 <div class="modal fade" id="modal-container-357981" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <form name="kr_form" id="kr_form">
-                        <div class="modal-dialog modal-dialog-centered" role="document" id="mymodal2">
+                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document" id="mymodal2">
                         </div>
                     </form>
                 </div>
+
+                <!-- Initiative 슬라이드 메뉴 -->
+                <div id="mySidenav" class="sidenav">
+                    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                    
+                    <div class="card" style="margin:5px">
+                        <h5 class="card-header">
+                            고지훈
+                        </h5>
+                        <div class="card-body">
+                            <p class="card-text">
+                                KR 1 1.
+                            </p>
+                            <p class="card-text">
+                                KR 1 2.
+                            </p>
+                            <p class="card-text">
+                                KR 2 3.
+                            </p>
+                            <ol>
+                                <li >111</li>
+                                <li >111</li>
+                                <li >111</li>
+                            </ol>
+                        </div>
+
+                    </div>
+            
+                </div>
+
+                <!-- Use any element to open the sidenav -->
+                <span onclick="openNav()">open</span>
+
 
                 <!-- 시작하는부분 -->
                 <div class="m-content">
                 
                     <div class="row" style="padding-left:15px;">
+
                         <select name="year" id="year-select">
                             <script>
                                 for(var i=1988; i<=2099; i++){
@@ -817,6 +852,15 @@
         }
     }
 
+    /* Set the width of the side navigation to 250px */
+    function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+    }
+
+    /* Set the width of the side navigation to 0 */
+    function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+    }
 
 
 
