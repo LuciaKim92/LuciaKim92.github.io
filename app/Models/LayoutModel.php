@@ -32,19 +32,34 @@ class LayoutModel extends Model{
         //$this->db = \Config\Database::connect();
         //$okr_db = \Config\Database::connect('okrdb');
         $cts_db = \Config\Database::connect('ctsdb');
+        $query = 
+                "
+                    SELECT *
+                    FROM EMP_MST
+                    WHERE EMP_EMAIL = ?
+                    
+                ;";
+        //$result = $okr_db->query($query, array('jihun.ko@computer.co.kr'));
+        $result = $cts_db->query($query, array('youjin.lee@computer.co.kr'));
+        return $result->getRowArray();
 
-        $builder = $cts_db->table('EMP_MST');
-        $builder->select('*');
-        $builder->where('EMP_EMAIL', 'youjin.lee@computer.co.kr');
-        $query  = $builder->get();
-
-        return $query->getRowArray();
-        //새로운 소스 끝
-        //ci4 db by lcs 210405 끝
     }
     
     public function GetKeyResult($dept_CD, $dept_ST){
         $okr_db = \Config\Database::connect('okrdb');
+        $query = 
+                "
+                    SELECT 
+                        *
+                    FROM 
+                        OKR_KEYS_MST
+                    LEFT JOIN
+                        OKR_OBJT_MST
+                    ON
+                        OKR_KEYS
+                    WHERE EMP_EMAIL = ?
+                    
+                ;";
         $builder = $okr_db->table('OKR_KEYS_MST');
         $builder->select('*');
         $builder->where('DEPT_CD', $dept_CD);
@@ -75,6 +90,7 @@ class LayoutModel extends Model{
         return $query->getResultArray();
 
     }
+
     
 
 }

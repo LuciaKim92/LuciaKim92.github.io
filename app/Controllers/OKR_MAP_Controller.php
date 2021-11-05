@@ -29,6 +29,9 @@ class OKR_MAP_Controller extends BaseController
         }
 
         $mydata['DWCTS'] = $this->Model->return_dwcts($YEAR, $QTR);
+        // foreach($mydata['DWCTS'] as $key => $bean){
+        //     echo $bean['DEPT_CD'];
+        // }
         $mydata['team_arr'] = $this->Model->return_first_team($YEAR, $QTR);
         $mydata['YEAR'] = $YEAR;
         $mydata['QTR'] = $QTR;
@@ -71,6 +74,29 @@ class OKR_MAP_Controller extends BaseController
             $result = $this->Model->update_objective($_POST['OBJECTIVE_ID'], $_POST['OBJECTIVE'],
                                            $_SESSION['admin_ids'], $_SESSION['admin_names']);
         }
+    }
+
+    //ajax
+    public function delete_OKR(){
+        $this->Model = new OKR_MAP_Model;
+        $this->Model->delete_objective($_POST['ID']);
+    }
+
+    public function edit_KR(){
+        $this->session_setting();
+        $this->Model = new OKR_MAP_Model;
+
+        $arr = array();
+
+        for($i=0; $i<sizeof($_POST['kr-id']); $i++){
+            $arr[$i]['ID'] = $_POST['kr-id'][$i];
+            $arr[$i]['CONTENT'] = $_POST['kr-content'][$i];
+            $arr[$i]['IS_DELETE'] = $_POST['kr-delete'][$i];
+            $arr[$i]['PROC_RAT'] = $_POST['kr-proc'][$i];
+        };
+
+        $this->Model->edit_kr($arr, $_SESSION['admin_names'], $_SESSION['admin_ids'], $_POST['objective_id'], $_POST['dept_cd']);
+ 
     }
 
 }

@@ -11,6 +11,7 @@
             }
           });
         </script>
+		
 
 		<!--end::Web font -->
 
@@ -38,9 +39,13 @@
 		<link rel="shortcut icon" href="/assets/icon/dwcts_logo.png" />
 
 		<!-- JS -->
+		<script src="/assets/js/initiative.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     	<script src="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.min.js"></script>
 
 
 		<!-- Pagination -->
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.css"/>
+
+		<!--하트 아이콘-->
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">

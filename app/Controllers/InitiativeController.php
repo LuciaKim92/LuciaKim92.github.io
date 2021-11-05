@@ -120,8 +120,36 @@ class InitiativeController extends BaseController {
         $res = $initiativeModel->getInitViewReply();
         echo json_encode($res);
     }
+    public function getInitMakerAjax(){
+        $initiativeModel = new InitiativeModel();
+        $name = $initiativeModel->getInitMaker();
+        echo json_encode($name);
+    }
 
-   
+    public function saveInitReplyDataAjax(){
+        $initiativeModel = new InitiativeModel();
+        $res = $initiativeModel->saveInitReplyData();
+        echo json_encode($res);
+    }
+
+    public function initReplyReadOKAjax(){
+        $initiativeModel = new InitiativeModel();
+        $res = $initiativeModel->initReplyReadOK();
+        echo json_encode($res);
+    }
+
+   public function saveLikeInitReplyAjax(){
+    $initiativeModel = new InitiativeModel();
+    $res = $initiativeModel->saveLikeInitReply();
+    echo json_encode($res);
+
+   }
+
+   public function getLikeCntInitReplyAjax(){
+    $initiativeModel = new InitiativeModel();
+    $res = $initiativeModel->getLikeCntInitReply();
+    echo json_encode($res);
+   }
 }
 
 ?>

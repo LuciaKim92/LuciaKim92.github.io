@@ -10,6 +10,7 @@
     <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="/css/App.css" />
+    <link rel="stylesheet" type="text/css" href="/css/okr_map.css" />
 	<!-- <link rel="stylesheet"
   		  href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
   		  integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
@@ -56,22 +57,58 @@
                 </div>
 
 
-                <!-- 편집창 모달 -->
+                <!-- o 편집창 모달 -->
                 <div class="modal fade" id="modal-container-357980" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				    <div class="modal-dialog modal-dialog-centered" role="document" id="mymodal">
+				    <div class="modal-dialog modal-dialog-centered modal-lg" role="document" id="mymodal">
                     </div>
                 </div>
 
-                <!-- 편집창 모달 -->
+                <!-- kr 편집창 모달 -->
                 <div class="modal fade" id="modal-container-357981" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				    <div class="modal-dialog modal-dialog-centered" role="document" id="mymodal2">
-                    </div>
+                    <form name="kr_form" id="kr_form">
+                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document" id="mymodal2">
+                        </div>
+                    </form>
                 </div>
+
+                <!-- Initiative 슬라이드 메뉴 -->
+                <div id="mySidenav" class="sidenav">
+                    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                    
+                    <div class="card" style="margin:5px">
+                        <h5 class="card-header">
+                            고지훈
+                        </h5>
+                        <div class="card-body">
+                            <p class="card-text">
+                                KR 1 1.
+                            </p>
+                            <p class="card-text">
+                                KR 1 2.
+                            </p>
+                            <p class="card-text">
+                                KR 2 3.
+                            </p>
+                            <ol>
+                                <li >111</li>
+                                <li >111</li>
+                                <li >111</li>
+                            </ol>
+                        </div>
+
+                    </div>
+            
+                </div>
+
+                <!-- Use any element to open the sidenav -->
+                <span onclick="openNav()">open</span>
+
 
                 <!-- 시작하는부분 -->
                 <div class="m-content">
                 
                     <div class="row" style="padding-left:15px;">
+
                         <select name="year" id="year-select">
                             <script>
                                 for(var i=1988; i<=2099; i++){
@@ -100,62 +137,18 @@
                     <div class="row">
 
                         <div class="col-md-4" id="parent">
-                            <div><a class="card-link" data-toggle="collapse" data-parent="#card-parent" onclick="reset()" href=".card-child"><h4>대원씨티에스</h4></a></div>
-                            <div id="card-parent">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <div>Objective</div>
-                                        <hr>
-                                        <span>
-                                            <?php 
-                                                if($DWCTS['OBJECTIVE'] != null){
-                                                ?>
-                                                    <span><?=$DWCTS['OBJECTIVE']?></span>
-                                                
+                            <script>
+                                $(document).ready(function() {
+                                    <?php
+                                        foreach($DWCTS as $key => $bean){
+                                            ?>
+                                                add_column('#parent' , '<?=$bean["DEPT_CD"]?>', '<?=$bean["DEPT_NM"]?>', '<?=$bean["OBJECTIVE_ID"]?>','<?=$bean["OBJECTIVE"]?>', '<?=$bean["IS_UP_DEPT"]?>', '<?=$bean["DWGP_CD"]?>');
                                             <?php
-                                                }
-                                                else
-                                                ?>
-                                                    <span>Objective가 등록되지 않았습니다.</span>   
+                                        }
+                                    ?>
+                                })
+                            </script>
 
-                                        </span>
-                                    
-                                    </div>
-
-                                    <div class="card-header" style="text-align:center;">
-                                        <a class="card-link" data-toggle="collapse" data-parent="#card-parent" href="#card-element-534736">Key Results</a>
-                                    </div>
-                                    <div id="card-element-534736" class="collapse">
-                                        <div class="card-body">
-                                            <div style="text-align:center; text-decoration: underline;"><h4>Key Results</h4></div>
-                                                <?php
-                                                    if($DWCTS['KR'] == null){
-                                                        ?>
-                                                        <div style="text-align:center; margin-top:10px;">KR이 등록되지 않았습니다.</div>
-
-                                                        <?php
-                                                    }
-
-                                                    else {
-                                                        ?>
-                                                        <ol style="padding: 10px 0px 0px 20px">
-                                                        <?php
-                                                        foreach($DWCTS['KR'] as $key => $bean){
-                                                            ?>
-                                                            <li style='margin:10px 0px 10px 0px'><?=$bean['KR_CONTENT']?></li>
-
-                                                            <?php
-                                                        }
-                                                        ?>
-                                                        </ol>
-                                                        <?php
-                                                    }
-                                                ?>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
                         <div class="col-md-4" id="child-1">
@@ -163,7 +156,7 @@
                                 <div id="card-child-1" class="card-body" style="padding:0px;">
 
                                     <script>
-                                        window.onload = function(){
+                                        $(document).ready(function() {
                                             <?php
                                                 foreach($team_arr as $key => $bean){
                                                     ?>
@@ -172,7 +165,7 @@
                                                     <?php
                                                 }
                                             ?>
-                                        }
+                                        })
                                     </script>                      
                                     
                                 </div>
@@ -355,8 +348,8 @@
         var myfunction;
         var html;
 
-        if(objective == null || objective == 'null')
-            objective_temp = 'Objective가 등록되지 않았습니다.';
+        if(objective == null ||objective == 'null')
+            objective_temp = '';
         else
             objective_temp = objective;
 
@@ -371,6 +364,10 @@
         else if(card_id == '#card-child-3'){
             myhref = "#";
             myfunction = "#";
+        }
+
+        else {
+            console.log("123123123");
         }
 
         // 작업중
@@ -397,6 +394,11 @@
                                                             <li class="m-nav__item">
                                                                 <a id="modal-357980" onclick="edit_objective_modal('`+objective_id+`','`+objective+`', '` +dept_cd+ `','`+ dwgp_cd +`')" href="#modal-container-357980" role="button" class="btn" data-toggle="modal">편집</a>
                                                             </li>
+
+                                                            <li class="m-nav__item">
+                                                                <a href="javascript:confirm_delete_objective(`+ objective_id +`)" class="btn">삭제</a>
+                                                            </li>
+
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -526,7 +528,13 @@
                     for(var i=0; i < result.length; i++){
                     // console.log(result[i]['ID']);
                     // console.log(result[i]['CONTENT']);
-                    html = html.concat("<li id='"+ result[i]['ID'] +"' style='margin:10px 0px 10px 0px' >"+ result[i]['CONTENT'] + "</li>");
+                    // 진척율: `+ result[i]['PROC_RAT'] +`%
+                    html = html.concat(`<li class="show_proc" kr_id='`+ result[i]['ID'] +`' kr_proc='`+ result[i]['PROC_RAT'] +`' style='margin:10px 0px 10px 0px' onmouseover="MouseOn(this)" onMouseout="clearTimeout(timer); MouseOut(this)">`+ result[i]['CONTENT'] + `</li>
+                                        <div class="progress" style="display:none; position:relative; height:25px">
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="`+ result[i]['PROC_RAT'] +`" aria-valuemin="0" aria-valuemax="100" style="width:`+ result[i]['PROC_RAT'] +`%; font-size: 12px;">
+                                                진척율: `+ result[i]['PROC_RAT'] +`%
+                                            </div>
+                                        </div>`);
                     }
                     html = html.concat('</ol>');
 
@@ -575,12 +583,13 @@
                         </div>
                         <div class="modal-body">
                             <input id="edit_okr_hidden" type="hidden" value="`+temp_objective_id+`"></input>
-                            <textarea id="edit_okr" col="50" rows="4" style="width:100%; overflow:hidden; resize: none;" onKeyUp="javascript:fnChkByte(this,'200')">`+temp_objective+`</textarea>
+                            <textarea class="form-control" id="edit_okr" col="50" rows="4" style="width:100%; overflow:hidden; resize: none;" onKeyUp="javascript:fnChkByte(this,'200')">`+temp_objective+`</textarea>
+                            <br>
                             <span id="byteInfo">0</span> / 200bytes
                         </div>
                         <div class="modal-footer">
                             
-                            <button type="button" class="btn btn-primary" onclick="okr_edit('`+dept_cd+`', '`+ dwgp_cd +`')">
+                            <button type="button" class="btn btn-primary" onclick="objective_edit('`+dept_cd+`', '`+ dwgp_cd +`')">
                                 Save changes
                             </button> 
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -595,32 +604,61 @@
     //Modal Creator
     function edit_kr_modal(objective_id, dept_cd){
 
-        var my123 = document.querySelector("#card-" + dept_cd + "-element > div > ol").childNodes;
+        $("#mymodal2").empty();
+
+        var my123 = new Array();
+
+        if(document.querySelector("#card-" + dept_cd + "-element > div > ol") != null)
+            my123 = document.querySelectorAll("#card-" + dept_cd + "-element > div > ol > li")
+
 
         var html = `
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="myModalLabel">
-                                Objective 수정
+                                KR 수정
                             </h5> 
                             <button type="button" class="close" data-dismiss="modal">
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-body" style="text-align:center">
+                            <div id="add_here">
+                                <input name="objective_id" type="hidden" value="`+ objective_id +`"></input>
+                                <input name="dept_cd" type="hidden" value="`+ dept_cd +`"></input>
                     `;
 
         for(var i=0;i<my123.length;i++){
-            html = html.concat(`<input name="kr-id[]" type='hidden' value='`+ my123[i].id +`'></input>`);
-            html = html.concat(`<textarea name="kr-content[]" col="50" rows="4" style="width:100%; overflow:hidden; resize: none;" >`+my123[i].innerText+`</textarea>`);
+            html = html.concat(`<div class="input-group" style="margin-top:10px">
+                                    <input name="kr-id[]" type='hidden' value='`+ $(my123[i]).attr('kr_id') +`'></input>
+                                    <textarea id="kr-content-`+$(my123[i]).attr('kr_id')+`" class="form-control" name="kr-content[]" col="50" rows="4" style="overflow:auto; resize: none;" >`+ $(my123[i]).text()+`</textarea>
+                                    <div class="input-group-append">
+                                        <input id="kr-delete-`+$(my123[i]).attr('kr_id')+`" name="kr-delete[]" type='hidden' value='N'></input>
+                                        
+                                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:black"></button>
+                                        <div class="dropdown-menu">
+                                            <div class="input-group" style="margin-top:10px">
+                                                <div class="input-group-prepend" style="margin:5px 0px 5px 5px">
+                                                    <span class="input-group-text">진척율</span>
+                                                </div>
+
+                                                <input id="kr-proc-`+$(my123[i]).attr('kr_id')+`" class="form-control" name="kr-proc[]" type='text' style="margin:5px 5px 5px 0px" value='`+ $(my123[i]).attr('kr_proc') +`'></input>
+                                            </div>
+                                            <hr class="dropdown-divider">
+                                            <a id="kr-text-`+ $(my123[i]).attr('kr_id') +`" class="dropdown-item" href="javascript:delete_kr(`+ $(my123[i]).attr('kr_id') +`)">삭제</a>
+                                        </div>
+                                    </div>
+                                </div>`);
+
         }
 
         var html2 = `
-                            <span id="byteInfo">0</span> / 200bytes
+                            </div>
+                            <button class="btn btn-primary" type="button" onclick="kr_add_column()" style="margin-top:10px" >+</button>
                         </div>
                         <div class="modal-footer">
                             
-                            <button type="button" class="btn btn-primary" onclick="">
+                            <button type="button" class="btn btn-primary" onclick="kr_edit()">
                                 Save changes
                             </button> 
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -674,7 +712,7 @@
         }
     }
 
-    function okr_edit(dept_cd, dwgp_cd){
+    function objective_edit(dept_cd, dwgp_cd){
         // console.log($("#edit_okr_hidden").val());
         // console.log($("#edit_okr").val());
 
@@ -702,6 +740,129 @@
             }
         });
     }
+
+    function kr_edit(){
+
+        var queryString = $("form[name=kr_form]").serialize();
+    
+        $.ajax({
+            type : 'POST',
+            url : '/OKR_MAP_Controller/edit_KR',
+            cache : false,
+            data : queryString,
+            async: false,
+            success : function( data ){
+                window.location.reload();
+            },
+            error : function( request , status , error ){
+                alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+            }
+        });
+    }
+
+    function kr_add_column(){
+ 
+        var html = `    <div class="input-group" style="margin-top:10px">
+                            <input name="kr-id[]" type='hidden' value=''></input>
+                            <textarea class="form-control" name="kr-content[]" col="50" rows="4" style="overflow:auto; resize: none;" ></textarea>
+                            <div class="input-group-append">
+                                <input name="kr-delete[]" type='hidden' value='N'></input>
+                                
+                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:black"></button>
+                                <div class="dropdown-menu">
+                                    <div class="input-group" style="margin-top:10px">
+                                        <div class="input-group-prepend" style="margin:5px 0px 5px 5px">
+                                            <span class="input-group-text">진척율</span>
+                                        </div>
+
+                                        <input class="form-control" name="kr-proc[]" type='text' style="margin:5px 5px 5px 0px" value='0'></input>
+                                    </div>
+                                    <hr class="dropdown-divider">
+                                    <a class="dropdown-item" onclick="delete_new_kr(this)">삭제</a>
+                                </div>
+                            </div>
+                        </div>`
+
+                    
+        $("#add_here").append(html);
+    }
+
+    function delete_kr(id){
+
+        if($('#kr-delete-'+id).val() == 'N'){
+            // console.log("삭제");
+            $('#kr-delete-'+id).val('Y')
+            $('#kr-text-'+id).text("취소");
+            $('#kr-content-' + id).attr("readonly", true);
+            $('#kr-content-' + id).css("background-color", "#d3d3d3");
+            $('#kr-proc-' + id).attr("readonly", true);
+            $('#kr-proc-' + id).css("background-color", "#d3d3d3");
+        }
+        
+        else{
+            // console.log("취소");
+            $('#kr-delete-'+id).val('N')
+            $('#kr-text-'+id).text("삭제");
+            $('#kr-content-' + id).removeAttr("readonly"); 
+            $('#kr-content-' + id).css("background-color", "white");
+            $('#kr-proc-' + id).removeAttr("readonly"); 
+            $('#kr-proc-' + id).css("background-color", "white");
+        }
+    }
+
+    //에러가 발생할수있음...
+    function delete_new_kr(e){
+        $(e).parent().parent().parent().remove();
+    }
+
+    //진척율 표시관련
+    function MouseOn(e){
+
+        timer=setTimeout(function(){
+                $(e).next().css("display", "");
+            }, 1000 * 1);
+    }
+
+    //진척율 표시관련
+    function MouseOut(e){
+        $(e).next().css("display", "none");
+    }
+
+    function confirm_delete_objective(objective_id){
+
+        if(objective_id == null){
+            return;
+        }
+
+        if(confirm("정말 삭제하시겠습니까?\n연동된 모든 내용이 삭제됩니다.")){
+            $.ajax({
+                type : 'POST',
+                url : '/OKR_MAP_Controller/delete_OKR',
+                cache : false,
+                data : {"ID": objective_id},
+                async: false,
+                success : function( data ){
+                    alert("성공적으로 삭제하였습니다.");
+                    window.location.reload();
+                },
+                error : function( jqxhr , status , error ){
+    
+                }
+            });           
+        }
+    }
+
+    /* Set the width of the side navigation to 250px */
+    function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+    }
+
+    /* Set the width of the side navigation to 0 */
+    function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+    }
+
+
 
     //OKR_MAP 메뉴 활성화
 
