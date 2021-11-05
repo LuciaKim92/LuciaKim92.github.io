@@ -127,5 +127,11 @@ nb-configuration.xml
 
 node_modules
 
+<<<<<<< Updated upstream
 system/Database/SQLSRV
 system/Database/sqlsrv
+=======
+
+system/Database/sqlsrv/
+system/Database/SQLSRV/
+>>>>>>> Stashed changes

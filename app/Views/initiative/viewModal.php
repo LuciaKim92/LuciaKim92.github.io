@@ -21,7 +21,7 @@
 <body>
     <!-- Modal -->
     <div class="modal fade" data-keyboard="true" id="initiative-view-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header" style = "border-bottom: 0 none; padding-bottom : 5px">
                     <h5 class="modal-title text-center" id="exampleModalLongTitle">Initiative Tool</h5>
@@ -149,7 +149,7 @@
 								</div>
 								</div>
 							</div>
-
+                            
                             <!--modal footer start-->
                             <div id = "modal-footer">
                                 <div style="margin : 5px; cursor : pointer;">
@@ -213,7 +213,13 @@
                
     </div><!-- /.modal -->
 
-    <div class ="modal" id = "sticker-memo-modal" aria-hidden="true" style="margin-top : 10%; padding-right : 0px; margin-right : 0px; bottom: 50%; right: 30%; left : auto; background-color : white; border-radius : 5px; border : 1px solid #c9c9c9; display:none; width : 300px; height : 250px; z-index:9999">
+    <div class ="fixed-top" id = "init-custom-alert" style="padding-top : 10px; font-size : 14px;z-index:9999; display : none; border-radius : 5px; width : 20%; height : 5%; background-color : #c9c9c9; top : 5%; right : 0; left : 0; margin: 0 auto; text-align : center; border : 1px solid #c9c9c9;"> <!-- alert -->
+        <span id = "init-custom-alert-content">
+            욤욤욤욤욤욤요묘욤욤ㅇㅁ요
+        </span>
+    </div> 
+
+    <div class ="modal" id = "sticker-memo-modal" aria-hidden="true" style="margin-top : 10%; padding-right : 0px; margin-right : 0px; bottom: 50%; right: 20%; left : auto; background-color : white; border-radius : 5px; border : 1px solid #c9c9c9; display:none; width : 300px; height : 250px; z-index:9999">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -223,7 +229,10 @@
                 INITIATIVE : <span id="sticker-memo-span" style="margin-left : 5px; font-size : 11px; color : #727272;">content</span></span>
             </div>
             <input type="hidden" id="sticker-memo-todo-id" value="">
-            <textarea id="sticker-memo-textarea" class="form-control" placeholder="스티커 메모" style="resize: none; border : 1px solid #c9c9c9; display : block; width : 100%; height : 140px; margin-left : 3%; margin-right : 5%; padding : 5px;" ></textarea>
+            <div>
+                <textarea id="sticker-memo-textarea" class="form-control" placeholder="스티커 메모" style="resize: none; border : 1px solid #c9c9c9; display : block; width : 100%; height : 140px; margin-left : 3%; margin-right : 2%; padding : 5px;" ></textarea>
+                <div></div>
+            </div>
             <button id = "todo-sticker-save" type="button" class="btn btn-warning float-right" style = "margin : 5px; border-radius : 3px; background-color : #9F9FFF; border-color : #9F9FFF; color : white; font-size : 12px; width : 20%; display : block" onclick ="saveStickerMemo('s');">등록</button>
             <button id = "todo-sticker-update" type="button" class="btn btn-warning float-right" style = "margin : 5px; border-radius : 3px; border-color : #9F9FFF; background-color : #9F9FFF; color : white; font-size : 12px; width : 20%; display : none" onclick ="updateStickerMemo();">수정</button>
             <button id = "todo-sticker-delete" type="button" class="btn btn-danger float-right" style = "margin : 5px; border-radius : 3px; color : white; font-size : 12px; width : 20%; display : none" onclick ="saveStickerMemo('d');">삭제</button>            
@@ -311,7 +320,7 @@
             }
             if(confirm(str)){
                 if(memo == ""){
-                    alert("작성한 내용이 없습니다.\n작성 후 저장하세요")
+                    showNotification("작성한 내용이 없습니다.\n작성 후 저장하세요")
                 }
                 else{
                     $.ajax({
@@ -325,7 +334,7 @@
                         },
                         success:function(res){
                             console.log(res);
-                            alert(compStr);
+                            showNotification(compStr);
                             $("#sticker-memo-content-"+n).val(res.NOTES);
                             $("#sticker-memo-modal").modal("hide");
                         },
@@ -416,7 +425,7 @@
                     }
                     console.log(res);
                     $("#st-btn").text(str);
-                    $("$st-btn").val(res.PROC_ST)
+                    $("#st-btn").val(res.PROC_ST)
                 },
                 error:function(request,status,error){
                     alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -641,7 +650,7 @@
                             update_by : '<?=$_SESSION['admin_names']?>'
                         },
                         success:function(res){
-                            alert("해당 내용을 완료된 ToDoList로 이동시켰습니다.");
+                            showNotification("해당 내용을 완료된 ToDoList로 이동시켰습니다.");
 
                             tmpStr += `<div class="form-check form-check-inline" style = "display : block; margin-top : 5px; margin-bottom : 5px;">`
                                         + `<input id="viewInlineCheckboxComp`+ cnt +`" class="form-check-input" type="checkbox" value="option1" checked disabled>`
@@ -679,7 +688,7 @@
             //직접입력 : value만 세팅함
             var confStr = $("#view-conf-span").val();
             if(initID == "n"){
-                alert("Initiative 선택 후 변경할 수 있습니다.");
+                showNotification("Initiative 선택 후 변경할 수 있습니다.");
                 return ;
             }
             if(confStr != s){
@@ -696,7 +705,7 @@
                             update_by : '<?=$_SESSION['admin_names']?>'
                         },
                         success:function(res){
-                            alert("자신감이 변경되었습니다.");
+                            showNotification("자신감이 변경되었습니다.");
                         },
                         error:function(request,status,error){
                             alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -724,7 +733,7 @@
                 if(confirm("진행 상태를 변경하시겠습니까?")){
                     
                     if($("#modal-init-select-view option:selected").val() == 'n'){
-                        alert("Initiative 선택 후 변경할 수 있습니다.");
+                        showNotification("Initiative 선택 후 변경할 수 있습니다.");
                     }
 
                     else if(a != value){
@@ -746,7 +755,7 @@
                                 update_by : '<?=$_SESSION['admin_names']?>'
                             },
                             success:function(res){
-                                alert("진행 상태가 변경되었습니다.");
+                                showNotification("진행 상태가 변경되었습니다.","n");
                                 $("#st-btn").val(a);
                                 $("#st-btn").text(text);
                             },
@@ -770,11 +779,33 @@
             console.log(like);
 
             var tmpStr = "";
-            tmpStr += `<div class = "initiative-comment" style="margin-left : 5px; border-radius : 10px; margin : 5px; border : solid 0.1em; width : 89%">`
+            tmpStr += `<div class = "initiative-comment" style="margin-left : 5px; border-radius : 10px; margin : 5px; border : solid 0.1em; width : 95%">`
                                         + `<div>` //프로필, 이름, 날짜
+
                                             + `<div class="float-right" id="test-date" style ="margin-right: 10px;">`//날짜[오른쪽 정렬]
-                                                + day
-                                            + `</div>` 
+                                                + `<span>`+day+`<span>`
+                                                +  `<div class="m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" m-dropdown-toggle="click" aria-expanded="true">
+                                                    <a href="#" class="m-portlet__nav-link m-dropdown__toggle btn m-btn m-btn--link" style="display : inline; float:right; padding:0px">
+                                                        <i class="la la-ellipsis-h"></i>
+                                                    </a>
+                                                    <div class="m-dropdown__wrapper" style="z-index: 101; width:auto; height:auto;">
+                                                        <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust" style="left: auto; right: 29.5px;"></span>
+                                                        <div class="m-dropdown__inner">
+                                                            <div class="m-dropdown__body" style="padding:5px">
+                                                                <div class="m-dropdown__content">
+                                                                    <ul class="m-nav">
+                                                                        <li class="m-nav__item">
+                                                                            <a role="button" class="btn" data-toggle="modal" onclick = "updateInitReplyStatus(`+n+`,'s');">수정</a>
+                                                                            <a role="button" class="btn" data-toggle="modal" onclick = "updateInitReplyStatus(`+n+`,'d');">삭제</a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>`//DROPDOWN [댓글 수정/삭제]
+                                            + `</div>`
+                                            
                                         + `<i id = "init-reply-user-icon-`+n+`" class="flaticon-profile-1" style = "margin-left : 5px"></i>` //프로필
                                         + `<span style="margin-left : 5px;">`+ name +`</span>`// 이름
                                         +`</div>`//프로필, 이름, 날짜 끝
@@ -782,12 +813,13 @@
                                         +`<div>`//좋아요 및 내용 표시
                                             +`<div id = "init-reply-mention-div-`+n+`" style="display : none"></div>` //멘션때문에 임시로 둠
                                             +`<span id = "init-reply-content-`+n+`">`+ content +`</span>` // 내용
-                                            + `<div class="float-right" id="test-date" style ="margin-right: 10px;">` //오른쪽 정렬 하트 2개
+                                            + `<div class="float-right" id="test-date" style ="margin-right: 5%;">` //오른쪽 정렬 하트 2개
                                                 +`<span id = "likes-cnt-init-rply-`+n+`" style="margin-right : 10px;"></span>`//좋아요 수
-                                                +`<i id = "rply-blank-heart-`+n+`" class="far fa-heart red-color" style="display : inline;" onclick = "saveLikeInitReply(`+n+`,0);"></i>`
-                                                +`<i id = "rply-heart-`+n+`"class="fas fa-heart red-color" style="display : none;" onclick = "saveLikeInitReply(`+n+`,1);"></i>`
+                                                +`<i id = "rply-blank-heart-`+n+`" class="far fa-heart" style="display : inline; color : red" onclick = "saveLikeInitReply(`+n+`,0);"></i>`//빈 하트
+                                                +`<i id = "rply-heart-`+n+`"class="fas fa-heart" style="display : none; color : red" onclick = "saveLikeInitReply(`+n+`,1);"></i>`//찬 하트
                                             +`</div>`
-                                        +`</div>`;
+                                        +`</div>`
+                                        ;
 
             $("#init-view-reply-div").prepend(tmpStr);
             if(like == "Y"){
@@ -802,6 +834,18 @@
             
 
         }
+        //댓글 수정/삭제
+        function updateInitReplyStatus(n,s){
+            //delete일 때
+            if(s == 'd'){
+                //삭제되었습니다 표시
+            }
+            //update일 때
+            else if(s == 'd'){
+
+            }
+        }
+
         //댓글 좋아요 수 표시
         function getLikeInitReply(n){
             var replyID = $("#init-reply-id-"+n).val();
@@ -862,7 +906,7 @@
                 success:function(res){
                     console.log(res);
                     if(str != "")
-                        alert(str);
+                        showNotification(str);
                         getLikeInitReply(n);
                 },
                 error:function(request,status,error){
@@ -882,7 +926,7 @@
             var date;
 
             if(initID == "n"){
-                alert("Initiative 선택 후 댓글을 입력할 수 있습니다.");
+                showNotification("Initiative 선택 후 댓글을 입력할 수 있습니다.");
                 $("#init-view-reply-textarea").val("");
                 return ;
             }
@@ -900,7 +944,7 @@
                 success:function(res){
                     date = (res.CREATE_ON).split(".")[0];
                     $("#init-view-reply-textarea").val("");
-                    alert("댓글이 저장되었습니다.");
+                    showNotification("댓글이 저장되었습니다.");
                     console.log(res);
                     makeInitViewReply(99999,res.CREATE_BY,res.CONTENT,date,res.ID,"n");
                     saveInitReplyData(res.ID);
@@ -1076,6 +1120,7 @@
                 $("#init-rply-input-file").addClass("hid");
             }
         }
+
         
         
        

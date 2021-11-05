@@ -16,7 +16,7 @@
 <body>
     <!-- Modal -->
     <div class="modal fade" id="initiative-write-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header" style = "border-bottom: 0 none; padding-bottom : 5px">
                     <h5 class="modal-title text-center" id="exampleModalLongTitle">Initiative Tool 등록</h5>
@@ -238,6 +238,7 @@
         //KR 선택 시 Initiative 세팅
         $("#modal-kr-select").on("change", function(){
             $(".todo-write-more").hide();
+            $("#init-input-box").hide();
             var empNum = '<?=$_SESSION['emp_no']?>';
             $.ajax({
                 url:"/InitiativeController/getInitiativeListAjax",
@@ -249,11 +250,10 @@
                 },
                 success:function(res){
                     var cnt = Object.keys(res).length;
-                    var tmpStr = '<option disabled selected value ="n">====선택====</option>';
+                    var tmpStr = '<option disabled selected value ="n">====선택====</option>' + `<option value= '1'>직접 입력</option>`;
                     for(var i = 0; i < cnt; i++){
                         tmpStr += `<option value='`+res[i].ID+`'>`+res[i].CONTENT+`</option>`;
                     }
-                    tmpStr += `<option value= '1'>직접 입력</option>`
                     document.getElementById('modal-init-select').innerHTML = tmpStr;
                 },
                 error:function(request,status,error){
@@ -265,6 +265,7 @@
 
         //Initiative 직접입력 && 초기실행
         $(function(){
+ 
 
 
             //직접입력 인풋박스 기존에는 숨어있다가
@@ -300,6 +301,7 @@
                     $("#init-file").hide();
                     $("#write-todo-completed-button").show();
                     $("#todo-write-more-btn").show();
+
                     console.log($(this).val());
                     if($("#proc-hidden").val() == "block"){
                         $("#todo-write-more-proc").show();

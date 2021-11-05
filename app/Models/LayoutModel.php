@@ -57,7 +57,6 @@ class LayoutModel extends Model{
                         OKR_OBJT_MST
                     ON
                         OKR_KEYS
-
                     WHERE EMP_EMAIL = ?
                     
                 ;";
