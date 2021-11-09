@@ -66,7 +66,11 @@ class Home extends BaseController
 
 		$mydata['dashBoardData'] = $dashBoardData;
 		*/
-		$this->response->redirect("/main");
+		//$this->response->redirect("/test");
+		//echo view("/test/initiativeTest.php");
+		echo view("/case/createCase.php");
+		//메인으로 이동
+		//$this->response->redirect("/main");
 	}
 
 	public function session_setting()

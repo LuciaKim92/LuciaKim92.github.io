@@ -4,6 +4,7 @@ namespace App\Models;
 use CodeIgniter\Database\ConnectionInterface;
 use CodeIgniter\Model;
 
+//Initiative Tool에 사용되는 Model
 class InitiativeModel extends Model{
     var $admin_db;
 	var $admin_db_cfg;
@@ -12,6 +13,7 @@ class InitiativeModel extends Model{
         parent::__construct();
     }
 
+    //진행률 설정
     public function setProgress()
     {
         //$this->db = \Config\Database::connect();
@@ -34,6 +36,7 @@ class InitiativeModel extends Model{
         //ci4 db by lcs 210405 끝
     }
 
+    //작성된 Initiative 목록 불러오기
     public function getInitiativeList(){
         $okr_db = \Config\Database::connect('okrdb');
         $query = 
@@ -55,6 +58,7 @@ class InitiativeModel extends Model{
         //list 전체뽑기
     }
 
+    //작성된 ToDoList 목록 불러오기
     public function getTodoList(){
         $okr_db = \Config\Database::connect('okrdb');
         $query = 
@@ -71,6 +75,7 @@ class InitiativeModel extends Model{
         return $result->getResultArray();
     }
     
+    //Initiative Tool에 작성한 Initiative 저장하기
     public function saveInitiative(){
         $okr_db = \Config\Database::connect('okrdb');
         $query = 
@@ -102,12 +107,13 @@ class InitiativeModel extends Model{
         //return $result->getResultArray();
     }
 
+    //Initiative 작성 후 해당 Initiative의 ID,CONTENT 가져오기[해당 열 추가하기위함]
     public function getInitID($content){
         $okr_db = \Config\Database::connect('okrdb');
         $query = 
                 "
                     SELECT TOP 1
-                            ID
+                            ID,CONTENT
                     FROM OKR_INIT_MST 
                     WHERE CONTENT = ?
                     AND EMPY_NO = ?
@@ -117,6 +123,7 @@ class InitiativeModel extends Model{
         return $result->getRowArray(); //한줄뽑기        
     }
     
+    //Initiative Tool에 작성한 ToDoList 저장하기
     public function saveToDo($content){
         $okr_db = \Config\Database::connect('okrdb');
         $query = 
@@ -146,6 +153,7 @@ class InitiativeModel extends Model{
         return $id; 
     }
 
+    //작성한 ToDoList의 ID 가져오기
     public function getToDoID($content){
         $okr_db = \Config\Database::connect('okrdb');
         $query = 
@@ -161,6 +169,7 @@ class InitiativeModel extends Model{
         return $result->getRowArray();        
     }
 
+    //Initiative Tool에 사용할 자신감정도 가져오기
     public function getInitConfTP(){
         $okr_db = \Config\Database::connect('okrdb');
         $query = 
@@ -172,6 +181,8 @@ class InitiativeModel extends Model{
         $result = $okr_db->query($query, array($_GET['initKey']));
         return $result->getRowArray();       
     }
+
+    //Initiative Tool에서 자신감 버튼으로 직접 변경한 것 바로 저장되게하기
     public function updateConfTP(){
         $okr_db = \Config\Database::connect('okrdb');
         $query =
@@ -189,6 +200,7 @@ class InitiativeModel extends Model{
         
     }
 
+    //ToDoList의 진행상황 변경하기
     public function setTodoListProcST(){
         $okr_db = \Config\Database::connect('okrdb');
         $query = 
@@ -205,6 +217,7 @@ class InitiativeModel extends Model{
         return $_POST['id'];
     }
 
+    // KR ID 가져오기
     public function getKR(){
         $okr_db = \Config\Database::connect('okrdb');
         $query = 
@@ -217,6 +230,7 @@ class InitiativeModel extends Model{
         return $result->getRowArray();    
     }
 
+    //Initiative의 진행상황 가져오기
     public function getInitiativeProcST(){
         $okr_db = \Config\Database::connect('okrdb');
         $query = 
@@ -230,6 +244,7 @@ class InitiativeModel extends Model{
 
     }
 
+    //이미 입력되어있는 ToDoList에 StickerMemo 추가하기
     public function updateStickerMemo(){
         $okr_db = \Config\Database::connect('okrdb');
         if($_POST['notes'] == "null"){
@@ -249,6 +264,7 @@ class InitiativeModel extends Model{
         return $_POST['id'];
     }
 
+    //ToDoList의 Sticker Memo 가져오기
     public function getStickerMemo(){
         $okr_db = \Config\Database::connect('okrdb');
         $query = 
@@ -262,6 +278,7 @@ class InitiativeModel extends Model{
 
     }
 
+    //Initiative Tool에서 작성한 댓글 저장하기
     public function saveInitReplyInTable($id){
         $okr_db = \Config\Database::connect('okrdb');
         $query = 
@@ -286,6 +303,7 @@ class InitiativeModel extends Model{
         return $id;
     }
     
+    //Initiative Tool에서 SESSION에 접속한 사용자가 해당 댓글들 봤다는 증거로 Data저장하기
     public function saveInitViewReply(){
         $okr_db = \Config\Database::connect('okrdb');
         $query = 
@@ -314,6 +332,7 @@ class InitiativeModel extends Model{
         return $id;
     }
     
+    //Initiative Tool 댓글 저장 후 ID가져오기
     public function getInitReplyID($content){
         $okr_db = \Config\Database::connect('okrdb');
         $query = 
@@ -331,6 +350,7 @@ class InitiativeModel extends Model{
     
 
 
+    //Initiative Tool 댓글 가져오기
     public function getInitViewReply(){
         $okr_db = \Config\Database::connect('okrdb');
         $query = 
@@ -364,6 +384,8 @@ class InitiativeModel extends Model{
         $result = $okr_db->query($query, array($_POST['id'],$_POST['empy_no']));
         return $result->getResultArray();
     }
+
+    //Initiative 담당자 가져오기
     public function getInitMaker(){
         $okr_db = \Config\Database::connect('okrdb');
         $query = 
@@ -378,6 +400,7 @@ class InitiativeModel extends Model{
         return $result->getRowArray();
     }
 
+    //Initiative Tool 댓글 저장하기
     public function saveInitReplyData(){
         $okr_db = \Config\Database::connect('okrdb');
         $query = 
@@ -404,6 +427,7 @@ class InitiativeModel extends Model{
         return $_POST['id'];
     }
     
+    //Initiative Tool 댓글 읽음 여부 가져오기
     public function initReplyReadOK(){
         $okr_db = \Config\Database::connect('okrdb');
 
@@ -427,6 +451,7 @@ class InitiativeModel extends Model{
         return $result->getResultArray();
     }
 
+    //댓글 읽은 사람이 좋아요 눌렀을 때 활성화/비활성화 즉시저장
     public function saveLikeInitReply(){
         $okr_db = \Config\Database::connect('okrdb');
         $query = 
@@ -444,6 +469,7 @@ class InitiativeModel extends Model{
         return $_POST['id'];
     }
 
+    //댓글에 달린 좋아요 수 불러오기
     public function getLikeCntInitReply(){
         $okr_db = \Config\Database::connect('okrdb');
         $query = 

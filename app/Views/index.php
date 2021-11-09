@@ -81,6 +81,7 @@
 							</div>
 							<div class="m-portlet__body  m-portlet__body--no-padding">
 								<div class="row m-row--no-padding m-row--col-separator-xl">
+									<!--회사 OKR-->
 									<div class="col-xl-4">
 										<div class="m-widget24">
 											<div class="m-widget24__item">
@@ -131,6 +132,7 @@
 											</div>
 										</div>
 									</div>
+									<!--부문 OKR-->
 									<div class="col-xl-4">
 										<div class="m-widget24">
 											<div class="m-widget24__item">
@@ -181,6 +183,7 @@
 											</div>
 										</div>
 									</div>
+									<!--팀 OKR-->
 									<div class="col-xl-4">
 										<div class="m-widget24">
 											<div class="m-widget24__item">

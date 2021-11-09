@@ -17,12 +17,24 @@ class LayoutModel extends Model{
         //$this->db = \Config\Database::connect();
         $okr_db = \Config\Database::connect('okrdb');
         //$cts_db = \Config\Database::connect('ctsdb');
+        $query = 
+                "
+                    SELECT 
+                        ID,
+                        OBJECTIVE,
+                        OKR_YEAR,
+                        OKR_QTR
+                    FROM
+                        OKR_OBJT_MST
+                    WHERE 
+                        DEPT_CD = ?
+                    
+                ;";
+        $result = $okr_db->query($query, array($dept_CD));
+        return $result->getRowArray();
 
-        $builder = $okr_db->table('OKR_OBJT_MST');
-        $builder->select('*');
-        $builder->where('DEPT_CD', $dept_CD);
-        $query  = $builder->get();
-        return $query->getRowArray();
+
+
         //새로운 소스 끝
         //ci4 db by lcs 210405 끝
     }
@@ -34,9 +46,15 @@ class LayoutModel extends Model{
         $cts_db = \Config\Database::connect('ctsdb');
         $query = 
                 "
-                    SELECT *
-                    FROM EMP_MST
-                    WHERE EMP_EMAIL = ?
+                    SELECT 
+                        EMP_NM,
+                        EMP_NO,
+                        EMP_EMAIL,
+                        DEPT_CD
+                    FROM 
+                        EMP_MST
+                    WHERE 
+                        EMP_EMAIL = ?
                     
                 ;";
         //$result = $okr_db->query($query, array('jihun.ko@computer.co.kr'));
@@ -50,43 +68,62 @@ class LayoutModel extends Model{
         $query = 
                 "
                     SELECT 
-                        *
+                        ID,
+                        CONTENT,
+                        OKR
                     FROM 
                         OKR_KEYS_MST
-                    LEFT JOIN
-                        OKR_OBJT_MST
-                    ON
-                        OKR_KEYS
-                    WHERE EMP_EMAIL = ?
-                    
+                    WHERE 
+                        DEPT_CD = ?
+                    AND
+                        PROC_ST = ?
                 ;";
-        $builder = $okr_db->table('OKR_KEYS_MST');
-        $builder->select('*');
-        $builder->where('DEPT_CD', $dept_CD);
-        $builder->where('PROC_ST', $dept_ST);
-        $query  = $builder->get();
+        $result = $okr_db->query($query, array($dept_CD,$dept_ST));
         //print_r($query->getResult());
-        return $query->getResultArray();
+        return $result->getResultArray();
 
     }
 
     public function GetDeptCode($dept_CD){
         //DB 연결
         $cts_db = \Config\Database::connect('ctsdb');
-        
-        $builder = $cts_db->table('DEPT_MAP');
-        $builder->select('*');
-        $builder->where('DEPT_CD',$dept_CD);
-        $builder->where('BEND_DT','29991231');
-        $query = $builder->get();
-        return $query->getRowArray();
+        $query = 
+                "
+                    SELECT
+                        ,
+                    FROM
+                        DEPT_MAP
+                    WHERE
+                        DEPT_CD = ?
+                    AND   
+                        BEND_DT = ?
+   
+                ;";
+        $result = $cts_db->query($query, array($dept_CD,'29991231'));
+        return $result->getRowArray();
         
     }
 
     public function GetInitiative($empy_no,$proc_st){
         //DB연결
         $okr_db = \Config\Database::connect('okrdb');
-        $query = $okr_db->query("SELECT DISTINCT ID,OKR_KEYS_ID,EMPY_NO,CONTENT,CONF_TP,PROC_ST FROM OKR_INIT_MST WHERE PROC_ST ='".$proc_st."' AND EMPY_NO = '".$empy_no."';");
+        $query =
+                "
+                    SELECT DISTINCT
+                        ID,
+                        OKR_KEYS_ID,
+                        EMPY_NO,
+                        CONTENT,
+                        CONF_TP,
+                        PROC_ST
+                    FROM 
+                        OKR_INIT_MST 
+                    WHERE 
+                        PROC_ST = ? 
+                    AND
+                        EMPY_NO = ?
+                ;";
+        $result = $okr_db->query($query,array($proc_st,$empy_no));
         return $query->getResultArray();
 
     }
