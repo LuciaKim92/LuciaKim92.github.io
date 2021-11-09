@@ -162,7 +162,7 @@
                                     <div style = "margin-top : 10px; ">
                                         <span style = "margin-left : 10px">댓글 입력</span>
                                         <i id = "init-rply-file-btn" class="flaticon-tool-1 icon-xs float-right" onclick="writeInputFile();" style = "margin-right : 10px; cursor : pointer"></i>
-                                        <textarea id = "init-view-reply-textarea" class="form-control mentions" placeholder="댓글을 입력하세요" data-val-required="true" style="resize: none; margin-left : 10%; border-radius : 5px; margin : 5px; border : solid 0.1em; height : 50px; width : 98%"></textarea>
+                                        <textarea id = "init-view-reply-textarea" class="form-control mentions" placeholder="댓글을 입력하세요" data-val-required="true" style="resize: none; margin-left : 10%; border-radius : 5px; margin : 5px; border : solid 0.1em; height : 50px; width : 98%" onkeydown = "initReplyPressEnter(this);"></textarea>
                                         <input class ="hidden" id = "init-rply-input-file" type ="file" style=" margin-bottom : 0px; margin-left : 2%">
                                         <div class="float-right" style="text-align : center; margin-right : 5px;">
                                             <button type="button" class="btn btn-info" style = "width : 50px; text-align: center; height : 30px; padding : 7px; border-radius : 3px; margin-bottom : 20px;" onclick = "saveInitViewReply();">등록</button>
@@ -213,7 +213,7 @@
                
     </div><!-- /.modal -->
 
-    <div class ="fixed-top" id = "init-custom-alert" style="padding-top : 10px; font-size : 14px;z-index:9999; display : none; border-radius : 5px; width : 20%; height : 5%; background-color : #c9c9c9; top : 5%; right : 0; left : 0; margin: 0 auto; text-align : center; border : 1px solid #c9c9c9;"> <!-- alert -->
+    <div class ="fixed-top" id = "init-custom-alert" style="padding-top : 10px; font-size : 15px; z-index:9999; display : none; border-radius : 5px; width : 330px; height : 5%; background-color : #c9c9c9; top : 5%; right : 0; left : 0; margin: 0 auto; text-align : center; border : 1px solid #c9c9c9;"> <!-- alert -->
         <span id = "init-custom-alert-content">
             욤욤욤욤욤욤요묘욤욤ㅇㅁ요
         </span>
@@ -263,7 +263,7 @@
                     id : todoID,
                 },
                 success:function(res){
-                    console.log(res);
+                    //console.log(res);
                     $("#sticker-memo-content-"+n).val(res.NOTES);
                 },
                 error:function(request,status,error){
@@ -277,14 +277,14 @@
             $("#sticker-memo-span").text(todoContent);
             $("#sticker-memo-todo-id").val(todoID);
             var memo = $("#sticker-memo-todo-id").val();
-            console.log(memo);
+            //console.log(memo);
 
 
             memoContent=$("#sticker-memo-content-"+n).val();
             
             //저장된 내용 O
             if(typeof memoContent != "undefined" && memoContent != "" && memoContent != "null"){
-                console.log(memoContent);
+                //console.log(memoContent);
                 $("#todo-sticker-save").hide();
                 $("#todo-sticker-update").show();
                 $("#todo-sticker-delete").show();
@@ -295,7 +295,7 @@
 
             //저장된 내용 X
             else{
-                console.log(memoContent);
+                //console.log(memoContent);
                 $("#todo-sticker-save").show();
                 $("#todo-sticker-update").hide();
                 $("#todo-sticker-delete").hide();
@@ -312,7 +312,7 @@
             var compStr="스티커 메모가 저장되었습니다.";
             var todoId = $("#sticker-memo-todo-id").val();
             var memo = $("#sticker-memo-textarea").val();
-            console.log("memo")
+            //console.log("memo")
             if(n == 'd'){
                 memo = "null";
                 str="저장된 메모를 삭제하시겠습니까?";
@@ -320,7 +320,7 @@
             }
             if(confirm(str)){
                 if(memo == ""){
-                    showNotification("작성한 내용이 없습니다.\n작성 후 저장하세요")
+                    showNotification("작성한 내용이 없습니다.\n작성 후 저장하세요","init-custom-alert")
                 }
                 else{
                     $.ajax({
@@ -333,8 +333,8 @@
                             update_by : '<?=$_SESSION['admin_names']?>',
                         },
                         success:function(res){
-                            console.log(res);
-                            showNotification(compStr);
+                            //console.log(res);
+                            showNotification(compStr,"init-custom-alert");
                             $("#sticker-memo-content-"+n).val(res.NOTES);
                             $("#sticker-memo-modal").modal("hide");
                         },
@@ -365,9 +365,10 @@
                     id : krId,
                 },
                 success:function(res){
-                    console.log(res);
+                    //console.log(res);
                     $("#kr-view-modal-span").text(res.CONTENT);
                     $("#kr-keyid").val(res.ID);
+                    $("#newCFRMenu").hide();
                     $("#initiative-view-modal").modal({
                         backdrop:'static'
                     })
@@ -384,7 +385,7 @@
 
         function setViewInitiativeToolInit(krId){
             var empNum = '<?=$_SESSION['emp_no']?>';
-            console.log($("#kr-keyid").val());
+            //console.log($("#kr-keyid").val());
             $.ajax({
                 url:"/InitiativeController/getInitiativeListAjax",
                 type:"get",
@@ -397,7 +398,7 @@
                     var cnt = Object.keys(res).length;
                     var tmpStr = '<option disabled selected value ="n">====선택====</option>';
                     for(var i = 0; i < cnt; i++){
-                        console.log(res[i].ID);
+                        //console.log(res[i].ID);
                         tmpStr += `<option value='`+res[i].ID+`'>`+res[i].CONTENT+`</option>`;
                     }
                     document.getElementById('modal-init-select-view').innerHTML = tmpStr;
@@ -408,29 +409,6 @@
             });
 
 
-             //상태 버튼 세팅[Initiative 진행/완료 여부]
-             $.ajax({
-                url:"/InitiativeController/getInitiativeProcSTAjax",
-                type:"get",
-                dataType:"json",
-                data:{
-                    id : initID,
-                },
-                success:function(res){
-                    if(res.PROC_ST == "7"){
-                        str = "완료";
-                    }
-                    else{
-                        str = "진행";
-                    }
-                    console.log(res);
-                    $("#st-btn").text(str);
-                    $("#st-btn").val(res.PROC_ST)
-                },
-                error:function(request,status,error){
-                    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-                }
-            });
         }
 
         //완료된 To Do List 버튼 누를 때
@@ -461,7 +439,7 @@
 
             var element = document.getElementById('todo-uncompleted-button');
             element.style.opacity = "1";
-            console.log($("#todo-view-more-btn").hasClass("deg"));
+            //console.log($("#todo-view-more-btn").hasClass("deg"));
 
             if($("#todo-view-more-btn").hasClass("deg")){
                 $("#todo-view-more-btn").removeClass("deg");
@@ -482,8 +460,8 @@
             }
             $(this).toggleClass("deg");
 
-            console.log(proc);
-            console.log(comp);
+            //console.log(proc);
+            //console.log(comp);
 
         });
 
@@ -516,7 +494,7 @@
                     else{
                         str = "진행";
                     }
-                    console.log(res);
+                    //console.log(res);
                     $("#st-btn").text(str);
                     $("$st-btn").val(res.PROC_ST)
                 },
@@ -535,7 +513,7 @@
                     initKey:$(this).val(),
                 },
                 success:function(res){
-                    console.log(res);
+                    //console.log(res);
                     $("#view-conf-span").val(res.CONF_TP);
                     var str="";
                     switch($("#view-conf-span").val()){
@@ -544,7 +522,7 @@
                         case "2" : str = "하"; break;
                         default : ; break;
                     }
-                    console.log(str);
+                    //console.log(str);
                     $("#view-conf-span").text(str);
                 }
             });
@@ -558,8 +536,8 @@
                     id : initID
                 },
                 success:function(res){
-                    console.log("담당자: ");
-                    console.log(res);
+                    //console.log("담당자: ");
+                    //console.log(res);
                     $("#init-maker").text(res.EMP_NM);
 
                 },
@@ -592,7 +570,7 @@
                                 + `<input type="hidden" id = "sticker-memo-content-`+i+`"  value="`+res[i].NOTES+`">`
                                 + `</div>`
                     }
-                    console.log("NOTES");
+                    //console.log("NOTES");
                     document.getElementById('todo-view-more-proc').innerHTML = tmpStr;
                     $("#todo-view-more-proc").show();
                 }
@@ -631,50 +609,48 @@
             var content = $("#viewInlineCheckboxLabelProc"+n).text();
             var cnt = $("#todoCompCnt").val();
             if($("#viewInlineCheckboxProc"+n).is(":checked")){
-                if(confirm("해당 내용을 완료된 ToDoList로 이동시키겠습니까? \n[※ 완료 처리 후 수정 불가능]")){
-                    var todoID = $("#viewprocTodoID"+n).val();
-                    console.log(todoID);
-                    console.log(cnt);
-
-                    
-                    $("#viewcheckboxProcDiv"+n).hide();
-                    
-                    
-                    $.ajax({
-                        url:"/InitiativeController/setTodoListProcSTAjax",
-                        type:"post",
-                        dataType:"json",
-                        data:{ 
-                            id : todoID,
-                            proc_st : '7',
-                            update_by : '<?=$_SESSION['admin_names']?>'
-                        },
-                        success:function(res){
-                            showNotification("해당 내용을 완료된 ToDoList로 이동시켰습니다.");
-
-                            tmpStr += `<div class="form-check form-check-inline" style = "display : block; margin-top : 5px; margin-bottom : 5px;">`
-                                        + `<input id="viewInlineCheckboxComp`+ cnt +`" class="form-check-input" type="checkbox" value="option1" checked disabled>`
-                                        + `<label id="viewInlineCheckboxLabelComp`+ cnt +`"class="form-check-label" for="viewInlineCheckbox`+cnt+`">`+content+`</label>`
-                                        + `</div>`
-                            $("#todo-view-more-comp").append(tmpStr);
-
-                        },
-                        error:function(request,status,error){
-                            alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-                        }
-                    });
-
-
-
-
-                }
                 
-                else{
-                    $("#viewInlineCheckboxProc"+n).prop("checked",false);
-                }
+                var todoID = $("#viewprocTodoID"+n).val();
+                //console.log(todoID);
+                //console.log(cnt);
+
+                
+                $("#viewcheckboxProcDiv"+n).hide();
+                
+                
+                $.ajax({
+                    url:"/InitiativeController/setTodoListProcSTAjax",
+                    type:"post",
+                    dataType:"json",
+                    data:{ 
+                        id : todoID,
+                        proc_st : '7',
+                        update_by : '<?=$_SESSION['admin_names']?>'
+                    },
+                    success:function(res){
+                        showNotification("해당 내용을 완료된 ToDoList로 이동시켰습니다.","init-custom-alert");
+
+                        tmpStr += `<div class="form-check form-check-inline" style = "display : block; margin-top : 5px; margin-bottom : 5px;">`
+                                    + `<input id="viewInlineCheckboxComp`+ cnt +`" class="form-check-input" type="checkbox" value="option1" checked disabled>`
+                                    + `<label id="viewInlineCheckboxLabelComp`+ cnt +`"class="form-check-label" for="viewInlineCheckbox`+cnt+`">`+content+`</label>`
+                                    + `</div>`
+                        $("#todo-view-more-comp").append(tmpStr);
+
+                    },
+                    error:function(request,status,error){
+                        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                    }
+                });
+
+
+
+
+            
+                
+                
                 
             }
-        }
+        } 
         //자신감 변경
         function viewEditConf(s){
             var str = "";
@@ -688,7 +664,7 @@
             //직접입력 : value만 세팅함
             var confStr = $("#view-conf-span").val();
             if(initID == "n"){
-                showNotification("Initiative 선택 후 변경할 수 있습니다.");
+                showNotification("Initiative 선택 후 변경할 수 있습니다.","init-custom-alert");
                 return ;
             }
             if(confStr != s){
@@ -705,17 +681,17 @@
                             update_by : '<?=$_SESSION['admin_names']?>'
                         },
                         success:function(res){
-                            showNotification("자신감이 변경되었습니다.");
+                            showNotification("자신감이 변경되었습니다.","init-custom-alert");
                         },
                         error:function(request,status,error){
                             alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
                         }
                         });
                     }
-                    console.log(str);
+                    //console.log(str);
                     $("#view-conf-span").text(str);
                     $("#view-conf-span").val(s);
-                    console.log($("#view-conf-span").val());
+                    //console.log($("#view-conf-span").val());
                 }
             }
         }
@@ -724,8 +700,8 @@
             var initID = $("#modal-init-select-view option:selected").val();
             var text = $("#st-btn").text();
             var value =$("#st-btn").val();
-            console.log($("#st-btn").text());
-            console.log($("#st-btn").val());
+            //console.log($("#st-btn").text());
+            //console.log($("#st-btn").val());
             var id = '<?=$_SESSION['admin_names']?>';
             var emp_no = '<?=$_SESSION['emp_no']?>' ;
             
@@ -733,7 +709,7 @@
                 if(confirm("진행 상태를 변경하시겠습니까?")){
                     
                     if($("#modal-init-select-view option:selected").val() == 'n'){
-                        showNotification("Initiative 선택 후 변경할 수 있습니다.");
+                        showNotification("Initiative 선택 후 변경할 수 있습니다.","init-custom-alert");
                     }
 
                     else if(a != value){
@@ -755,7 +731,7 @@
                                 update_by : '<?=$_SESSION['admin_names']?>'
                             },
                             success:function(res){
-                                showNotification("진행 상태가 변경되었습니다.","n");
+                                showNotification("진행 상태가 변경되었습니다.","init-custom-alert");
                                 $("#st-btn").val(a);
                                 $("#st-btn").text(text);
                             },
@@ -775,8 +751,8 @@
         
         //댓글 만들기
         function makeInitViewReply(n,name,content,day,id,like){
-            console.log("makeInitViewReply에서 본 like");
-            console.log(like);
+            //console.log("makeInitViewReply에서 본 like");
+            //console.log(like);
 
             var tmpStr = "";
             tmpStr += `<div class = "initiative-comment" style="margin-left : 5px; border-radius : 10px; margin : 5px; border : solid 0.1em; width : 95%">`
@@ -836,14 +812,24 @@
         }
         //댓글 수정/삭제
         function updateInitReplyStatus(n,s){
+            var post_tp = "";
+            var str = "";
+            var initID = $("#modal-init-select-view option:selected").val();
+
             //delete일 때
             if(s == 'd'){
+                post_tp = "d";
+                str = "삭제되었습니다.";
+                
                 //삭제되었습니다 표시
             }
             //update일 때
             else if(s == 'd'){
-
+                post_tp = "d";
+                str = "수정되었습니다.";
             }
+
+            showNotification(str,"init-custom-alert");
         }
 
         //댓글 좋아요 수 표시
@@ -857,8 +843,8 @@
                     id : replyID,
                 },
                 success:function(res){
-                    console.log("댓글 좋아요 수 표시");
-                    console.log(res);
+                    //console.log("댓글 좋아요 수 표시");
+                    //console.log(res);
                     $("#likes-cnt-init-rply-"+n).text(res.COUNT);
                 },
                 error:function(request,status,error){
@@ -871,8 +857,8 @@
         //댓글 좋아요 여부 변경
         function saveLikeInitReply(n,chk){
             var replyID = $("#init-reply-id-"+n).val();
-            console.log("좋아요 누른것의 ID");
-            console.log(replyID);
+            //console.log("좋아요 누른것의 ID");
+            //console.log(replyID);
             var str = ""
             var tmp = "";
             var tmpCnt;
@@ -904,9 +890,9 @@
                     empy_no : '<?=$_SESSION['emp_no']?>'
                 },
                 success:function(res){
-                    console.log(res);
+                    //console.log(res);
                     if(str != "")
-                        showNotification(str);
+                        showNotification(str,"init-custom-alert");
                         getLikeInitReply(n);
                 },
                 error:function(request,status,error){
@@ -926,9 +912,14 @@
             var date;
 
             if(initID == "n"){
-                showNotification("Initiative 선택 후 댓글을 입력할 수 있습니다.");
+                showNotification("Initiative 선택 후 댓글을 입력할 수 있습니다.","init-custom-alert");
                 $("#init-view-reply-textarea").val("");
                 return ;
+            }
+
+            if(content == ""){
+                showNotification("입력된 내용이 없습니다.","init-custom-alert");
+                return;
             }
 
             $.ajax({
@@ -944,8 +935,8 @@
                 success:function(res){
                     date = (res.CREATE_ON).split(".")[0];
                     $("#init-view-reply-textarea").val("");
-                    showNotification("댓글이 저장되었습니다.");
-                    console.log(res);
+                    showNotification("댓글이 저장되었습니다.","init-custom-alert");
+                    //console.log(res);
                     makeInitViewReply(99999,res.CREATE_BY,res.CONTENT,date,res.ID,"n");
                     saveInitReplyData(res.ID);
                 },
@@ -959,7 +950,7 @@
         
         //댓글 세팅하기
         function setInitViewReply(initID){
-            console.log(initID);
+            //console.log(initID);
             var rplyID = new Array();
             
             $.ajax({
@@ -973,23 +964,27 @@
                 success:function(res){
                     var date;
                     var cnt = Object.keys(res).length;
-                    console.log("댓글 세팅 res : ")
-                    console.log(res);
-                    console.log(cnt);
+                    //console.log("댓글 세팅 res : ")
+                    //console.log(res);
+                    //console.log(cnt);
                     for(var i = 0; i < cnt; i++){
                         rplyID[i] = res[i].ID;
-                        console.log()
+                        //console.log()
                         //만약 부른 댓글이 있으면 div 상자 보여지게하고, 내용 입력하기
                         if(res[i].OKR_RPLY_ID == '0'){
                             
                         }
                         date = (res[i].CREATE_ON).split(".")[0];
-                        console.log(date);
-                        makeInitViewReply(i,res[i].CREATE_BY,res[i].CONTENT,date,res[i].ID,res[i].NICE_YN);
+                        //console.log(date);
+
+                        //내용이 비어있는건 삭제처리된것으로 간주
+                        if(res[i].CONTENT != ""){
+                            makeInitViewReply(i,res[i].CREATE_BY,res[i].CONTENT,date,res[i].ID,res[i].NICE_YN);
+                        }
 
                     }
-                    console.log("보내는 rply ID");
-                    console.log(rplyID);
+                    //console.log("보내는 rply ID");
+                    //console.log(rplyID);
                     initReplyReadOK(rplyID);
                 },
                 error:function(request,status,error){
@@ -998,18 +993,11 @@
             });
         }
 
-        //댓글 mention 후 회신
-        function initReplyMention(n){
-            
-
-
-        }
-
         //스크롤 event : 댓글 읽기에 사용하기위함
         /*
         $('#initiative-view-modal').on("scroll",function(){
-            console.log("Scrolling");
-            console.log(document.documentElement.scrollTop);
+            //console.log("Scrolling");
+            //console.log(document.documentElement.scrollTop);
         });
         */
 
@@ -1020,8 +1008,8 @@
             var initID = $("#modal-init-select-view option:selected").val();
             var idList = new Array();
             var savedIndex = new Array();
-            console.log("받는 rply ID");
-            console.log(ary);
+            //console.log("받는 rply ID");
+            //console.log(ary);
 
             //read 했는지 여부 불러오려고함
             $.ajax({
@@ -1034,10 +1022,10 @@
                     empy_no : '<?=$_SESSION['emp_no']?>',
                 },
                 success:function(res){
-                    console.log("댓글 읽음 저장 res : ")
+                    //console.log("댓글 읽음 저장 res : ")
                     var cnt = Object.keys(res).length;
-                    console.log(res);
-                    console.log(cnt);
+                    //console.log(res);
+                    //console.log(cnt);
                     if(cnt == 0){
                         for(var i = 0; i < ary.length; i++){
                             saveInitReplyData(ary[i]);
@@ -1048,24 +1036,24 @@
                         for(var i = 0; i < ary.length; i++){
                             for(var j = 0; j < cnt; j++){
 
-                                console.log("형변환");
-                                console.log(ary[i] == parseInt(res[j].OKR_RPLY_ID));
-                                console.log("형변환X");
-                                console.log(ary[i] == res[j].OKR_RPLY_ID)
+                                //console.log("형변환");
+                                //console.log(ary[i] == parseInt(res[j].OKR_RPLY_ID));
+                                //console.log("형변환X");
+                                //console.log(ary[i] == res[j].OKR_RPLY_ID)
 
                                 if(ary[i] == parseInt(res[j].OKR_RPLY_ID)){
-                                    console.log("페이지에 있는거");
-                                    console.log(ary[i]);
-                                    console.log("Ajax에서 가져온거");
-                                    console.log(res[j].OKR_RPLY_ID);
+                                    //console.log("페이지에 있는거");
+                                    //console.log(ary[i]);
+                                    //console.log("Ajax에서 가져온거");
+                                    //console.log(res[j].OKR_RPLY_ID);
                                     savedIndex[k] = i;
                                     k++
                                 }
                                 else{
-                                    console.log("페이지에 있는거");
-                                    console.log(ary[i]);
-                                    console.log("Ajax에서 가져온거");
-                                    console.log(res[j].OKR_RPLY_ID);
+                                    //console.log("페이지에 있는거");
+                                    //console.log(ary[i]);
+                                    //console.log("Ajax에서 가져온거");
+                                    //console.log(res[j].OKR_RPLY_ID);
                                 }
                             }
                         }
@@ -1081,7 +1069,7 @@
                             }
                         }
                     }
-                    console.log(res);
+                    //console.log(res);
                 },
                 error:function(request,status,error){
                     alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -1100,10 +1088,10 @@
                     empy_no : '<?=$_SESSION['emp_no']?>',
                 },
                 success:function(res){
-                    console.log("댓글 읽음 저장 res : ");
-                    console.log(res == "");
-                    console.log(res == null);
-                    console.log(res);
+                    //console.log("댓글 읽음 저장 res : ");
+                    //console.log(res == "");
+                    //console.log(res == null);
+                    //console.log(res);
                 },
                 error:function(request,status,error){
                     alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -1118,6 +1106,17 @@
             }
             else{
                 $("#init-rply-input-file").addClass("hid");
+            }
+        }
+        function initReplyPressEnter(){
+            var str = "";
+            var code = event.keyCode;
+            if(code == '13'){
+                if(confirm("저장하시겠습니까?")){
+                    
+                    saveInitViewReply();
+
+                }
             }
         }
 
