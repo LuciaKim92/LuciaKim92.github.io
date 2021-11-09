@@ -17,6 +17,7 @@ class CaseController extends BaseController
             "emp_no" => 'P221002',
             "logged_in" => TRUE
         );
+
         $this->session->set($user_data);
     }
 
@@ -53,6 +54,12 @@ class CaseController extends BaseController
 
         return $result;
 	}
+
+    public function case_write()
+    {
+        $this->session_setting();
+        return view("/case/case_write.php");
+    }
 
 }
 
