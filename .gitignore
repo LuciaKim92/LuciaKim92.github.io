@@ -127,5 +127,11 @@ nb-configuration.xml
 
 node_modules
 
+<<<<<<< HEAD
 system/Database/SQLSRV/
 system/Database/sqlsrv/
+=======
+
+system/Database/sqlsrv/
+system/Database/SQLSRV/
+>>>>>>> bbf640826d3ba296e24cd6453191ea48ccecd049

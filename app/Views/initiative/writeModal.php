@@ -16,7 +16,7 @@
 <body>
     <!-- Modal -->
     <div class="modal fade" id="initiative-write-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header" style = "border-bottom: 0 none; padding-bottom : 5px">
                     <h5 class="modal-title text-center" id="exampleModalLongTitle">Initiative Tool 등록</h5>
@@ -32,9 +32,9 @@
 								<div class="m-portlet__head-caption">
 									<div class="m-portlet__head-title">
 										<h3 class="m-portlet__head-text">
-                                            <span class="init-badge m-badge m-badge--success m-badge--wide" style = "border-radius : 3px; padding : 10px; background-color : #9F9FFF">KR</span>
-                                            <span style="font-size : 13px; margin-left : 5px" contenteditable="true">
-                                                <select id = 'modal-kr-select' style="height : 30px;">
+                                            <span class="init-badge m-badge m-badge--success m-badge--wide" style = "width: 80px; height: 40px; border-radius : 3px; padding : 10px; background-color : #9F9FFF">KR</span>
+                                            <span style="font-size : 13px; margin-left : 5px;">
+                                                <select id = 'modal-kr-select' style="margin-left : 5px; height : 30px; width : 90%">
                                                     <option disabled selected value ="n">====선택====</option>
                                                     <?php                   
                                                         $i = 1;                  
@@ -67,11 +67,11 @@
                                                         <div>
                                                             <span class="init-badge m-badge m-badge--info m-badge--wide" style = "border-radius : 3px; padding : 10px; background-color : #9BBB59;">Initiatives</span>
                                                             <span style="font-size : 12px; margin : 5px;">
-                                                                <select style="height : 30px; width : 70%" id = 'modal-init-select'>
+                                                                <select style="height : 30px; width : 70%;" id = 'modal-init-select'>
                                                                     <option disabled selected value ="n">KR을 선택해주세요</option>
                                                                 </select>
                                                                 <!--여기 추가하려고 생각한 것 : 수정버튼[누를 시 selected 내용이 textbox로 변경되며 select는 숨겨짐 + todo에도...]-->
-                                                                <input type="text" id="init-input-box" style="width : 95%; margin-top : 5px; display : none; height : 30px;">
+                                                                <input type="text" id="init-input-box" style="width : 95%; margin-top : 5px; display : none; height : 30px;" onkeydown="initInputPressEnter(this);">
                                                             </span></div>
                                                             <br><input id ="init-file" type="file" style="margin-bottom : 10px; display : hidden"></input>
 
@@ -209,7 +209,7 @@
             $("#proc-hidden").val("block");
             var element = document.getElementById('write-todo-uncompleted-button');
             element.style.opacity = "1";
-            console.log($("#todo-write-more-btn").hasClass("deg"));
+            //console.log($("#todo-write-more-btn").hasClass("deg"));
             if($("#todo-write-more-btn").hasClass("deg")){
                 $("#todo-write-more-btn").removeClass("deg");
             }
@@ -229,8 +229,8 @@
             }
             $(this).toggleClass("deg");
 
-            console.log(proc);
-            console.log(comp);
+            //console.log(proc);
+            //console.log(comp);
 
         });
         
@@ -238,6 +238,7 @@
         //KR 선택 시 Initiative 세팅
         $("#modal-kr-select").on("change", function(){
             $(".todo-write-more").hide();
+            $("#init-input-box").hide();
             var empNum = '<?=$_SESSION['emp_no']?>';
             $.ajax({
                 url:"/InitiativeController/getInitiativeListAjax",
@@ -249,11 +250,10 @@
                 },
                 success:function(res){
                     var cnt = Object.keys(res).length;
-                    var tmpStr = '<option disabled selected value ="n">====선택====</option>';
+                    var tmpStr = '<option disabled selected value ="n">====선택====</option>' + `<option value= '1'>직접 입력</option>`;
                     for(var i = 0; i < cnt; i++){
                         tmpStr += `<option value='`+res[i].ID+`'>`+res[i].CONTENT+`</option>`;
                     }
-                    tmpStr += `<option value= '1'>직접 입력</option>`
                     document.getElementById('modal-init-select').innerHTML = tmpStr;
                 },
                 error:function(request,status,error){
@@ -265,6 +265,7 @@
 
         //Initiative 직접입력 && 초기실행
         $(function(){
+ 
 
 
             //직접입력 인풋박스 기존에는 숨어있다가
@@ -300,7 +301,8 @@
                     $("#init-file").hide();
                     $("#write-todo-completed-button").show();
                     $("#todo-write-more-btn").show();
-                    console.log($(this).val());
+
+                    //console.log($(this).val());
                     if($("#proc-hidden").val() == "block"){
                         $("#todo-write-more-proc").show();
                     }
@@ -317,7 +319,7 @@
                             initKey:$(this).val(),
                         },
                         success:function(res){
-                            console.log(res);
+                            //console.log(res);
                             $("#write-conf-span").val(res.CONF_TP);
                             var str="";
                             switch($("#write-conf-span").val()){
@@ -326,7 +328,7 @@
                                 case "2" : str = "하"; break;
                                 default : ; break;
                             }
-                            console.log(str);
+                            //console.log(str);
                             $("#write-conf-span").text(str);
                         }
                     });
@@ -350,7 +352,7 @@
                                         + `<input id = "procTodoID`+i+`" type = "hidden" value = `+res[i].ID+`>`
                                         + `</div>`
                             }
-                            console.log(tmpStr);
+                            //console.log(tmpStr);
                             document.getElementById('todo-write-more-proc').innerHTML = tmpStr;
                         }
                     });
@@ -374,7 +376,7 @@
                                         + `</div>`
                             }
                             $("#todoCompCnt").val(parseInt($("#todoCompCnt").val())+cnt);
-                            console.log(tmpStr);
+                            //console.log(tmpStr);
                             document.getElementById('todo-write-more-comp').innerHTML = tmpStr;
                         }
                     });
@@ -392,8 +394,8 @@
             if($("#writeInlineCheckboxProc"+n).is(":checked")){
                 if(confirm("해당 내용을 완료된 ToDoList로 이동시키겠습니까? \n[※ 완료 처리 후 수정 불가능]")){
                     var todoID = $("#procTodoID"+n).val();
-                    console.log(todoID);
-                    console.log(cnt);
+                    //console.log(todoID);
+                    //console.log(cnt);
 
                     
                     $("#checkboxProcDiv"+n).hide();
@@ -409,7 +411,7 @@
                             update_by : '<?=$_SESSION['admin_names']?>'
                         },
                         success:function(res){
-                            alert("해당 내용을 완료된 ToDoList로 이동시켰습니다.");
+                            showNotification("해당 내용을 완료된 ToDoList로 이동시켰습니다.","init-custom-alert");
 
                             tmpStr += `<div class="form-check form-check-inline" style = "display : block; margin-top : 5px; margin-bottom : 5px;">`
                                         + `<input id="writeInlineCheckboxComp`+ cnt +`" class="form-check-input" type="checkbox" value="option1" >`
@@ -460,8 +462,8 @@
             $("#new-todo-make-span").html(btnStr);
             // $("#new-todo-list-div").append($("#new-todo-list-div").html() + tmpStr);
             $("#new-todo-list-div").append(tmpStr);
-            console.log($("#new-todo-make-btn").html());
-            console.log(tmpStr);
+            //console.log($("#new-todo-make-btn").html());
+            //console.log(tmpStr);
 
         }
 
@@ -472,13 +474,13 @@
             if($("#init-input-box-"+n).val() != ""){
                 if(confirm("해당 내용을 삭제하시겠습니까?")){
                     $("#init-input-box-"+n).val("");
-                    console.log($("#init-input-box-"+n).val()+"이건 deleteTo어쩌고 에서");
+                    //console.log($("#init-input-box-"+n).val()+"이건 deleteTo어쩌고 에서");
                     $("#init-input-span-"+n).hide();
                 }
             }
             else{
                 $("#init-input-box-"+n).val("");
-                console.log($("#init-input-box-"+n).val()+"이건 deleteTo어쩌고 에서");
+                //console.log($("#init-input-box-"+n).val()+"이건 deleteTo어쩌고 에서");
                 $("#init-input-span-"+n).hide();
             }
             
@@ -524,13 +526,13 @@
             else{
                 //직접입력 아닐 때 선택한 Initiative의 value(ID) 추출 --> TodoList 저장에 사용
                 initID;
-                console.log(initID);
+                //console.log(initID);
                 
             }
-            console.log(krID);
-            console.log(initConfTP);
+            //console.log(krID);
+            //console.log(initConfTP);
             toDoCnt = $("#new-todo-make-cnt").val();
-            console.log(toDoCnt);
+            //console.log(toDoCnt);
             
             //Cnt만큼 반복하며 입력된 내용이 있는 것만 추출 + 입력된 것들에서만 첨부파일 추출해야함 같은 방식으로
             if(toDoCnt > 0){
@@ -540,7 +542,7 @@
                     }
                     else{
                         toDoContent[toDoIndex] = $("#init-input-box-"+i).val();
-                        console.log(toDoContent[toDoIndex]);
+                        //console.log(toDoContent[toDoIndex]);
                         toDoIndex++;
                     }
                 }
@@ -550,26 +552,30 @@
             if(initID == "n"){
                 
                 if(krID == "n"){
-                    alert("KR을 선택해주세요.");
+                    showNotification("KR을 선택해주세요.","init-custom-alert");
                     
                 }
                 else{
-                    alert("Initiative를 선택해주세요.");
+                    showNotification("Initiative를 선택해주세요.","init-custom-alert");
                     
                 }
             }
             else if(initID == "1" && initContent == ""){
-                alert("Initiative를 입력해주세요.");
+                showNotification("Initiative를 입력해주세요.","init-custom-alert");
             }
             else{
                 saveOK = 1;
-                console.log("saveOK 1인가요?");
-                console.log(saveOK == 1);
+                //console.log("saveOK 1인가요?");
+                //console.log(saveOK == 1);
                 if(toDoIndex == 0){
                     saveOK = 0;
-                    console.log("saveOK 0인가요?");
-                    console.log(saveOK == 0);
-                    if(confirm("To Do List를 작성하지 않았습니다.\n저장하시겠습니까?")){
+                    //console.log("saveOK 0인가요?");
+                    //console.log(saveOK == 0);
+                    if(confirm("To Do List를 작성하지 않았습니다.\n저장하시겠습니까?","init-custom-alert")){
+                        if(initID != "1"){
+                            showNotification("저장할 내용이 없습니다.","init-custom-alert");
+                            return;
+                        }
                         saveOK = 1;
                         onlyInit = 1;
                     }
@@ -579,113 +585,40 @@
                 }
                 var tmpStr ="";
                 if(saveOK == 1){
-                    console.log("onlyInit의 값은 뭐죠?");
-                    console.log(onlyInit);
-                    console.log("글자수 : ");
-                    console.log();
+                    //console.log("onlyInit의 값은 뭐죠?");
+                    //console.log(onlyInit);
+                    //console.log("글자수 : ");
+                    //console.log();
                     
-                    console.log(typeof initContent);
+                    //console.log(typeof initContent);
+
+
                     if(confirm("내용을 저장하시겠습니까?")){
-                        console.log("통과");
+                        //console.log("통과");
                         if(initID == "1"){
-                            console.log(initContent.length >= 50);
+                            //console.log(initContent.length >= 50);
                             if(initContent.length >= 50){
-                                alert("Initiative의 최대 글자수는 50자입니다.\n다시 입력해주세요.");
+                                showNotification("Initiative의 최대 글자수는 50자입니다.\n다시 입력해주세요.","init-custom-alert");
                             }
                             else{
                                 //Initiative Tool에 내용 저장하는 경우
-                                $.ajax({
-                                    url:"/InitiativeController/saveInitiativeAjax",
-                                    type:"post",
-                                    dataType:"json",
-                                    data:{
-                                        okr_keys_id : krID,
-                                        empy_no : empNum,
-                                        content : initContent,
-                                        conf_tp : initConfTP,
-                                        create_by : empName
-                                    },
-                                    success:function(res){
-                                        
-                                        tmpStr = res.ID;
-                                        $("#modal-init-select option:selected").val(res.ID);
-                                        console.log("initID 변경 : ");
-                                        console.log($("#modal-init-select option:selected").val());
-                                        if(onlyInit == 1){
-                                            alert("저장되었습니다.");
-                                            location.reload(true);
-                                        }
-                                        else{
-                                            if(confirm("Initiative 저장되었습니다.\nToDo List를 저장하시겠습니까?")){
-                                                $.ajax({
-                                                    url:"/InitiativeController/saveToDoAjax",
-                                                    type:"post",
-                                                    dataType:"json",
-                                                    data:{
-                                                        okr_init_id : $("#modal-init-select option:selected").val(),
-                                                        empy_no : empNum,
-                                                        content : toDoContent,
-                                                        proc_st : toDoProcST,
-                                                        create_by : empName
-                                                    },
-                                                    success:function(res){
-                                                        console.log(res);
-                                                        alert("To Do List가 저장되었습니다.");
-                                                        location.reload(true);
-                                                        //console.log(jQuery.parseJSON(res));
-                                                        //console.log(JSON.parse(JSON.stringify(res))); 
-                                                    },
-                                                    error:function(request,status,error){
-                                                        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-                                                    }
-                                                    
-                                                    
-                                                    //console.log(jQuery.parseJSON(res));
-                                                    //console.log(JSON.parse(JSON.stringify(res))); 
-                                                });
-                                            }
-                                        }
-                                    },
-                                    error:function(request,status,error){
-                                        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-                                    }
-                                });
+                                saveInitiative();
                             }
                         }
+
                         else{
-                            console.log("initID 변경[TODO에서 확인하기] : ");
-                            console.log(initID);
-                            console.log("tmpStr : ");
-                            console.log(tmpStr);
-                            console.log("ToDo까지 저장됨");
+                            //console.log("initID 변경[TODO에서 확인하기] : ");
+                            //console.log(initID);
+                            //console.log("tmpStr : ");
+                            //console.log(tmpStr);
+                            //console.log("ToDo까지 저장됨");
                             if(initID == "1"){
                                 initID = $("#modal-init-select option:selected").val();
-                                console.log("init ID :")
-                                console.log($("#modal-init-select option:selected").val());
+                                //console.log("init ID :")
+                                //console.log($("#modal-init-select option:selected").val());
                             }
                             
-                            $.ajax({
-                                url:"/InitiativeController/saveToDoAjax",
-                                type:"post",
-                                dataType:"json",
-                                data:{
-                                    okr_init_id : $("#modal-init-select option:selected").val(),
-                                    empy_no : empNum,
-                                    content : toDoContent,
-                                    proc_st : toDoProcST,
-                                    create_by : empName
-                                },
-                                success:function(res){
-                                    console.log(res);
-                                    alert("To Do List가 저장되었습니다.");
-                                    location.reload(true);
-                                    //console.log(jQuery.parseJSON(res));
-                                    //console.log(JSON.parse(JSON.stringify(res))); 
-                                },
-                                error:function(request,status,error){
-                                    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-                                }
-                            });
+                            saveToDoList(toDoContent);
                         }
                 
                        
@@ -697,6 +630,73 @@
 
             
         });
+
+        //To Do List 저장
+        function saveToDoList(toDoContent){
+            var empNum = '<?=$_SESSION['emp_no']?>';
+            var empName = '<?=$_SESSION['admin_names']?>';
+            var toDoProcST = '0';
+            $.ajax({
+                        url:"/InitiativeController/saveToDoAjax",
+                        type:"post",
+                        dataType:"json",
+                        data:{
+                            okr_init_id : $("#modal-init-select option:selected").val(),
+                            empy_no : empNum,
+                            content : toDoContent,
+                            proc_st : toDoProcST,
+                            create_by : empName
+                        },
+                        success:function(res){
+                            //console.log(res);
+                            showNotification("To Do List가 저장되었습니다.","init-custom-alert");
+                            location.reload(true);
+                            //console.log(jQuery.parseJSON(res));
+                            //console.log(JSON.parse(JSON.stringify(res))); 
+                        },
+                        error:function(request,status,error){
+                            showNotification("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                        }
+                        
+                        //console.log(jQuery.parseJSON(res));
+                        //console.log(JSON.parse(JSON.stringify(res))); 
+                    });
+        }
+
+        //Initiative 저장
+        function saveInitiative(){
+            var str = "";
+            var initID = $("#modal-init-select option:selected").val();
+            var initConfTP = $("#init-input-box").val();
+            var empNum = '<?=$_SESSION['emp_no']?>';
+            var empName = '<?=$_SESSION['admin_names']?>';
+            var krID = $("#modal-kr-select option:selected").val();
+
+            $.ajax({
+                        url:"/InitiativeController/saveInitiativeAjax",
+                        type:"post",
+                        dataType:"json",
+                        data:{
+                            okr_keys_id : krID,
+                            empy_no : empNum,
+                            content : initContent,
+                            conf_tp : initConfTP,
+                            create_by : empName
+                        },
+                        success:function(res){
+                            tmpStr = res.ID;
+                            $("#modal-init-select option:selected").val(res.ID);
+                            showNotification("저장되었습니다.");
+                            $("#modal-init-select").val("");
+                            str += `<option value='`+res[i].ID+`' selected>`+res[i].CONTENT+`</option>`;
+                            $("#modal-init-select").append(str);
+                    
+                            //location.reload(true);
+                        }
+                    });
+
+
+        }
 
         //자신감 변경
         function writeEditConf(s){
@@ -710,7 +710,7 @@
                 }
 
             if(initID == "n"){
-                alert("Initiative 선택 후 변경할 수 있습니다.");
+                showNotification("Initiative 선택 후 변경할 수 있습니다.","init-custom-alert");
                 return ;
             }
             
@@ -730,25 +730,44 @@
                             update_by : '<?=$_SESSION['admin_names']?>'
                         },
                         success:function(res){
-                            alert("자신감이 변경되었습니다.");
+                            showNotification("자신감이 변경되었습니다.","init-custom-alert");
                         },
                         error:function(request,status,error){
                             alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
                         }
                         });
                     }
-                    console.log(str);
+                    //console.log(str);
                     $("#write-conf-span").text(str);
                     $("#write-conf-span").val(s);
-                    console.log($("#write-conf-span").val());
+                    //console.log($("#write-conf-span").val());
                 }
             }
         }
 
+        //Initiative Tool[등록] Modal열기
         function openWriteModal(){
+            $("#newCFRMenu").hide();
             $("#initiative-write-modal").modal({
             backdrop:'static'
             })
+        }
+
+        //Initiative 직접입력 EnterKey 눌렀을 때 저장되게끔 하기
+        function initInputPressEnter(){
+            var str = "";
+            var code = event.keyCode;
+            if(code == '13'){
+                if(confirm("저장하시겠습니까?")){
+                    
+                    function saveInitiative();
+                    
+                            
+
+
+
+                }
+            }
         }
         
 

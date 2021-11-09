@@ -39,6 +39,7 @@
 		<link rel="shortcut icon" href="/assets/icon/dwcts_logo.png" />
 
 		<!-- JS -->
+		<script src="/assets/js/initiative.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     	<script src="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.min.js"></script>
 
