@@ -27,14 +27,14 @@ class OKR_MAP_Model extends Model
                     FROM	DWCTS.DBO.DEPT_MST AS A
                     LEFT OUTER JOIN DBO.OKR_OBJT_MST AS B
                     ON A.DEPT_CD = B.DEPT_CD
-                    AND B.OKR_YEAR = ".$YEAR."
-                    AND B.OKR_QTR = ".$QTR."
+                    AND B.OKR_YEAR = ?
+                    AND B.OKR_QTR = ?
                     AND B.PROC_ST NOT IN ('8','9')
                     
                     WHERE A.DEPT_CD = 'MD00000002'
                 ";
 
-        $stmt = sqlsrv_query($this->dbconn, $query );
+        $stmt = sqlsrv_query($this->dbconn, $query, array($YEAR, $QTR));
 
         $arr = array();
         
@@ -189,18 +189,18 @@ class OKR_MAP_Model extends Model
                         ,[PROC_ST])
                     VALUES
                         (GETDATE()
-                        ,'".$create_by."'
-                        ,".$create_id."
-                        ,'".$dwgp_cd."'
-                        ,'".$dept_cd."'
-                        ,'".$empy_no."'
-                        ,".$year."
-                        ,".$qtr."
-                        ,'".$content."'
+                        ,?
+                        ,?
+                        ,?
+                        ,?
+                        ,?
+                        ,?
+                        ,?
+                        ,?
                         ,'0')
 
                     ";
-        $stmt = sqlsrv_query($this->dbconn, $query);
+        $stmt = sqlsrv_query($this->dbconn, $query, array($create_by, $create_id, $dwgp_cd, $dept_cd, $empy_no, $year, $qtr, $content) );
     }
 
     // KR 상태도 변경
@@ -212,7 +212,7 @@ class OKR_MAP_Model extends Model
                             UPDATE [dbo].[OKR_OBJT_MST]
                                 SET 
                                     [PROC_ST] = '9'
-                            WHERE ID = ".$objective_id."
+                            WHERE ID = ?
 
                         ";
 
@@ -221,10 +221,10 @@ class OKR_MAP_Model extends Model
                             UPDATE [dbo].[OKR_KEYS_MST]
                                 SET
                                     [PROC_ST] = '9'
-                            WHERE ID = ".$objective_id."
+                            WHERE OKR_OBJT_ID = ?
                         ";
 
-        $stmt = sqlsrv_query($this->dbconn, $query);
+        $stmt = sqlsrv_query($this->dbconn, $query, array($objective_id) );
 
     }
 
@@ -239,7 +239,6 @@ class OKR_MAP_Model extends Model
             // ,[PROC_RAT] = <PROC_RAT, decimal(17,5),>
             // ,[PROC_ST] = <PROC_ST, char(1),>
             if($bean['ID'] != NULL){
-
                 if($bean['IS_DELETE'] == 'Y'){
                     $temp = "
                             UPDATE [dbo].[OKR_KEYS_MST]
@@ -299,5 +298,9 @@ class OKR_MAP_Model extends Model
 
         $stmt = sqlsrv_query($this->dbconn, $query);
     }
+
+    insert_KR()
+    delete_KR()
+    update_KR()
 
 }
