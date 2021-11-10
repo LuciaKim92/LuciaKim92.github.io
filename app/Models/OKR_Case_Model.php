@@ -43,4 +43,45 @@ class OKR_Case_Model extends Model
         return $result;
     }
 
+    public function get_exm_details($params)
+    {
+        $stmt = sqlsrv_query($this->dbconn, '{CALL DWOKR.dbo.USP_OKR_EXM_CASE_DETAIL(?)}', $params);
+        $detail_arr = array();
+        $kr_arr = array();
+
+        do {
+            if (sqlsrv_num_fields($stmt) == 1) {
+                while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
+                {
+                    array_push($kr_arr, [
+                        'CONTENT' => $row['KR']
+                    ]);
+                }
+            } else {
+                while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
+                {
+                    array_push($detail_arr, [
+                        'OBJECTIVE' => $row['OBJECTIVE'], 
+                        'CASE_TP' => $row['CASE_TP'],
+                        'TITLE' => $row['TITLE'], 
+                        'TARGET' => $row['TARGET'], 
+                        'COTCOME' => $row['COTCOME'],
+                        'CONTEXT' => $row['CONTEXT'],
+                        'STRATEGY' => $row['STRATEGY'], 
+                        'KNOWHOW' => $row['KNOWHOW'],
+                        'PROC_ST' => $row['PROC_ST'],
+                        'CONFIRM_DTM' => $row['CONFIRM_DTM'],
+                        'CONFIRM_EMP_NO' => $row['CONFIRM_EMP_NO'],
+                        'CONFIRM_NOTES' => $row['CONFIRM_NOTES']
+                    ]);
+                }
+            }
+        } while (sqlsrv_next_result($stmt));
+
+        $result['DETAIL'] = $detail_arr;
+        $result['KR'] = $kr_arr;
+
+        return $result;
+    }
+
 }

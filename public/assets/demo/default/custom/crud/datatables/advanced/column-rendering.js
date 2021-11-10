@@ -47,8 +47,9 @@ function getCaseList(is_clip) {
                 title: "제목",
                 width: 430,
                 render: function (a, e, n, s) {
+                    //console.log(n);
                     return (
-                    '<a class="m-link" href="/CaseController/okr_case_detail/' + n[0] + '">' + a + "</a>"
+                    '<a class="m-link" href="/CaseController/case_detail/' + n['ID'] + '">' + a + "</a>"
                     );
                 },
             },

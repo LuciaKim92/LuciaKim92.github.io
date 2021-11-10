@@ -55,6 +55,20 @@ class CaseController extends BaseController
         return $result;
 	}
 
+    public function case_detail($ID)
+    {
+        $this->session_setting();
+
+        $params = array(
+            array($ID,SQLSRV_PARAM_IN)
+        );
+
+        $this->Model = new OKR_Case_Model;
+        $data = $this->Model->get_exm_details($params);
+
+        return view("/case/case_detail.php", $data);
+    }
+
     public function case_write()
     {
         $this->session_setting();

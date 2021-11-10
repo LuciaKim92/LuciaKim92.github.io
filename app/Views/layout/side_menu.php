@@ -38,8 +38,8 @@
 							class="m-menu__link-text"><img src="/assets/icon/exam_icon.png" height="15" width="15">&nbsp;&nbsp;OKR 사례</span></a>
 								<div class="m-menu__submenu "><span class="m-menu__arrow"></span>
 									<ul class="m-menu__subnav">
-										<li class="m-menu__item " aria-haspopup="false" m-menu-link-redirect="1"><a href="./inner" class="m-menu__link "><i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i><span class="m-menu__link-text">내가 스크랩한 사례</span></a></li>
-										<li class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1"><a href="./inner" class="m-menu__link "><i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i><span class="m-menu__link-text">수상 사례 모음</span></a></li>
+										<li class="m-menu__item " aria-haspopup="false" m-menu-link-redirect="1"><a href="/CaseController" class="m-menu__link "><i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i><span class="m-menu__link-text">OKR 사례 목록</span></a></li>
+										<li class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1"><a href="/CaseController/case_write" class="m-menu__link "><i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i><span class="m-menu__link-text">OKR 사례 등록</span></a></li>
 									</ul>
 								</div>
 							</li>
