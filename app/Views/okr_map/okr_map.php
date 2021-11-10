@@ -56,7 +56,6 @@
                     </div>
                 </div>
 
-
                 <!-- o 편집창 모달 -->
                 <div class="modal fade" id="modal-container-357980" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				    <div class="modal-dialog modal-dialog-centered modal-lg" role="document" id="mymodal">
@@ -75,27 +74,40 @@
                 <div id="mySidenav" class="sidenav">
                     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
                     
+                    <!--  이 부분을 반목문을 통해 -->
                     <div class="card" style="margin:5px">
                         <h5 class="card-header">
                             고지훈
                         </h5>
-                        <div class="card-body">
-                            <p class="card-text">
-                                KR 1 1.
-                            </p>
-                            <p class="card-text">
-                                KR 1 2.
-                            </p>
-                            <p class="card-text">
-                                KR 2 3.
-                            </p>
-                            <ol>
-                                <li >111</li>
-                                <li >111</li>
-                                <li >111</li>
-                            </ol>
-                        </div>
 
+                        <div class="card-body">
+
+                            <div class="initiative-content" style="text-align:center">
+                                <span class="m-widget24__change">
+                                    <span class="okr-badge m-badge m-badge--brand">6</span>진행
+                                </span>
+
+                                &nbsp&nbsp&nbsp&nbsp&nbsp
+
+                                <span class="m-widget24__change">
+                                    <span class="okr-badge m-badge m-badge--success">3</span>완료
+                                </span>
+
+                                &nbsp&nbsp&nbsp&nbsp&nbsp
+
+                                <span class="m-widget24__change">
+                                    <span class="funnel" onclick="goFunnel();"><span class="okr-badge m-badge m-badge--warning"> 2</span>펀넬</span>
+                                </span>
+                            </div>
+
+                            <div class="initiative-content">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item"><span class="badge badge-primary badge-pill">KR1</span> 지훈 Initiative 1</li>
+                                    <li class="list-group-item"><span class="badge badge-primary badge-pill">KR2</span> 지훈 Initiative 2</li>
+                                    <li class="list-group-item"><span class="badge badge-primary badge-pill">KR3</span> 지훈 Initiative 3</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
             
                 </div>
@@ -854,7 +866,7 @@
 
     /* Set the width of the side navigation to 250px */
     function openNav() {
-    document.getElementById("mySidenav").style.width = "250px";
+    document.getElementById("mySidenav").style.width = "320px";
     }
 
     /* Set the width of the side navigation to 0 */
