@@ -6,6 +6,7 @@
         <meta name=viewport content="width=device-width, initial-scale=1">
         <title>Jquery Comments Plugin</title>
 
+		<!-- Bootstrap -->
         <link rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
             integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
@@ -16,6 +17,9 @@
 
         <!-- 제이쿼리 -->
         <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+		<!-- JS Tree -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
 
         <!--begin::Global Theme Styles -->
         <link href="/assets/vendors/base/vendors.bundle.css" rel="stylesheet" type="text/css" />
@@ -74,47 +78,7 @@
 										</div>
 									</div>
 									<div class="m-portlet__body">
-                                        <div id="m_tree_2" class="tree-demo">
-											<ul>
-												<li>
-													대원CTS
-												</li>
-												<li>
-													경영기획 부문
-												</li>
-												<li>
-													IT 혁신팀
-													<ul>
-														<li data-jstree='{ "selected" : true }'>
-															<a href="javascript:;">2019</a>
-														</li>
-														<li data-jstree='{ "icon" : "fa fa-briefcase m--font-success" }'>
-															2020
-														</li>
-														<li data-jstree='{ "opened" : true }'>
-															2021
-															<ul>
-																<li data-jstree='{ "type" : "file", "disabled" : false }'>
-																	1분기
-																</li>
-																<li data-jstree='{ "type" : "file" }'>
-																	2분기
-																</li>
-																<li data-jstree='{ "type" : "file" }'>
-																	3분기
-																</li>
-																<li data-jstree='{ "type" : "file" }'>
-																	4분기
-																</li>
-															</ul>
-														</li>
-														<li>
-															2022
-														</li>
-													</ul>
-												</li>
-											</ul>
-										</div>
+                                        <div id="m_tree_2" class="tree-demo"></div>
 									</div>
 								</div>
 								<!--end::OKR Tree View-->
@@ -258,6 +222,7 @@
 		<!--end::Global Theme Bundle -->
 
 		<!--begin::Page Vendors -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 		<!--end::Page Vendors -->
 
 		<!--begin::Page Scripts -->

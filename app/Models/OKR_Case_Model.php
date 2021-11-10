@@ -48,8 +48,10 @@ class OKR_Case_Model extends Model
         $stmt = sqlsrv_query($this->dbconn, '{CALL DWOKR.dbo.USP_OKR_EXM_CASE_DETAIL(?)}', $params);
         $detail_arr = array();
         $kr_arr = array();
+        $clip_arr = array();
 
         do {
+            //Key Result 가져오기
             if (sqlsrv_num_fields($stmt) == 1) {
                 while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
                 {
@@ -57,6 +59,16 @@ class OKR_Case_Model extends Model
                         'CONTENT' => $row['KR']
                     ]);
                 }
+            //스크랩 리스트 가져오기
+            } else if (sqlsrv_num_fields($stmt) == 2) {
+                while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
+                {
+                    array_push($clip_arr, [
+                        'EMPY_NO' => $row['EMPY_NO'],
+                        'EMP_NM' => $row['EMP_NM']
+                    ]);
+                }
+            //OKR 사례 내용 가져오기
             } else {
                 while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
                 {
@@ -80,8 +92,45 @@ class OKR_Case_Model extends Model
 
         $result['DETAIL'] = $detail_arr;
         $result['KR'] = $kr_arr;
+        $result['CLIP'] = $clip_arr;
 
         return $result;
+    }
+
+    public function get_okr_year($dept_cd)
+    {
+        //DB 연결
+        $okr_db = \Config\Database::connect('okrdb');
+        $query = 
+                "
+                    SELECT
+                        OKR_YEAR
+                    FROM
+                        OKR_OBJT_MST
+                    WHERE
+                        DEPT_CD = ?
+                ;";
+        $result = $okr_db->query($query, array($dept_cd));
+        return $result->getRowArray();
+    }
+
+    public function get_okr_quarter($dept_cd, $year)
+    {
+        //DB 연결
+        $okr_db = \Config\Database::connect('okrdb');
+        $query = 
+                "
+                    SELECT
+                        OKR_QTR
+                    FROM
+                        OKR_OBJT_MST
+                    WHERE
+                        DEPT_CD = ?
+                    AND
+                        OKR_YEAR = ?
+                ;";
+        $result = $okr_db->query($query, array($dept_cd, $year));
+        return $result->getRowArray();
     }
 
 }

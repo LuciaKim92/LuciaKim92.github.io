@@ -31,13 +31,15 @@
 		#m_header_nav { background-color: rgb(32, 31, 43) !important; }
         #contents th { width: 25%; background-color: #fafafa; }
         #contents th, #contents td { padding: 20px 10px; line-height: 1.5; }
+        .m-messenger__messages { overflow: visible !important; }
         .m-messenger__message { position: relative; }
         .m-messenger__message-body { cursor: pointer; }
         .m-messenger__message-username,
         .m-messenger__message-text { text-align: left; }
         .date { font-size: .75rem; margin-left: 7px; }
         .my-date { font-size: .75rem; color: white; }
-        .m-nav__section i { cursor: pointer; font-size: 1.1rem;}
+        .m-nav__section i { cursor: pointer; font-size: 1.1rem; }
+        .m-messenger__message .m-dropdown__body { padding: 5px !important;}
     </style>
 
     <!-- begin::Body -->
@@ -82,7 +84,28 @@
 											<ul class="m-portlet__nav">
 												<li class="m-portlet__nav-item m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" m-dropdown-toggle="hover" aria-expanded="true">
 													<a href="#" class="m-portlet__nav-link m-portlet__nav-link--icon m-portlet__nav-link--icon-xl">
-														<i class="la la-heart-o m--font-brand"></i>
+                                                        <?php 
+                                                            if (sizeof($CLIP) != 0) {
+                                                                foreach ($CLIP as $key => $bean) {
+                                                                    if ($bean['EMPY_NO'] == $_SESSION['emp_no']) {
+                                                                        $isClip = 'true';
+                                                                    }
+                                                                }
+                                                                if ($isClip == 'true') {
+                                                                ?>
+                                                                    <i class="la la-heart m--font-brand"></i>
+                                                                <?php
+                                                                } else {
+                                                                ?>
+                                                                    <i class="la la-heart-o m--font-brand"></i>
+                                                                <?php
+                                                                }
+                                                            } else {
+                                                                ?>
+                                                                    <i class="la la-heart-o m--font-brand"></i>
+                                                                <?php
+                                                            }
+                                                        ?>
 													</a>
 													<div class="m-dropdown__wrapper">
 														<span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust" style="left: auto; right: 17px;"></span>
@@ -90,24 +113,26 @@
 															<div class="m-dropdown__body">
 																<div class="m-dropdown__content">
 																	<ul class="m-nav">
-																		<li class="m-nav__item">
-																			<a href="" class="m-nav__link">
-                                                                                <i class="m-nav__link-icon la la-user"></i>
-																				<span class="m-nav__link-text">김경민</span>
-																			</a>
-																		</li>
-																		<li class="m-nav__item">
-																			<a href="" class="m-nav__link">
-                                                                                <i class="m-nav__link-icon la la-user"></i>
-																				<span class="m-nav__link-text">고지훈</span>
-																			</a>
-																		</li>
-																		<li class="m-nav__item">
-																			<a href="" class="m-nav__link">
-                                                                                <i class="m-nav__link-icon la la-user"></i>
-																				<span class="m-nav__link-text">이유진</span>
-																			</a>
-																		</li>
+                                                                        <?php
+                                                                            if(sizeof($CLIP) == 0) {
+                                                                            ?>
+                                                                                <li class="m-nav__item">
+                                                                                    <i class="m-nav__link-icon la la-user-times"></i>&nbsp;&nbsp;
+                                                                                    <span class="m-nav__link-text">스크랩한 사원이 없습니다.</span>
+                                                                                </li>
+                                                                            <?php
+                                                                            }
+                                                                            foreach($CLIP as $key => $bean) {
+                                                                            ?>
+                                                                                <li class="m-nav__item">
+                                                                                    <a href="" class="m-nav__link">
+                                                                                        <i class="m-nav__link-icon la la-user"></i>
+                                                                                        <span class="m-nav__link-text"><?=$bean['EMP_NM']?></span>
+                                                                                    </a>
+                                                                                </li>
+                                                                            <?php
+                                                                            }
+                                                                        ?>
 																	</ul>
 																</div>
 															</div>
@@ -120,7 +145,7 @@
                                     <div class="m-portlet__body">
                                         <div class="m-section">
                                             <div class="m-section__content">
-                                                <table class="table table-bordered table-hover m-table" id="contents">
+                                                <table class="table table-bordered m-table" id="contents">
                                                     <tbody>
                                                         <tr>
 															<th scope="row">Objective</th>
@@ -205,15 +230,7 @@
                                                                 <div class="m-messenger__message-pic">
                                                                     <img src="../../assets/app/media/img//users/user3.jpg" alt="" />
                                                                 </div>
-                                                                <div class="m-messenger__message-body" data-toggle="m-tooltip" data-html="true" data-offset="40px 0px"
-                                                                     title="<ul class='m-nav d-flex'>
-                                                                                <li class='m-nav__section m-nav__section--first mr-1'>
-                                                                                    <i class='la la-heart-o'></i>
-                                                                                </li>
-                                                                                <li class='m-nav__section m-nav__section--first mr-1'>
-                                                                                    <i class='la la-reply'></i>
-                                                                                </li>
-                                                                            </ul>">
+                                                                <div class="m-messenger__message-body m-dropdown m-dropdown--up m-dropdown--inline m-dropdown--align-right" m-dropdown-toggle="hover" aria-expanded="true">
                                                                     <div class="m-messenger__message-arrow"></div>
                                                                     <div class="m-messenger__message-content">
                                                                         <div class="m-messenger__message-username">
@@ -224,6 +241,22 @@
                                                                             좋은 사례네요!
                                                                         </div>
                                                                     </div>
+                                                                    <div class="m-dropdown__wrapper" style="width: 30% !important;">
+                                                                        <div class="m-dropdown__inner">
+                                                                            <div class="m-dropdown__body">
+                                                                                <div class="m-dropdown__content">
+                                                                                    <ul class='m-nav d-flex justify-content-center'>
+                                                                                        <li class='m-nav__section m-nav__section--first text-center'>
+                                                                                            <i class='la la-heart-o'></i>
+                                                                                        </li>
+                                                                                        <li class='m-nav__section m-nav__section--first text-center'>
+                                                                                            <i class='la la-reply'></i>
+                                                                                        </li>
+                                                                                    </ul>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -232,15 +265,7 @@
                                                                 <div class="m-messenger__message-pic">
                                                                     <img src="../../assets/app/media/img//users/user3.jpg" alt="" />
                                                                 </div>
-                                                                <div class="m-messenger__message-body" data-toggle="m-tooltip" data-html="true" data-offset="40px 0px"
-                                                                     title="<ul class='m-nav d-flex'>
-                                                                                <li class='m-nav__section m-nav__section--first mr-1'>
-                                                                                    <i class='la la-heart-o'></i>
-                                                                                </li>
-                                                                                <li class='m-nav__section m-nav__section--first mr-1'>
-                                                                                    <i class='la la-reply'></i>
-                                                                                </li>
-                                                                            </ul>">
+                                                                <div class="m-messenger__message-body m-dropdown m-dropdown--up m-dropdown--inline m-dropdown--align-right" m-dropdown-toggle="hover" aria-expanded="true">
                                                                     <div class="m-messenger__message-arrow"></div>
                                                                     <div class="m-messenger__message-content">
                                                                         <div class="m-messenger__message-username">
@@ -251,26 +276,28 @@
                                                                             공유 감사합니다.
                                                                         </div>
                                                                     </div>
+                                                                    <div class="m-dropdown__wrapper" style="width: 30% !important;">
+                                                                        <div class="m-dropdown__inner">
+                                                                            <div class="m-dropdown__body">
+                                                                                <div class="m-dropdown__content">
+                                                                                    <ul class='m-nav d-flex justify-content-center'>
+                                                                                        <li class='m-nav__section m-nav__section--first text-center'>
+                                                                                            <i class='la la-heart-o'></i>
+                                                                                        </li>
+                                                                                        <li class='m-nav__section m-nav__section--first text-center'>
+                                                                                            <i class='la la-reply'></i>
+                                                                                        </li>
+                                                                                    </ul>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="m-messenger__wrapper">
                                                             <div class="m-messenger__message m-messenger__message--out">
-                                                                <div class="m-messenger__message-body" data-toggle="m-tooltip" data-html="true" data-offset="40px 0px"
-                                                                     title="<ul class='m-nav d-flex'>
-                                                                                <li class='m-nav__section m-nav__section--first mr-1'>
-                                                                                    <i class='la la-heart-o'></i>
-                                                                                </li>
-                                                                                <li class='m-nav__section m-nav__section--first mr-1'>
-                                                                                    <i class='la la-reply'></i>
-                                                                                </li>
-                                                                                <li class='m-nav__section m-nav__section--first mr-1'>
-                                                                                    <i class='la la-edit'></i>
-                                                                                </li>
-                                                                                <li class='m-nav__section m-nav__section--first mr-1'>
-                                                                                    <i class='la la-trash'></i>
-                                                                                </li>
-                                                                            </ul>">
+                                                                <div class="m-messenger__message-body m-dropdown m-dropdown--up m-dropdown--inline m-dropdown--align-right" m-dropdown-toggle="hover" aria-expanded="true">
                                                                     <div class="m-messenger__message-arrow"></div>
                                                                     <div class="m-messenger__message-content">
                                                                         <div class="m-messenger__message-username">
@@ -278,6 +305,28 @@
                                                                         </div>
                                                                         <div class="m-messenger__message-text">
                                                                             저도 열심히 하겠습니다!
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="m-dropdown__wrapper" style="width: 50% !important;">
+                                                                        <div class="m-dropdown__inner">
+                                                                            <div class="m-dropdown__body">
+                                                                                <div class="m-dropdown__content">
+                                                                                    <ul class='m-nav d-flex justify-content-center'>
+                                                                                        <li class='m-nav__section m-nav__section--first text-center'>
+                                                                                            <i class='la la-heart-o'></i>
+                                                                                        </li>
+                                                                                        <li class='m-nav__section m-nav__section--first text-center'>
+                                                                                            <i class='la la-reply'></i>
+                                                                                        </li>
+                                                                                        <li class='m-nav__section m-nav__section--first text-center'>
+                                                                                            <i class='la la-edit'></i>
+                                                                                        </li>
+                                                                                        <li class='m-nav__section m-nav__section--first text-center'>
+                                                                                            <i class='la la-trash'></i>
+                                                                                        </li>
+                                                                                    </ul>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -322,7 +371,6 @@
 		<script src="/assets/demo/default/custom/components/base/sweetalert2.js" type="text/javascript"></script>
 		<!--end::Page Scripts -->
 
-        
         <script>
         </script>
         

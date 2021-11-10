@@ -60,7 +60,6 @@ class LayoutModel extends Model{
         //$result = $okr_db->query($query, array('jihun.ko@computer.co.kr'));
         $result = $cts_db->query($query, array('youjin.lee@computer.co.kr'));
         return $result->getRowArray();
-
     }
     
     public function GetKeyResult($dept_CD, $dept_ST){
@@ -90,13 +89,15 @@ class LayoutModel extends Model{
         $query = 
                 "
                     SELECT
-                        ,
+                        *
                     FROM
                         DEPT_MAP
                     WHERE
                         DEPT_CD = ?
                     AND   
                         BEND_DT = ?
+                    AND
+                        USE_YN = 'Y'
    
                 ;";
         $result = $cts_db->query($query, array($dept_CD,'29991231'));

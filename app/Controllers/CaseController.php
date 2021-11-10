@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\OKR_Case_Model;
+use App\Models\LayoutModel;
 
 class CaseController extends BaseController
 {
@@ -11,6 +12,7 @@ class CaseController extends BaseController
     public function session_setting(){
         $this->response = \Config\Services::response();
         $this->session = \Config\Services::session();
+
         $user_data = array(
             "admin_ids" => 123123,
             "admin_names" => '이유진',
@@ -73,6 +75,93 @@ class CaseController extends BaseController
     {
         $this->session_setting();
         return view("/case/case_write.php");
+    }
+
+    public function get_okr_list_depts()
+    {
+        $layoutModel = new LayoutModel();
+        $temp = $layoutModel->GetNavBarData();
+        $myData['DEPT_CD'] = $temp['DEPT_CD'];
+
+        $temp = $layoutModel->GetDeptCode($myData['DEPT_CD']);
+        $myData['DEPT_NM'] = $temp['DEPT_NM'];
+        $myData['DEPT_UP_CD'] = $temp['DEPT_UP_CD'];
+
+        $temp = $layoutModel->GetDeptCode($myData['DEPT_UP_CD']);
+        $myData['DEPT_UP_NM'] = $temp['DEPT_NM'];
+        $myData['COMP_CD'] = $temp['DEPT_UP_CD'];
+
+        $temp = $layoutModel->GetDeptCode($myData['COMP_CD']);
+        $myData['COMP_NM'] = $temp['DEPT_NM'];
+
+        $arr = array(
+            'id' => $myData['DEPT_CD'],
+            'text' => $myData['DEPT_NM'],
+            'parent' => '#',
+            'children' => true,
+            'type' => 'root'
+        );
+
+        $arr2 = array(
+            'id' => $myData['DEPT_UP_CD'],
+            'text' => $myData['DEPT_UP_NM'],
+            'parent' => '#',
+            'children' => true,
+            'type' => 'root'
+        );
+
+        $arr3 = array(
+            'id' => $myData['COMP_CD'],
+            'text' => $myData['COMP_NM'],
+            'parent' => '#',
+            'children' => true,
+            'type' => 'root'
+        );
+
+        $result = array($arr, $arr2, $arr3);
+        $output = json_encode($result, JSON_UNESCAPED_UNICODE);
+
+        return $output;
+    }
+
+    public function get_okr_list_year($dept_cd) {
+        
+        $this->Model = new OKR_Case_Model;
+        $data = $this->Model->get_okr_year($dept_cd);
+
+        $result = array();
+        foreach($data as $key => $value) {
+            array_push($result, [
+                'id' => strval($value),
+                'text' => strval($value),
+                'parent' => $dept_cd,
+                'type' => 'year',
+                'children' => true
+            ]);
+        }
+
+        $output = json_encode($result, JSON_UNESCAPED_UNICODE);
+        return $output;
+    }
+
+    public function get_okr_list_quarter($dept_cd, $year) {
+        
+        $this->Model = new OKR_Case_Model;
+        $data = $this->Model->get_okr_quarter($dept_cd, $year);
+
+        $result = array();
+        foreach($data as $key => $value) {
+            array_push($result, [
+                'id' => strval($value),
+                'text' => strval($value),
+                'parent' => $year,
+                'type' => 'quarter',
+                'children' => true
+            ]);
+        }
+
+        $output = json_encode($result, JSON_UNESCAPED_UNICODE);
+        return $output;
     }
 
 }

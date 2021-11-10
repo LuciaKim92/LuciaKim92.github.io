@@ -11,15 +11,40 @@ var Treeview = {
       plugins: ["types"],
     }),
       $("#m_tree_2").jstree({
-        core: { themes: { responsive: !1 } },
-        types: {
-          default: { icon: "fa fa-briefcase m--font-success" },
-          file: { icon: "fa fa-copy  m--font-warning" },
+        "core": {
+          "themes" : { "responsive" : true },
+          "check_callback": true,
+          "data": {
+            "url": function (e) {
+              console.log(e);
+              if(e.id == '#') {
+                return "/CaseController/get_okr_list_depts";
+              }
+              if (e.type == 'root') {
+                return "/CaseController/get_okr_list_year/" + e.id;
+              }
+              if (e.type == 'year') {
+                return "/CaseController/get_okr_list_quarter/" + e.parent + "/" + e.id;
+              }
+            },
+            "data": function (e) {
+              console.log(e);
+              return { "id": e.id };
+            },
+            "dataType": "json"
+          },
+        },
+        "types": {
+          "default": { "icon": "fa fa-briefcase m--font-success" },
+          "#" : { "valid_children" : ["root"] },
+          "root": { "valid_children" : ["year"] },
+          "year": { "valid_children" : ["default"] },
+          "quarter": { "valid_children" : ["default"] },
         },
         plugins: ["types"],
       }),
-      $("#m_tree_2").on("select_node.jstree", function (event, obj) {
-        var n = $("#" + obj.selected).find("a");
+      $("#m_tree_2").on("loaded.jstree", function (event, obj) {
+        /*var n = $("#" + obj.selected).find("a");
         if (
           "#" != n.attr("href") &&
           "javascript:;" != n.attr("href") &&
@@ -29,7 +54,7 @@ var Treeview = {
             "_blank" == n.attr("target") && (n.attr("href").target = "_blank"),
             (document.location.href = n.attr("href")),
             !1
-          );
+          );*/
       }),
       $("#m_tree_3").jstree({
         plugins: ["wholerow", "checkbox", "types"],
