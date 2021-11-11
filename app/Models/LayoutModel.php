@@ -68,8 +68,7 @@ class LayoutModel extends Model{
                 "
                     SELECT 
                         ID,
-                        CONTENT,
-                        OKR
+                        CONTENT
                     FROM 
                         OKR_KEYS_MST
                     WHERE 
@@ -125,7 +124,7 @@ class LayoutModel extends Model{
                         EMPY_NO = ?
                 ;";
         $result = $okr_db->query($query,array($proc_st,$empy_no));
-        return $query->getResultArray();
+        return $result->getResultArray();
 
     }
 

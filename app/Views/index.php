@@ -216,7 +216,7 @@
 																foreach($dashBoardData['team']['krList'] as $key => $bean){
 																	$id[$i-1]=$bean['ID'];
 																?>								
-																<li class ="dash-kr-li" id = "dash-kr-li-team-<?=$i?>" onclick ="setViewInitiativeToolKR(<?=$bean['ID']?>)"><?=$bean['CONTENT']?></li>
+																<li class ="dash-kr-li" id = "dash-kr-li-team-<?=$i?>" onclick ="setViewInitiativeToolKR(<?=$bean['ID']?>,'0')"><?=$bean['CONTENT']?></li>
 																<?php
 																	$i = $i + 1;
 																}
@@ -253,7 +253,6 @@
 			<!-- end:: Body -->
 
 		</div>
-
 		<!-- end:: Page -->
 
 		<!-- begin::Quick Sidebar -->

@@ -17,7 +17,7 @@
 
 		<!-- Objective Div / Key Result Bar css파일 불러오기-->
 		<link rel="stylesheet" type="text/css" href="/assets/css/dashboard.css">
-		<!-- Objective Div / Key Result Bar css파일 불러오기-->
+		<!-- Initiative Tool Modal css파일 불러오기-->
 		<link rel="stylesheet" type="text/css" href="/assets/css/initiativeToolModal.css">
 
 		<!--begin::Global Theme Styles -->

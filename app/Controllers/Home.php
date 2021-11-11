@@ -68,7 +68,7 @@ class Home extends BaseController
 		*/
 		//$this->response->redirect("/test");
 		//echo view("/test/initiativeTest.php");
-		echo view("/case/createCase.php");
+		echo view("/cfr/cfrMainView.php");
 		//메인으로 이동
 		//$this->response->redirect("/main");
 	}

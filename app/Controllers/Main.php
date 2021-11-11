@@ -10,11 +10,13 @@ class Main extends BaseController
 	public function index()
 	{
 		$this->session = \Config\Services::session();
-		
+		$this->session_setting();
 		//return view('comment.php');
+		/*
 		if(!isset($_SESSION['emp_no'])){
-			$this->session_setting();
+
 		}
+		*/
 		$layoutModel = new LayoutModel();
 
         //echo $model->getLastQuery();

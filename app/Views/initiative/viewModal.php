@@ -347,7 +347,7 @@
         }
 
         //Initiative + KR 세팅[임의(KR눌렀을 때 나오는것이라서.. 맵에서 나중에 해야할 것 같음)]
-        function setViewInitiativeToolKR(krId){
+        function setViewInitiativeToolKR(krId,initID){
             var str="";
             $(".todo-view-more").html("");
             $("#todo-view-more-proc").show();
@@ -377,13 +377,13 @@
                     alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
                 }
             });
-
-            setViewInitiativeToolInit(krId);
+            
+            setViewInitiativeToolInit(krId, initID);
            
             
         }
 
-        function setViewInitiativeToolInit(krId){
+        function setViewInitiativeToolInit(krId, initID){
             var empNum = '<?=$_SESSION['emp_no']?>';
             //console.log($("#kr-keyid").val());
             $.ajax({
@@ -396,12 +396,25 @@
                 },
                 success:function(res){
                     var cnt = Object.keys(res).length;
-                    var tmpStr = '<option disabled selected value ="n">====선택====</option>';
+                    var tmpStrSelected = "selected";
+                    if(initID == '0'){
+                        tmpStrSelected = "";
+                    }
+                    var tmpStr = '<option disabled '+tmpStrSelected+' value ="n">====선택====</option>';
                     for(var i = 0; i < cnt; i++){
                         //console.log(res[i].ID);
-                        tmpStr += `<option value='`+res[i].ID+`'>`+res[i].CONTENT+`</option>`;
+                        if(initID == res[i].ID){
+                            tmpStr += `<option value='`+res[i].ID+`' selected>`+res[i].CONTENT+`</option>`;
+                        }
+                        else{
+                            tmpStr += `<option value='`+res[i].ID+`'>`+res[i].CONTENT+`</option>`;
+                        }
                     }
                     document.getElementById('modal-init-select-view').innerHTML = tmpStr;
+                    if(initID != '0'){
+                        setViewInitToDoList('0');
+                        setViewInitToDoList('7');
+                    }
                 },
                 error:function(request,status,error){
                     alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -496,7 +509,7 @@
                     }
                     //console.log(res);
                     $("#st-btn").text(str);
-                    $("$st-btn").val(res.PROC_ST)
+                    $("#st-btn").val(res.PROC_ST)
                 },
                 error:function(request,status,error){
                     alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -548,8 +561,7 @@
         
             
             
-            //Initative 직접 입력 아닐 시 ToDo 세팅[진행중]
-            
+            //Initiative 직접 입력 아닐 시 ToDo 세팅[진행중]
             $.ajax({
                 url:"/InitiativeController/getTodoListAjax",
                 type:"get",
@@ -914,10 +926,10 @@
             if(initID == "n"){
                 showNotification("Initiative 선택 후 댓글을 입력할 수 있습니다.","init-custom-alert");
                 $("#init-view-reply-textarea").val("");
-                return ;
+                return;
             }
 
-            if(content == ""){
+            if($.trim(content) == ""){
                 showNotification("입력된 내용이 없습니다.","init-custom-alert");
                 return;
             }
@@ -1113,11 +1125,55 @@
             var code = event.keyCode;
             if(code == '13'){
                 if(confirm("저장하시겠습니까?")){
-                    
                     saveInitViewReply();
 
                 }
             }
+        }
+        //TODO 세팅
+        function setViewInitToDoList(n){
+            
+            var initID = $("#modal-init-select-view").val();
+            $("#todo-view-more-comp").html("");
+            $("#todo-view-more-proc").html("");
+            $.ajax({
+                        url:"/InitiativeController/getTodoListAjax",
+                        type:"get",
+                        dataType:"json",
+                        data:{
+                            initKey: initID,
+                            proc_ST : n,
+                        },
+                        success:function(res){
+                            var cnt = Object.keys(res).length;
+                            var tmpStr = "";
+                            var procStr = "";
+                            var checked = "";
+                            
+                            if(n == '0'){
+                                procStr = "proc"
+                                //$("#todo-proc-Cnt").val(cnt);
+                                //console.log($("#todo-proc-Cnt").val());
+                            }
+                            else{
+                                procStr = "comp"
+                                checked = "checked";
+                                //$("#todo-comp-Cnt").val(cnt);
+                                //console.log($("#todo-comp-Cnt").val());
+                            }
+                            
+
+                            for(var i = 0; i < cnt; i++){
+                                tmpStr += `<div id = "checkbox-`+procStr+`-div`+i+`" class="form-check form-check-inline" style = "display : block; margin-top : 5px; margin-bottom : 5px;">`
+                                        + `<input id="view-inline-check-`+ procStr + i +`" class="form-check-input" type="checkbox" value="option1" onchange = "viewInlineCheckboxClick(`+i+`)"`+checked+`>`
+                                        + `<label id="view-inline-check-label-`+ procStr + i +`"class="form-check-label" for="viewInlineCheckbox`+i+`">`+res[i].CONTENT+`</label>`
+                                        + `<input id = "`+procStr+`TodoID`+i+`" type = "hidden" value = `+res[i].ID+`>`
+                                        + `</div>`
+                            }
+                            $("#todo-view-more-"+procStr).html(tmpStr);
+                            //document.getElementById('todo-write-more-'+procStr).innerHTML = tmpStr;
+                        }
+                    });
         }
 
         
