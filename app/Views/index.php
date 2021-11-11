@@ -736,8 +736,8 @@
 		</div>
 		
 		<?php
-			$mydata['id'] = "100027";
-			echo view('/initiative/viewModal.php',$mydata);
+			//$mydata['id'] = "100027";
+			echo view('/initiative/viewModal.php');
 			echo view('/initiative/writeModal.php');
 		?>
 

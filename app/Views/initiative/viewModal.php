@@ -411,7 +411,21 @@
                         }
                     }
                     document.getElementById('modal-init-select-view').innerHTML = tmpStr;
+
+                    //Initiative 직접 선택해서 들어올때
                     if(initID != '0'){
+                        //진행 세팅
+                        viewSetProcST();
+                        //댓글 세팅
+                        setInitViewReply(initID);
+
+                        //자신감 세팅
+                        viewSetConfTP();
+                        
+                        //담당자 세팅
+                        viewSetWriter();
+
+                        //TODOLIST 세팅
                         setViewInitToDoList('0');
                         setViewInitToDoList('7');
                     }
@@ -478,21 +492,9 @@
 
         });
 
-        //Initiative 골랐을 때[선택 시] 이벤트
-        $("#modal-init-select-view").change(function() {
-            $("#todo-view-more-comp").html("");
-            $("#todo-view-more-proc").html("");
-            $("#init-view-reply-div").html("");
+        //진행 / 완료 여부 세팅
+        function viewSetProcST(){
             var initID = $("#modal-init-select-view option:selected").val();
-            
-            //댓글 세팅
-            setInitViewReply(initID)
-
-            //댓글 읽기 table 생성[댓글 전체의 읽음여부 파악 -> 없으면 저장]
-
-
-
-            // 진행/완료 여부 세팅
             $.ajax({
                 url:"/InitiativeController/getInitiativeProcSTAjax",
                 type:"get",
@@ -515,15 +517,17 @@
                     alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
                 }
             });
+        }
 
-
-            //자신감 세팅
+        //자신감 세팅
+        function viewSetConfTP(){
+            var initID = $("#modal-init-select-view option:selected").val();
             $.ajax({
                 url:"/InitiativeController/getInitConfTPAjax",
                 type:"get",
                 dataType:"json",
                 data:{
-                    initKey:$(this).val(),
+                    initKey:initID
                 },
                 success:function(res){
                     //console.log(res);
@@ -539,8 +543,10 @@
                     $("#view-conf-span").text(str);
                 }
             });
-            
-            //담당자 세팅
+        }
+        //담당자 세팅
+        function viewSetWriter(){
+            var initID = $("#modal-init-select-view option:selected").val();
             $.ajax({
                 url:"/InitiativeController/getInitMakerAjax",
                 type:"post",
@@ -558,59 +564,30 @@
                     alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
                 }
             })
-        
-            
-            
-            //Initiative 직접 입력 아닐 시 ToDo 세팅[진행중]
-            $.ajax({
-                url:"/InitiativeController/getTodoListAjax",
-                type:"get",
-                dataType:"json",
-                data:{
-                    initKey:$(this).val(),
-                    proc_ST : '0',
-                },
-                success:function(res){
-                    var cnt = Object.keys(res).length;
-                    var tmpStr = "";
-                    for(var i = 0; i < cnt; i++){
-                        tmpStr += `<div id = "viewcheckboxProcDiv`+i+`" class="form-check form-check-inline" style = "display : block; margin-top : 5px; margin-bottom : 5px;">`
-                                + `<input id="viewInlineCheckboxProc`+ i +`" class="form-check-input" type="checkbox" value="option1" onClick = "viewInlineCheckboxClick(`+i+`)">`
-                                + `<label id="viewInlineCheckboxLabelProc`+ i +`"class="form-check-label" for="viewInlineCheckbox`+i+`">`+res[i].CONTENT+`</label>`
-                                + `<input id = "viewprocTodoID`+i+`" type = "hidden" value = `+res[i].ID+`>`
-                                + `<i id="sticker-memo-proc-`+i+`"class="flaticon-speech-bubble-1" style= "margin-left : 8px; cursor : pointer" onclick="openStickerMemo('`+i+`', '`+res[i].ID+`', '`+res[i].CONTENT+`');"></i>`
-                                + `<input type="hidden" id = "sticker-memo-content-`+i+`"  value="`+res[i].NOTES+`">`
-                                + `</div>`
-                    }
-                    //console.log("NOTES");
-                    document.getElementById('todo-view-more-proc').innerHTML = tmpStr;
-                    $("#todo-view-more-proc").show();
-                }
-            });
+        }
 
-            //Initiaitve 직접 입력 아닐 시 ToDo 세팅[완료]
-            $.ajax({
-                url:"/InitiativeController/getTodoListAjax",
-                type:"get",
-                dataType:"json",
-                data:{
-                    initKey:$(this).val(),
-                    proc_ST : '7',
-                },
-                success:function(res){
-                    var cnt = Object.keys(res).length;
-                    var tmpStr = "";
-                    for(var i = 0; i < cnt; i++){
-                        tmpStr += `<div class="form-check form-check-inline" style = "display : block; margin-top : 5px; margin-bottom : 5px;">`
-                                + `<input id="viewInlineCheckboxComp`+ i +`" class="form-check-input" type="checkbox" value="option1" checked disabled>`
-                                + `<label id="viewInlineCheckboxLabelComp`+ i +`"class="form-check-label" for="viewInlineCheckbox`+i+`">`+res[i].CONTENT+`</label>`
-                                + `<i id="sticker-memo-comp-`+i+`"class="flaticon-speech-bubble-1" style= "margin-left : 8px; cursor : pointer"></i>`
-                                + `</div>`
-                    }
-                    $("#viewtodoCompCnt").val(parseInt($("#viewtodoCompCnt").val())+cnt);
-                    document.getElementById('todo-view-more-comp').innerHTML = tmpStr;
-                }
-            });
+
+        //Initiative 골랐을 때[선택 시] 이벤트
+        $("#modal-init-select-view").change(function() {
+            $("#todo-view-more-comp").html("");
+            $("#todo-view-more-proc").html("");
+            $("#init-view-reply-div").html("");
+            var initID = $("#modal-init-select-view option:selected").val();
+            //진행 세팅
+            viewSetProcST();
+            //댓글 세팅
+            setInitViewReply(initID);
+
+            //자신감 세팅
+            viewSetConfTP();
+            
+            //담당자 세팅
+            viewSetWriter();
+
+            //TODOLIST 세팅
+            setViewInitToDoList('0');
+            setViewInitToDoList('7');
+        
 
         });
 
