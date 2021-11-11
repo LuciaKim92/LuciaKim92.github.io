@@ -801,26 +801,20 @@
 
     function kr_add_column(){
  
-        var html = `    <div class="input-group" style="margin-top:10px">
-                            <input name="kr-id[]" type='hidden' value=''></input>
-                            <textarea class="form-control" name="kr-content[]" col="50" rows="4" style="overflow:auto; resize: none;" ></textarea>
-                            <div class="input-group-append">
-                                <input name="kr-delete[]" type='hidden' value='N'></input>
-                                
-                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:black"></button>
-                                <div class="dropdown-menu">
-                                    <div class="input-group" style="margin-top:10px">
-                                        <div class="input-group-prepend" style="margin:5px 0px 5px 5px">
-                                            <span class="input-group-text">진척율</span>
-                                        </div>
-
-                                        <input class="form-control" name="kr-proc[]" type='text' style="margin:5px 5px 5px 0px" value='0'></input>
-                                    </div>
-                                    <hr class="dropdown-divider">
-                                    <a class="dropdown-item" onclick="delete_new_kr(this)">삭제</a>
-                                </div>
+        var html = `<div class="input-group" style="margin-top:30px">
+                        <input name="kr-id[]" type='hidden' value=''></input>
+                        <textarea class="form-control" name="kr-content[]" col="50" rows="4" style="overflow:auto; resize: none;" ></textarea>
+                        <input name="kr-delete[]" type='hidden' value='N'></input>
+                        <div class="input-group" style="margin-top:10px">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">진척율</span>
                             </div>
-                        </div>`;
+
+                            <input class="form-control" name="kr-proc[]" type='text' value='0'></input>
+                        </div>
+
+                        <div style="width:100%; margin-top:10px"><a style="float:right" class="btn btn-danger" href="#" onclick="delete_new_kr(this)">삭제</a></div>
+                    </div>`
 
                     
         $("#add_here").append(html);
@@ -851,7 +845,7 @@
 
     //에러가 발생할수있음...
     function delete_new_kr(e){
-        $(e).parent().parent().parent().remove();
+        $(e).parent().parent().remove();
     }
 
     //진척율 표시관련
