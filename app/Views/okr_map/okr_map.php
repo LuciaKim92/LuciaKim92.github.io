@@ -65,55 +65,18 @@
                 <!-- kr 편집창 모달 -->
                 <div class="modal fade" id="modal-container-357981" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <form name="kr_form" id="kr_form">
-                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document" id="mymodal2">
+                        <div class="modal-dialog modal-dialog-centered modal-lg " role="document" id="mymodal2">
                         </div>
                     </form>
                 </div>
 
-                <!-- Initiative 슬라이드 메뉴 -->
-                <div id="mySidenav" class="sidenav">
-                    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-                    
-                    <!--  이 부분을 반목문을 통해 -->
-                    <div class="card" style="margin:5px">
-                        <h5 class="card-header">
-                            고지훈
-                        </h5>
 
-                        <div class="card-body">
+                <!-- Initiative 모달 -->
+                <div class="modal fade" id="modal-container-357982" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document" id="mymodal3">
 
-                            <div class="initiative-content" style="text-align:center">
-                                <span class="m-widget24__change">
-                                    <span class="okr-badge m-badge m-badge--brand">6</span>진행
-                                </span>
-
-                                &nbsp&nbsp&nbsp&nbsp&nbsp
-
-                                <span class="m-widget24__change">
-                                    <span class="okr-badge m-badge m-badge--success">3</span>완료
-                                </span>
-
-                                &nbsp&nbsp&nbsp&nbsp&nbsp
-
-                                <span class="m-widget24__change">
-                                    <span class="funnel" onclick="goFunnel();"><span class="okr-badge m-badge m-badge--warning"> 2</span>펀넬</span>
-                                </span>
-                            </div>
-
-                            <div class="initiative-content">
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item"><span class="badge badge-primary badge-pill">KR1</span> 지훈 Initiative 1</li>
-                                    <li class="list-group-item"><span class="badge badge-primary badge-pill">KR2</span> 지훈 Initiative 2</li>
-                                    <li class="list-group-item"><span class="badge badge-primary badge-pill">KR3</span> 지훈 Initiative 3</li>
-                                </ul>
-                            </div>
-                        </div>
                     </div>
-            
                 </div>
-
-                <!-- Use any element to open the sidenav -->
-                <span onclick="openNav()">open</span>
 
 
                 <!-- 시작하는부분 -->
@@ -123,7 +86,7 @@
 
                         <select name="year" id="year-select">
                             <script>
-                                for(var i=1988; i<=2099; i++){
+                                for(var i=2011; i<=2031; i++){
                                     $("#year-select").append("<option value="+i+">"+i+"년</option>");
                                 }
 
@@ -211,24 +174,14 @@
             </div>
         </div>
 
-    </div>  
-
-    	<!--begin::Global Theme Bundle -->
-		<script src="/assets/vendors/base/vendors.bundle.js" type="text/javascript"></script>
-		<script src="/assets/demo/demo12/base/scripts.bundle.js" type="text/javascript"></script>
-
-		<!--end::Global Theme Bundle -->
-
-		<!--begin::Page Vendors -->
-		<script src="/assets/vendors/custom/fullcalendar/fullcalendar.bundle.js" type="text/javascript"></script>
-
-		<!--end::Page Vendors -->
-
-		<!--begin::Page Scripts -->
-		<script src="/assets/app/js/dashboard.js" type="text/javascript"></script>
-
-		<!--end::Page Scripts -->
-                                                        
+    </div>
+    <?php
+			//$mydata['id'] = "100027";
+			echo view('/initiative/viewModal.php');
+			//echo view('/initiative/writeModal.php');
+		?>
+  
+                                                  
 </body>
 
 
@@ -250,6 +203,40 @@
                 qtr[i].selected = true;
             }
         }
+
+
+        // 자동으로 팀열리게 해주는 코드
+        <?php
+            if($MY_DEPT[0]['DEPT_CD_4'] != null){
+                ?>
+                test('<?=$MY_DEPT[0]['DEPT_CD_4']?>');
+                test1('<?=$MY_DEPT[0]['DEPT_CD_3']?>');
+                test2('<?=$MY_DEPT[0]['DEPT_CD_2']?>', 'Y');
+                test3('<?=$MY_DEPT[0]['DEPT_CD_1']?>');
+
+                $('#<?=$MY_DEPT[0]['DEPT_CD_1']?>').find('.card-link').click();
+                <?php
+            }
+
+            else if($MY_DEPT[0]['DEPT_CD_3'] != null){
+                ?>
+                test('<?=$MY_DEPT[0]['DEPT_CD_3']?>')
+                test1('<?=$MY_DEPT[0]['DEPT_CD_2']?>');
+                test2('<?=$MY_DEPT[0]['DEPT_CD_1']?>', 'N');
+
+                $('#<?=$MY_DEPT[0]['DEPT_CD_1']?>').find('.card-link').click();
+                <?php
+            }
+
+            else if($MY_DEPT[0]['DEPT_CD_2'] != null){
+                ?>
+                test('<?=$MY_DEPT[0]['DEPT_CD_2']?>')
+                test1('<?=$MY_DEPT[0]['DEPT_CD_1']?>');
+    
+                $('#<?=$MY_DEPT[0]['DEPT_CD_1']?>').find('.card-link').click();
+                <?php
+            }
+        ?>
     });
 
     function refresh(){
@@ -266,6 +253,19 @@
         }
         toggle_child3 = false;
     }
+
+
+    function test(dept_cd){
+        reset();
+
+        if($('#'+dept_cd).find('.my_toggle').text() == '+')
+            $('#'+dept_cd).find('.my_toggle').text("-");
+
+        else
+            $('#'+dept_cd).find('.my_toggle').text("+");
+
+
+    }
     
     var toggle_child2 = false;
     var last_dept_cd2 = '';
@@ -275,6 +275,12 @@
         window.scrollTo(0,0);
         reset();
         ajax_get_team(dept_cd, '#card-child-2');
+
+        $('#'+dept_cd).find('.my_toggle').text("-");
+
+        if(last_dept_cd2 != '')
+            $('#'+last_dept_cd2).find('.my_toggle').text("+");
+
         $("#card-child-1").hide().prepend($("#"+dept_cd)).fadeIn(500);
 
         if(toggle_child2 == false){
@@ -301,33 +307,50 @@
     var toggle_child3 = false;
     var last_dept_cd3 = '';
 
-    function test2(dept_cd){
+    function test2(dept_cd, is_up_dept){
 
         ajax_get_team(dept_cd, '#card-child-3');
+
+        $('#'+dept_cd).find('.my_toggle').text("-");
+
+        if(last_dept_cd3 != '')
+            $('#'+last_dept_cd3).find('.my_toggle').text("+");
+
         $("#card-child-2").hide().prepend($("#"+dept_cd)).fadeIn(500);
 
-        if(toggle_child3 == false){
+        if(is_up_dept == 'Y'){
+
+            if(toggle_child3 == false){
             $(".col-md-4").attr("class", "col-md-3");
             $("#child-3").css("display", "inherit");
             $("#card-child-3").css("display", "inherit");
             last_dept_cd3 = dept_cd;
             toggle_child3 = true;
             // console.log("1");
+            }
+
+            else if(last_dept_cd3 != dept_cd && toggle_child3 == true){
+                $("#card-child-3").css("display", "inherit");
+                last_dept_cd3 = dept_cd;
+                // console.log("2");
+            }
+            else if(last_dept_cd3 == dept_cd && toggle_child3 == true){
+                $(".col-md-3").attr("class", "col-md-4");
+                $("#child-3").css("display", "none");
+                $("#card-child-3").css("display", "none");
+                last_dept_cd3 = '';
+                toggle_child3 = false;
+                // console.log("3");
+            }
+
         }
 
-        else if(last_dept_cd3 != dept_cd && toggle_child3 == true){
-            $("#card-child-3").css("display", "inherit");
-            last_dept_cd3 = dept_cd;
-            // console.log("2");
-        }
-        else if(last_dept_cd3 == dept_cd && toggle_child3 == true){
-            $(".col-md-3").attr("class", "col-md-4");
-            $("#child-3").css("display", "none");
-            $("#card-child-3").css("display", "none");
-            last_dept_cd3 = '';
-            toggle_child3 = false;
-            // console.log("3");
-        }
+        else
+            reset();
+    }
+
+    function test3(dept_cd){
+        $("#card-child-3").hide().prepend($("#"+dept_cd)).fadeIn(500);
     }
 
     function ajax_get_team(dept_cd, card_id){
@@ -365,28 +388,29 @@
         else
             objective_temp = objective;
 
-        if(card_id == '#card-child-1'){
+        if(card_id == '#parent'){
+            myhref = ".card-child";
+            myfunction = `test('`+dept_cd+`');`;
+        }
+
+        else if(card_id == '#card-child-1'){
             myhref = "#card-child-2";
             myfunction = `test1('`+dept_cd+`');`;
         }
         else if(card_id == '#card-child-2') {
             myhref = "#card-child-3";
-            myfunction = `test2('`+dept_cd+`');`;
+            myfunction = `test2('`+dept_cd+`', '`+is_up_dept+`');`;
         }
         else if(card_id == '#card-child-3'){
             myhref = "#";
-            myfunction = "#";
+            myfunction = `test3('`+dept_cd+`');`;
         }
 
-        else {
-            console.log("123123123");
-        }
 
-        // 작업중
         if(is_up_dept == 'Y'){
             html = `
                     <div id="`+dept_cd+`">
-                        <div><a class="card-link" data-toggle="collapse" data-parent="#card-`+dept_cd+`" href=`+myhref+` onclick="`+myfunction+`" ><h4> `+dept_nm+` </h4></a></div>
+                        <div><a class="card-link" data-toggle="collapse" data-parent="#card-`+dept_cd+`" href=`+myhref+` onclick="`+myfunction+`" ><h4> `+dept_nm+`<span class="my_toggle" style="position:relative; left:10px">+</span></h4></a></div>
 
                         <div id="card-`+dept_cd+`">
                             <div class="card">
@@ -455,7 +479,7 @@
         else{
             html = `
                     <div id="`+dept_cd+`">
-                        <div><h4> `+dept_nm+` </h4></div>
+                        <div><a style="color:black" class="card-link" data-toggle="collapse" data-parent="#card-`+dept_cd+`" href="#" onclick="`+myfunction+`" ><h4> `+dept_nm+` </h4></a></div>
 
                         <div id="card-`+dept_cd+`">
                             <div class="card">
@@ -474,6 +498,10 @@
                                                         <ul class="m-nav">
                                                             <li class="m-nav__item">
                                                                 <a id="modal-357980" onclick="edit_objective_modal('`+objective_id+`','`+objective+`', '` +dept_cd+ `','`+ dwgp_cd +`')" href="#modal-container-357980" role="button" class="btn" data-toggle="modal">편집</a>
+                                                            </li>
+
+                                                            <li class="m-nav__item">
+                                                                <a href="javascript:confirm_delete_objective(`+ objective_id +`)" class="btn">삭제</a>
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -506,6 +534,11 @@
                                                                 <li class="m-nav__item">
                                                                     <a id="modal-357981" onclick="edit_kr_modal('`+objective_id+`','`+dept_cd+`')" href="#modal-container-357981" role="button" class="btn" data-toggle="modal">편집</a>
                                                                 </li>
+
+                                                                <li class="m-nav__item">
+                                                                    <a id="modal-357982" onclick="openInit('`+dept_cd+`')" href="#modal-container-357982" role="button" class="btn" data-toggle="modal">Initiative</a>
+                                                                </li>
+                                                                
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -641,25 +674,19 @@
                     `;
 
         for(var i=0;i<my123.length;i++){
-            html = html.concat(`<div class="input-group" style="margin-top:10px">
+            html = html.concat(`<div class="input-group" style="margin-top:30px">
                                     <input name="kr-id[]" type='hidden' value='`+ $(my123[i]).attr('kr_id') +`'></input>
                                     <textarea id="kr-content-`+$(my123[i]).attr('kr_id')+`" class="form-control" name="kr-content[]" col="50" rows="4" style="overflow:auto; resize: none;" >`+ $(my123[i]).text()+`</textarea>
-                                    <div class="input-group-append">
-                                        <input id="kr-delete-`+$(my123[i]).attr('kr_id')+`" name="kr-delete[]" type='hidden' value='N'></input>
-                                        
-                                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:black"></button>
-                                        <div class="dropdown-menu">
-                                            <div class="input-group" style="margin-top:10px">
-                                                <div class="input-group-prepend" style="margin:5px 0px 5px 5px">
-                                                    <span class="input-group-text">진척율</span>
-                                                </div>
-
-                                                <input id="kr-proc-`+$(my123[i]).attr('kr_id')+`" class="form-control" name="kr-proc[]" type='text' style="margin:5px 5px 5px 0px" value='`+ $(my123[i]).attr('kr_proc') +`'></input>
-                                            </div>
-                                            <hr class="dropdown-divider">
-                                            <a id="kr-text-`+ $(my123[i]).attr('kr_id') +`" class="dropdown-item" href="javascript:delete_kr(`+ $(my123[i]).attr('kr_id') +`)">삭제</a>
+                                    <input id="kr-delete-`+$(my123[i]).attr('kr_id')+`" name="kr-delete[]" type='hidden' value='N'></input>
+                                    <div class="input-group" style="margin-top:10px">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">진척율</span>
                                         </div>
+
+                                        <input id="kr-proc-`+$(my123[i]).attr('kr_id')+`" class="form-control" name="kr-proc[]" type='text' value='`+ $(my123[i]).attr('kr_proc') +`'></input>
                                     </div>
+
+                                    <div style="width:100%; margin-top:10px"><a style="float:right" id="kr-text-`+ $(my123[i]).attr('kr_id') +`" class="btn btn-danger" href="javascript:delete_kr(`+ $(my123[i]).attr('kr_id') +`)">삭제</a></div>
                                 </div>`);
 
         }
@@ -793,7 +820,7 @@
                                     <a class="dropdown-item" onclick="delete_new_kr(this)">삭제</a>
                                 </div>
                             </div>
-                        </div>`
+                        </div>`;
 
                     
         $("#add_here").append(html);
@@ -854,7 +881,6 @@
                 data : {"ID": objective_id},
                 async: false,
                 success : function( data ){
-                    alert("성공적으로 삭제하였습니다.");
                     window.location.reload();
                 },
                 error : function( jqxhr , status , error ){
@@ -865,15 +891,136 @@
     }
 
     /* Set the width of the side navigation to 250px */
-    function openNav() {
-    document.getElementById("mySidenav").style.width = "320px";
+    // ajax 통신 해야함
+
+    function openInit(dept_cd) {
+
+        var html='';
+        var init_count = 1;
+
+        var my123 = new Array();
+        var kr_arr = new Array();
+
+        if(document.querySelector("#card-" + dept_cd + "-element > div > ol") != null)
+            my123 = document.querySelectorAll("#card-" + dept_cd + "-element > div > ol > li");
+
+        for(var i=0; i < my123.length; i++){
+            kr_arr.push($(my123[i]).attr('kr_id'));
+        }
+   
+        // console.log(kr_arr);
+
+        
+        $.ajax({
+            type : 'POST',
+            url : '/OKR_MAP_Controller/get_initiative',
+            dataType:"json",
+            data : {kr_arr},
+            async: false,
+            success : function( data ){
+                
+                html += `<div class="modal-content">
+                            <div class="modal-header" style="display:inline-block; text-align:center">
+                                <h1 id="myModalLabel" style="text-align:center">
+                                    INITIATIVES
+                                </h1> 
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body" style="text-align:center">
+                            `;
+
+                for(key in data){
+                    //초기화
+                    init_count = 1;
+
+                    html += `
+                            <div class="card mycard">
+                                <h5 class="card-header">
+                                    `+key+`
+                                </h5>
+
+                                <div class="card-body">
+
+                                    <div class="initiative-content" style="text-align:center">
+                                        <span class="m-widget24__change">
+                                            <span class="okr-badge m-badge m-badge--brand">`+data[key]['ONGOING']+`</span>진행
+                                        </span>
+
+                                        &nbsp&nbsp&nbsp&nbsp&nbsp
+
+                                        <span class="m-widget24__change">
+                                            <span class="okr-badge m-badge m-badge--success">`+data[key]['COMPLETE']+`</span>완료
+                                        </span>
+
+                                        &nbsp&nbsp&nbsp&nbsp&nbsp
+
+                                        <span class="m-widget24__change">
+                                            <span class="funnel" onclick="goFunnel();"><span class="okr-badge m-badge m-badge--warning"> 0</span>펀넬</span>
+                                        </span>
+                                    </div>
+
+                                    <div class="initiative-content">
+                                            <ul class="list-group list-group-flush mylist" id="mylist">
+                            `;
+
+                    for(value in data[key]){
+
+                        // ongoing, complete 제거...?
+                        if(data[key][value]['KR_ID'] == null)
+                            continue;
+
+                        if(data[key][value]['PROC_ST'] == '7'){
+                            html += `
+                            <li class="list-group-item"><a data-dismiss="modal" onclick="setViewInitiativeToolKR(`+data[key][value]['KR_ID']+`,`+data[key][value]['INIT_ID']+`);"><span class="badge badge-success badge-pill">KR `+ data[key][value]['KR_ID'] +`</span><label>`+ init_count +`. </label>`+ data[key][value]['INIT_CONTENT'] +`</a></li>
+                                    `;
+                        }
+                        
+                        else{
+                            html += `
+                                        <li class="list-group-item"><a data-dismiss="modal" onclick="setViewInitiativeToolKR(`+data[key][value]['KR_ID']+`,`+data[key][value]['INIT_ID']+`);"><span class="badge badge-primary badge-pill">KR `+ data[key][value]['KR_ID'] +`</span><label>`+ init_count +`. </label>`+ data[key][value]['INIT_CONTENT'] +`</a></li>
+                                    `;
+                        }
+
+                        init_count++;
+                    }
+
+                    html+=`
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            `;
+                }
+
+                html+= `
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                        `;
+
+            },
+            error : function( request , status , error ){
+                alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
+            }
+        });
+
+        $("#mymodal3").html(html);
+
     }
 
-    /* Set the width of the side navigation to 0 */
-    function closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
-    }
-
+    // Initiative Modal Change
+    $('#initiative-view-modal').on('hidden.bs.modal', function(){
+        // console.log("123123");
+        $('#modal-container-357982').modal('show');
+    })
 
 
     //OKR_MAP 메뉴 활성화
@@ -885,8 +1032,6 @@
         elements[i].classList.remove('m-menu__item--active');
 
     }
-
-
 
     document.getElementById('okr_map_left_menu').classList.add('m-menu__item--active');
 

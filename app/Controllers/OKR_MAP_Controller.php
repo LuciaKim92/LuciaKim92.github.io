@@ -13,7 +13,8 @@ class OKR_MAP_Controller extends BaseController
             "admin_ids" => '123123',
             "admin_names" => '이유진',
             "emp_no" => 'P221002',
-            "logged_in" => TRUE
+            "logged_in" => TRUE,
+            "dept_cd" => 'MD00000707'
         );
         $this->session->set($user_data);
     }
@@ -29,14 +30,14 @@ class OKR_MAP_Controller extends BaseController
         }
 
         $mydata['DWCTS'] = $this->Model->return_dwcts($YEAR, $QTR);
-        // foreach($mydata['DWCTS'] as $key => $bean){
-        //     echo $bean['DEPT_CD'];
-        // }
         $mydata['team_arr'] = $this->Model->return_first_team($YEAR, $QTR);
         $mydata['YEAR'] = $YEAR;
         $mydata['QTR'] = $QTR;
+        $mydata['MY_DEPT'] = $this->Model->return_up_depts();
 
         return view('/okr_map/okr_map.php', $mydata);
+
+        // return view('/cfr/cfr_form.php');
     }
 
     // ajax
@@ -99,5 +100,16 @@ class OKR_MAP_Controller extends BaseController
  
     }
 
+    //ajax 
+    public function get_initiative(){
+        $this->session_setting();
+        $this->Model = new OKR_MAP_Model;
+
+        // $_POST가 눌인경우 ㅅㅇ각해야됨
+
+        $arr = $this->Model->return_init();
+
+        echo(json_encode($arr));
+    }
 }
 ?>

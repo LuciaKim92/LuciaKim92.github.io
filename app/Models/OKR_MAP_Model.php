@@ -224,7 +224,7 @@ class OKR_MAP_Model extends Model
                             WHERE OKR_OBJT_ID = ?
                         ";
 
-        $stmt = sqlsrv_query($this->dbconn, $query, array($objective_id) );
+        $stmt = sqlsrv_query($this->dbconn, $query, array($objective_id, $objective_id) );
 
     }
 
@@ -299,8 +299,110 @@ class OKR_MAP_Model extends Model
         $stmt = sqlsrv_query($this->dbconn, $query);
     }
 
-    insert_KR()
-    delete_KR()
-    update_KR()
+    // insert_KR()
+    // delete_KR()
+    // update_KR()
+
+    public function return_init(){
+
+        // 진행중, 완료
+        $ongoing=0;
+        $complete=0;
+
+        //(?,?,?) >>. 이거하려고
+        $temp='';
+        for($i=0; $i<sizeof($_POST['kr_arr']); $i++){
+            $temp = $temp.'?,';
+        }
+        $temp = rtrim($temp, ",");
+
+
+        $query = "
+                    SELECT A.ID KR_ID, A.CONTENT KR_CONTENT, D.EMP_NM, B.SORT_SEQ, B.EMPY_NO, C.ID INIT_ID, C.CONTENT INIT_CONTENT, C.PROC_ST
+                    FROM
+                        DBO.OKR_KEYS_MST AS A
+                        INNER JOIN 
+                        DWCTS.DBO.EMP_MST AS D
+                        ON A.DEPT_CD = D.DEPT_CD
+                        INNER JOIN
+                        DBO.OKR_ORGN_MAP AS B
+                        ON A.DEPT_CD = B.DEPT_CD
+                        AND D.EMP_NO = B.EMPY_NO
+                        INNER JOIN 
+                        DBO.OKR_INIT_MST AS C
+                        ON  A.ID = C.OKR_KEYS_ID
+                        AND B.EMPY_NO = C.EMPY_NO
+                                        
+                    WHERE A.ID IN (".$temp.")
+                    AND   C.PROC_ST NOT IN ('8', '9')
+                    ORDER BY B.SORT_SEQ,  A.ID, C.ID
+        
+                    ";
+    
+        $stmt = sqlsrv_query($this->dbconn, $query, $_POST['kr_arr'] );
+    
+        $arr = array();
+    
+        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
+        {
+            if(!array_key_exists($row['EMP_NM'], $arr)){
+                $arr[$row['EMP_NM']] = array();
+                $ongoing = 0;
+                $complete = 0;
+            }
+
+            switch($row['PROC_ST']){
+                case '0':
+                    $ongoing++;
+                    break;
+
+                case '7':
+                    $complete++;
+                    break;
+
+                default:
+                    break;
+            }
+
+            array_push($arr[$row['EMP_NM']], ['KR_ID' => $row['KR_ID'], 'KR_CONTENT' => $row['KR_CONTENT'], 'SORT_SEQ' => $row['SORT_SEQ'], 
+                              'EMPY_NO' => $row['EMPY_NO'], 'INIT_ID' => $row['INIT_ID'], 'INIT_CONTENT' => $row['INIT_CONTENT'], 'PROC_ST' => $row['PROC_ST']]);
+
+            $arr[$row['EMP_NM']]['ONGOING'] = $ongoing;
+            $arr[$row['EMP_NM']]['COMPLETE'] = $complete;
+        }
+
+        return $arr;
+    
+    }
+
+    public function return_up_depts(){
+        $query = "
+                    SELECT A.DEPT_CD DEPT_CD_1, B.DEPT_CD DEPT_CD_2, C.DEPT_CD DEPT_CD_3, D.DEPT_CD DEPT_CD_4
+                    FROM 
+                        DWCTS.DBO.DEPT_MST A
+                        LEFT OUTER JOIN
+                        DWCTS.DBO.DEPT_MST B
+                        ON A.DEPT_UP_CD = B.DEPT_CD
+                        LEFT OUTER JOIN
+                        DWCTS.DBO.DEPT_MST C
+                        ON B.DEPT_UP_CD = C.DEPT_CD
+                        LEFT OUTER JOIN
+                        DWCTS.DBO.DEPT_MST D
+                        ON C.DEPT_UP_CD = D.DEPT_CD
+                    
+                    WHERE A.DEPT_CD = ?
+                ";
+
+        $stmt = sqlsrv_query($this->dbconn, $query, array($_SESSION['dept_cd']));
+
+        $arr = array();
+    
+        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC))
+        {
+            array_push($arr, ["DEPT_CD_1" => $row['DEPT_CD_1'], "DEPT_CD_2" => $row['DEPT_CD_2'], "DEPT_CD_3" => $row['DEPT_CD_3'], "DEPT_CD_4" => $row['DEPT_CD_4']]);
+        }
+
+        return $arr;
+    }
 
 }

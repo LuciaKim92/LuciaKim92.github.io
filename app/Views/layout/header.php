@@ -49,3 +49,19 @@
 
 		<!--하트 아이콘-->
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+		<!--begin::Global Theme Bundle -->
+		<script src="/assets/vendors/base/vendors.bundle.js" type="text/javascript"></script>
+		<script src="/assets/demo/demo12/base/scripts.bundle.js" type="text/javascript"></script>
+
+		<!--end::Global Theme Bundle -->
+
+		<!--begin::Page Vendors -->
+		<script src="/assets/vendors/custom/fullcalendar/fullcalendar.bundle.js" type="text/javascript"></script>
+
+		<!--end::Page Vendors -->
+
+		<!--begin::Page Scripts -->
+		<script src="/assets/app/js/dashboard.js" type="text/javascript"></script>
+
+		<!--end::Page Scripts -->   
