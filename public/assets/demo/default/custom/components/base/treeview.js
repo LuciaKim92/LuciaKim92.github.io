@@ -1,34 +1,35 @@
+var selected_init;
+
 var Treeview = {
-  init: function () {
-    $("#m_tree_1").jstree({
-      core: {
-        themes: { responsive: !1 },
-      },
-      types: {
-        default: { icon: "fa fa-folder" },
-        file: { icon: "fa fa-file" },
-      },
-      plugins: ["types"],
-    }),
-      $("#m_tree_2").jstree({
+  init: function (okr_init_id) {
+    $("#m_tree_2").jstree({
         "core": {
-          "themes" : { "responsive" : true },
+          "themes" : { "responsive" : false },
           "check_callback": true,
           "data": {
             "url": function (e) {
-              console.log(e);
+              var is_saved;
+              if (okr_init_id == '') {
+                is_saved = 0;
+              } else {
+                is_saved = okr_init_id;
+              }
+              
               if(e.id == '#') {
-                return "/CaseController/get_okr_list_depts";
-              }
-              if (e.type == 'root') {
-                return "/CaseController/get_okr_list_year/" + e.id;
-              }
-              if (e.type == 'year') {
-                return "/CaseController/get_okr_list_quarter/" + e.parent + "/" + e.id;
+                return "/CaseController/get_okr_depts/" + is_saved;
+              } else if (e.type == 'root') {
+                return "/CaseController/get_okr_year/" + e.id + "/" + is_saved;
+              } else if (e.type == 'year') {
+                return "/CaseController/get_okr_quarter/" + e.parent + "/" + e.id + "/" + is_saved;
+              } else if (e.type == 'quarter') {
+                return "/CaseController/get_okr_list/" + e.parents[1] + "/" + e.parents[0] + "/" + e.id + "/" + is_saved;
+              } else {
+                if (e.type == 'okr' && e.parents[4] == '#') {
+                  return "/CaseController/get_okr_initiatives/" + e.id + "/" + is_saved;
+                }
               }
             },
             "data": function (e) {
-              console.log(e);
               return { "id": e.id };
             },
             "dataType": "json"
@@ -38,178 +39,108 @@ var Treeview = {
           "default": { "icon": "fa fa-briefcase m--font-success" },
           "#" : { "valid_children" : ["root"] },
           "root": { "valid_children" : ["year"] },
-          "year": { "valid_children" : ["default"] },
-          "quarter": { "valid_children" : ["default"] },
+          "year": { "icon": "fa fa-folder m--font-accent", "valid_children" : ["quarter"] },
+          "quarter": { "icon": "fa fa-folder m--font-accent", "valid_children" : ["okr"] },
+          "okr": { "icon": "fa fa-copy m--font-metal", "valid_children" : ["okr", "initiatives"] },
+          "initiatives": { "icon": "fa fa-file m--font-metal" },
         },
         plugins: ["types"],
       }),
       $("#m_tree_2").on("loaded.jstree", function (event, obj) {
-        /*var n = $("#" + obj.selected).find("a");
-        if (
-          "#" != n.attr("href") &&
-          "javascript:;" != n.attr("href") &&
-          "" != n.attr("href")
-        )
-          return (
-            "_blank" == n.attr("target") && (n.attr("href").target = "_blank"),
-            (document.location.href = n.attr("href")),
-            !1
-          );*/
+        if(okr_init_id != '') {
+          selected_init = okr_init_id;
+        }
       }),
-      $("#m_tree_3").jstree({
-        plugins: ["wholerow", "checkbox", "types"],
-        core: {
-          themes: { responsive: !1 },
-          data: [
-            {
-              text: "Same but with checkboxes",
-              children: [
-                { text: "initially selected", state: { selected: !0 } },
-                { text: "custom icon", icon: "fa fa-warning m--font-danger" },
-                {
-                  text: "initially open",
-                  icon: "fa fa-folder m--font-default",
-                  state: { opened: !0 },
-                  children: ["Another node"],
-                },
-                { text: "custom icon", icon: "fa fa-warning m--font-waring" },
-                {
-                  text: "disabled node",
-                  icon: "fa fa-check m--font-success",
-                  state: { disabled: !0 },
-                },
-              ],
-            },
-            "And wholerow selection",
-          ],
-        },
-        types: {
-          default: { icon: "fa fa-folder m--font-warning" },
-          file: { icon: "fa fa-file  m--font-warning" },
-        },
-      }),
-      $("#m_tree_4").jstree({
-        core: {
-          themes: { responsive: !1 },
-          check_callback: !0,
-          data: [
-            {
-              text: "Parent Node",
-              children: [
-                { text: "Initially selected", state: { selected: !0 } },
-                { text: "Custom Icon", icon: "fa fa-warning m--font-danger" },
-                {
-                  text: "Initially open",
-                  icon: "fa fa-folder m--font-success",
-                  state: { opened: !0 },
-                  children: [
-                    { text: "Another node", icon: "fa fa-file m--font-waring" },
-                  ],
-                },
-                {
-                  text: "Another Custom Icon",
-                  icon: "fa fa-warning m--font-waring",
-                },
-                {
-                  text: "Disabled Node",
-                  icon: "fa fa-check m--font-success",
-                  state: { disabled: !0 },
-                },
-                {
-                  text: "Sub Nodes",
-                  icon: "fa fa-folder m--font-danger",
-                  children: [
-                    { text: "Item 1", icon: "fa fa-file m--font-waring" },
-                    { text: "Item 2", icon: "fa fa-file m--font-success" },
-                    { text: "Item 3", icon: "fa fa-file m--font-default" },
-                    { text: "Item 4", icon: "fa fa-file m--font-danger" },
-                    { text: "Item 5", icon: "fa fa-file m--font-info" },
-                  ],
-                },
-              ],
-            },
-            "Another Node",
-          ],
-        },
-        types: {
-          default: { icon: "fa fa-folder m--font-brand" },
-          file: { icon: "fa fa-file  m--font-brand" },
-        },
-        state: { key: "demo2" },
-        plugins: ["contextmenu", "state", "types"],
-      }),
-      $("#m_tree_5").jstree({
-        core: {
-          themes: { responsive: !1 },
-          check_callback: !0,
-          data: [
-            {
-              text: "Parent Node",
-              children: [
-                { text: "Initially selected", state: { selected: !0 } },
-                { text: "Custom Icon", icon: "fa fa-warning m--font-danger" },
-                {
-                  text: "Initially open",
-                  icon: "fa fa-folder m--font-success",
-                  state: { opened: !0 },
-                  children: [
-                    { text: "Another node", icon: "fa fa-file m--font-waring" },
-                  ],
-                },
-                {
-                  text: "Another Custom Icon",
-                  icon: "fa fa-warning m--font-waring",
-                },
-                {
-                  text: "Disabled Node",
-                  icon: "fa fa-check m--font-success",
-                  state: { disabled: !0 },
-                },
-                {
-                  text: "Sub Nodes",
-                  icon: "fa fa-folder m--font-danger",
-                  children: [
-                    { text: "Item 1", icon: "fa fa-file m--font-waring" },
-                    { text: "Item 2", icon: "fa fa-file m--font-success" },
-                    { text: "Item 3", icon: "fa fa-file m--font-default" },
-                    { text: "Item 4", icon: "fa fa-file m--font-danger" },
-                    { text: "Item 5", icon: "fa fa-file m--font-info" },
-                  ],
-                },
-              ],
-            },
-            "Another Node",
-          ],
-        },
-        types: {
-          default: { icon: "fa fa-folder m--font-success" },
-          file: { icon: "fa fa-file  m--font-success" },
-        },
-        state: { key: "demo2" },
-        plugins: ["dnd", "state", "types"],
-      }),
-      $("#m_tree_6").jstree({
-        core: {
-          themes: { responsive: !1 },
-          check_callback: !0,
-          data: {
-            url: function (e) {
-              return "https://keenthemes.com/metronic/themes/themes/metronic/dist/preview/inc/api/jstree/ajax_data.php";
-            },
-            data: function (e) {
-              return { parent: e.id };
-            },
-          },
-        },
-        types: {
-          default: { icon: "fa fa-folder m--font-brand" },
-          file: { icon: "fa fa-file  m--font-brand" },
-        },
-        state: { key: "demo3" },
-        plugins: ["dnd", "state", "types"],
+      $("#m_tree_2").on("select_node.jstree", function (event, obj) {
+        if(obj.node.type == 'initiatives') {
+          selected_init = obj.node.id;
+        }
+        //console.log(obj.node);
       });
   },
 };
-jQuery(document).ready(function () {
-  Treeview.init();
-});
+
+function jsSubmit(save_tp, code)
+{
+  //입력 값 가져오기
+  var formData = new FormData();
+  formData.append('CASE_TP', $("#case_tp").val());
+  formData.append('TITLE', $("#title").val());
+  formData.append('TARGET', $("#target").val());
+  formData.append('COTCOME', $("#result").val());
+  formData.append('CONTEXT', $("#context").val());
+  formData.append('STRATEGY', $("#strategy").val());
+  formData.append('KNOWHOW', $("#knowhow").val());
+  formData.append('OKR_INIT_ID', selected_init);
+  formData.append('SAVE_TP', save_tp);
+  formData.append('CODE', code);
+
+  /*폼 데이터 console log
+  for (let key of formData.keys()) {
+    console.log(key);
+  }
+  for (let value of formData.values()) {
+    console.log(value);
+  }*/
+  
+  //SweetAlert 메시지
+  var msg;
+  if (save_tp == 'CREATE') {
+    msg = "OKR 사례를 저장하시겠습니까?";
+  } else if (save_tp == 'UPDATE') {
+    msg = "OKR 사례를 수정하시겠습니까?";
+  } else if (save_tp == 'CONFIRM') {
+    msg = "OKR 사례 검수를 요청하시겠습니까?";
+  } else if (save_tp == 'DELETE') {
+    msg = "OKR 사례를 삭제하시겠습니까?";
+  } else {
+    msg = "OKR 사례를 공유하시겠습니까?";
+  }
+
+  //SweetAlert 실행
+  swal({
+      title: msg,
+      text: "",
+      type: "warning",
+      showCancelButton: !0,
+      confirmButtonText: "예",
+      cancelButtonText: "아니오"
+    }).then(function (e) {
+      if (e.value) {
+        //저장,검수,수정,삭제 실행
+          $.ajax({
+            type : 'POST',
+            url : '/CaseController/save_exm_case',
+            data : formData,
+            contentType: false,
+            processData: false,
+            success : function(res){
+                //console.log(res);
+                swal("완료되었습니다.", "", "success").then(function(){
+                  document.location = '/CaseController';
+                });
+            },
+            error : function(jqxhr, status, error){
+                //console.log(jqxhr, status, error);
+                swal("처리 중 오류가 발생했습니다", "", "error");
+            }
+          });
+      } else {
+          "cancel" === e.dismiss && swal("취소되었습니다.", "", "error");
+      }
+    });
+}
+
+//초기화 버튼
+function jsReset()
+{
+  $("#m_tree_2").jstree('deselect_all');
+  $("#m_tree_2").jstree('close_all');
+  $("#case_tp").val("0");
+  $("#title").val("")
+  $("#target").val("");
+  $("#result").val("");
+  $("#context").val("");
+  $("#strategy").val("");
+  $("#knowhow").val("");
+}

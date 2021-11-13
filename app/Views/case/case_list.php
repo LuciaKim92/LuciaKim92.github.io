@@ -198,6 +198,33 @@
                 getCaseList("0");
                 getCaseList("1");
             });
+
+            function getClipList(id) {
+                $.ajax({
+                    type : 'POST',
+                    url : '/CaseController/get_clip_list/' + id,
+                    data : { "id": id },
+                    contentType: false,
+                    processData: false,
+                    success : function(res){
+
+                        res = JSON.parse(res);
+                        if (res.length > 0) {
+                            $.each(res, function(index, value){
+
+                            });
+                        }
+                        
+                        console.log(res[0]);
+
+                        var html;
+
+                    },
+                    error : function(jqxhr, status, error){
+                        //console.log(jqxhr, status, error);
+                    }
+                });
+            }
         </script>
         
     </body>

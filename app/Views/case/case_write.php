@@ -12,14 +12,11 @@
             integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
             crossorigin="anonymous" />
 
-        <!-- 폰트어썸 -->
+        <!-- fontawesome -->
         <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" data-auto-replace-svg="nest"></script>
 
-        <!-- 제이쿼리 -->
+        <!-- jQuery -->
         <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
-
-		<!-- JS Tree -->
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
 
         <!--begin::Global Theme Styles -->
         <link href="/assets/vendors/base/vendors.bundle.css" rel="stylesheet" type="text/css" />
@@ -31,6 +28,8 @@
     </head>
 
     <style>
+		.m-portlet__head-title small { margin-left: 10px; color: gray; font-size: 0.9rem; }
+		.link-title { width:135%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         input[type=text], textarea, button { border-radius: 3.25px !important; }
 		.m-form .m-portlet__body { padding: 60px 0 !important;}
 		.m-portlet__foot .row { padding: 20px 0 !important; }
@@ -70,15 +69,16 @@
 								<div class="m-portlet m-portlet--mobile m-portlet--body-progress-">
 									<div class="m-portlet__head">
 										<div class="m-portlet__head-caption">
-											<div class="m-portlet__head-title">
+											<div class="m-portlet__head-title align-items-end">
 												<h3 class="m-portlet__head-text">
 													OKR 선택
 												</h3>
+												<small>initiative를 선택해주세요.</small>
 											</div>
 										</div>
 									</div>
 									<div class="m-portlet__body">
-                                        <div id="m_tree_2" class="tree-demo"></div>
+                                        <div id="m_tree_2" class="tree-demo overflow-auto"></div>
 									</div>
 								</div>
 								<!--end::OKR Tree View-->
@@ -102,19 +102,51 @@
 													<tbody>
 														<tr>
 															<th scope="row">검수요청일시</th>
-															<td></td>
+															<td>
+																<?php
+																	$cfm = ($DETAIL == null || $DETAIL[0]['CONFIRM_DTM'] == null) ? "" : $DETAIL[0]['CONFIRM_DTM'];
+																	echo($cfm);
+																?>
+															</td>
 														</tr>
 														<tr>
 															<th scope="row">검수자</th>
-															<td></td>
+															<td>
+																<?php
+																	$cfm = ($DETAIL == null || $DETAIL[0]['CONFIRM_EMP_NM'] == null) ? "" : $DETAIL[0]['CONFIRM_EMP_NM'];
+																	echo($cfm);
+																?>
+															</td>
 														</tr>
 														<tr>
 															<th scope="row">검수자 의견</th>
-															<td></td>
+															<td>
+																<?php
+																	$cfm = ($DETAIL == null || $DETAIL[0]['CONFIRM_NOTES'] == null) ? "" : $DETAIL[0]['CONFIRM_NOTES'];
+																	echo($cfm);
+																?>
+															</td>
 														</tr>
 													</tbody>
 												</table><br>
-												<button type="submit" class="btn btn-secondary m-btn" id="m_sweetalert_demo_8">검수 요청</button>
+												<?php
+													if($DETAIL == null || $DETAIL[0]['CONFIRM_DTM'] == null) {
+													?>
+														<button type="submit" class="btn btn-secondary m-btn" onclick="jsSubmit('CONFIRM', '<? echo($DETAIL == null ? '' : $DETAIL[0]['ID']) ?>')">검수 요청</button>
+													<?
+													} else {
+														if($DETAIL[0]['CONFIRM_NOTES'] == null) {
+													?>
+														<button class="btn btn-secondary m-btn" disabled="disabled">검수 대기중</button>
+													<?
+														} else {
+													?>
+															<button type="submit" class="btn btn-secondary m-btn" onclick="jsSubmit('RECONFIRM', '<? echo($DETAIL[0]['ID']) ?>')">검수 재요청</button>
+													<?
+														}
+													}
+												?>
+												
 											</div>
 										</div>
 										<!--end::Section-->
@@ -134,35 +166,86 @@
 												</h3>
 											</div>
 										</div>
+										<div class="m-portlet__head-tools">
+											<ul class="m-portlet__nav">
+												<li class="m-portlet__nav-item m-dropdown m-dropdown--huge m-dropdown--inline m-dropdown--align-right m-dropdown--align-push" m-dropdown-toggle="hover">
+													<a href="#" class="m-portlet__nav-link m-dropdown__toggle dropdown-toggle btn btn-md btn-metal m-btn m-btn--pill">
+														저장한 사례
+													</a>
+													<div class="m-dropdown__wrapper">
+														<div class="m-dropdown__inner">
+															<div class="m-dropdown__body">
+																<div class="m-dropdown__content">
+																	<ul class="m-nav">
+																		<?php
+																			if(sizeof($SAVED) == 0) {
+																			?>
+																				<li class="m-nav__item">
+																					<i class="m-nav__link-icon la la-times-circle"></i>&nbsp;&nbsp;
+																					<span class="m-nav__link-text">저장한 사례가 없습니다.</span>
+																				</li>
+																			<?
+																			} else {
+																				foreach($SAVED as $key => $bean) {
+																					$link = "/CaseController/case_write/".$bean['ID'];
+																			?>
+																					<li class="m-nav__item">
+																						<a href='<?=$link?>' class="m-nav__link">
+																							<i class="m-nav__link-icon la la-file-text"></i>
+																							<span class="m-nav__link-text link-title">
+																								<?=$bean['TITLE']?>
+																			<?					if($bean['CONFIRM_DTM'] != null && $bean['CONFIRM_NOTES'] == null) {
+																			?>						<span class="badge bg-secondary text-dark ml-1 p-1">검수 대기중</span>
+																			<?					} else if($bean['CONFIRM_DTM'] != null && $bean['CONFIRM_NOTES'] != null) {
+																			?>						<span class="badge bg-info ml-1 p-1">검수 완료</span>
+																			<?					} else {
+																			?>						<span class="badge bg-secondary text-dark ml-1 p-1">임시 저장</span>
+																			<?					}
+																			?>				</span>
+																							<span class="m-nav__link-text" style="width:65%; padding-left: 15px;"><?=$bean['DATE']?></span>
+																						</a>
+																					</li>
+																			<?
+																				}
+																			}
+																		?>
+																	</ul>
+																</div>
+															</div>
+														</div>
+													</div>
+												</li>
+											</ul>
+										</div>
 									</div>
 									<form class="m-form m-form--fit">
 										<div class="m-portlet__body">
 											<div class="form-group m-form__group row">
 												<label class="col-form-label col-lg-3 col-sm-12">사례 유형</label>
 												<div class="col-lg-4 col-md-9 col-sm-12">
-													<select class="form-control m-bootstrap-select m_selectpicker">
-														<option value="0">도전 성공 사례</option>
-														<option value="1">도전 축적 사례</option>
+													<select class="form-control m-bootstrap-select m_selectpicker" id="case_tp">
+														<option value="0" <? echo($DETAIL != null && $DETAIL[0]['CASE_TP'] == '0' ? 'selected' : '') ?>>도전 성공 사례</option>
+														<option value="1" <? echo($DETAIL != null && $DETAIL[0]['CASE_TP'] == '1' ? 'selected' : '') ?>>도전 축적 사례</option>
 													</select>
 												</div>
 											</div>
 											<div class="form-group m-form__group row">
 												<label for="title" class="col-lg-3 col-sm-12 col-form-label">지식의 제목</label>
 												<div class="col-lg-7 col-sm-12">
-													<input class="form-control m-input" type="text" value="" id="title">
+													<input class="form-control m-input" type="text" id="title" value="<? echo($DETAIL == null ? '' : $DETAIL[0]['TITLE']) ?>">
 												</div>
 											</div>
 											<div class="form-group m-form__group row">
 												<label for="goal" class="col-lg-3 col-sm-12 col-form-label">목표 성과</label>
 												<div class="col-lg-9 col-sm-12">
-													<input class="form-control m-input" type="text" id="goal">
+													<input class="form-control m-input" type="text" id="target" value="<? echo($DETAIL == null ? '' : $DETAIL[0]['TARGET']) ?>">
 													<span class="m-form__help">* 숫자를 포함하여 작성해주세요.</span>
 												</div>
 											</div>
 											<div class="form-group m-form__group row">
 												<label for="result" class="col-lg-3 col-sm-12 col-form-label">얻은 성과</label>
 												<div class="col-lg-9 col-sm-12">
-													<input class="form-control m-input" type="text" id="result">
+													<input class="form-control m-input" type="text" id="result" value="<? echo($DETAIL == null ? '' : $DETAIL[0]['COTCOME']) ?>">
 													<span class="m-form__help">* 숫자를 포함하여 작성해주세요.</span>
 												</div>
 											</div>
@@ -170,21 +253,21 @@
 											<div class="form-group m-form__group row">
 												<label for="context" class="col-lg-3 col-sm-12 col-form-label">맥락 설명</label>
 												<div class="col-lg-9 col-sm-12">
-													<textarea class="form-control m-input" id="context" rows="5" placeholder="당시 상황에 대해 자세하게 기술해 주세요."></textarea>
+													<textarea class="form-control m-input" id="context" rows="5" placeholder="당시 상황에 대해 자세하게 기술해 주세요."><? echo($DETAIL == null ? '' : $DETAIL[0]['CONTEXT']) ?></textarea>
 													<span class="m-form__help">* 당시 어떤 상황이었습니까? (문제인식)</span>
 												</div>
 											</div>
 											<div class="form-group m-form__group row">
 												<label for="strategy" class="col-lg-3 col-sm-12 col-form-label">전략 방향</label>
 												<div class="col-lg-9 col-sm-12">
-													<textarea class="form-control m-input" id="strategy" rows="5"></textarea>
+													<textarea class="form-control m-input" id="strategy" rows="5"><? echo($DETAIL == null ? '' : $DETAIL[0]['CONTEXT']) ?></textarea>
 													<span class="m-form__help">* 성과를 만들 수 있었던 주요 활동은 무엇입니까? (이전과 달리 무엇을 새롭게 시도했던 것입니까?)</span>
 												</div>
 											</div>
 											<div class="form-group m-form__group row">
 												<label for="knowhow" class="col-lg-3 col-sm-12 col-form-label">핵심 지식</label>
 												<div class="col-lg-9 col-sm-12">
-													<textarea class="form-control m-input" id="knowhow" rows="5"></textarea>
+													<textarea class="form-control m-input" id="knowhow" rows="5"><? echo($DETAIL == null ? '' : $DETAIL[0]['CONTEXT']) ?></textarea>
 													<span class="m-form__help">
 													* 이번 일과 연관하여 함께 나누고 싶은 노하우는 무엇입니까? (이번에 발견한 지식은 무엇입니까?)
 													</span>
@@ -200,11 +283,33 @@
 											<div class="m-form__actions m-form__actions--solid m-form__actions--right">
 												<div class="row">
 													<div class="col m--align-left">
-														<button type="submit" class="btn btn-success m-btn" id="m_sweetalert_demo_9">사례 공유</button>
+														<?
+															if($DETAIL == null || $DETAIL[0]['CONFIRM_NOTES'] == null) {
+															?>
+																<button type="submit" class="btn btn-success m-btn" disabled="disabled">사례 공유</button>
+															<?
+															} else {
+															?>
+																<button type="submit" class="btn btn-success m-btn" onclick="jsSubmit('COMPLETE', '<? echo($DETAIL[0]['ID']) ?>')">사례 공유</button>
+															<?
+															}
+														?>
 													</div>
 													<div class="col m--align-right">
-														<button type="submit" class="btn btn-secondary">임시 저장</button>
-														<button type="reset" class="btn btn-danger">취소</button>
+														<?
+															if($DETAIL == null) {
+															?>
+																<button type="submit" class="btn btn-secondary" onclick="jsSubmit('CREATE', '')">임시 저장</button>
+																<button type="reset" class="btn btn-secondary" onclick="jsReset()">초기화</button>
+															<?
+															} else {
+															?>
+																<button type="submit" class="btn btn-secondary" onclick="jsSubmit('UPDATE', '<? echo($DETAIL[0]['ID']) ?>')">수정</button>
+																<button type="submit" class="btn btn-danger" onclick="jsSubmit('DELETE', '<? echo($DETAIL[0]['ID']) ?>')">삭제</button>
+															<?
+															}
+														?>
+														
 													</div>
 												</div>
 											</div>
@@ -222,7 +327,6 @@
 		<!--end::Global Theme Bundle -->
 
 		<!--begin::Page Vendors -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 		<!--end::Page Vendors -->
 
 		<!--begin::Page Scripts -->
@@ -233,6 +337,16 @@
 		<!--end::Page Scripts -->
 
         <script>
+			jQuery(document).ready(function () {
+				
+				//jsTree 실행
+				Treeview.init(<? echo($DETAIL == null ? '' : $DETAIL[0]['OKR_INIT_ID']) ?>);
+				
+				$("button").on('click', (e) => {
+					e.preventDefault();
+				});
+				
+			});
         </script>
         
     </body>

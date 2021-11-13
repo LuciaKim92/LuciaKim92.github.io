@@ -89,25 +89,25 @@ function getCaseList(is_clip) {
                 targets: 7,
                 title: "EMPY_NO",
                 visible: false,
-                },
+            },
             {
                 targets: 8,
-                title: "스크랩/댓글",
+                title: "",
                 width: 100,
                 render: function (a, e, n, s) {
+                    //console.log(s);
+
                     return '\n<span class="dropdown">\
-                                <a href="#" class="btn m-btn m-btn--hover-success m-btn--icon m-btn--icon-only m-btn--pill" data-toggle="dropdown" aria-expanded="true">\
+                                <a href="#" class="btn m-btn m-btn--hover-success m-btn--icon m-btn--icon-only m-btn--pill" data-toggle="dropdown" aria-expanded="true" onclick="getClipList('+ n['ID'] +');">\
                                     <i class="la la-heart"></i>\
                                 </a>\
                                 <div class="dropdown-menu dropdown-menu-right">\
                                     <a class="dropdown-item" href="#"><i class="la la-edit"></i> Edit Details</a>\
-                                    <a class="dropdown-item" href="#"><i class="la la-leaf"></i> Update Status</a>\
-                                    <a class="dropdown-item" href="#"><i class="la la-print"></i> Generate Report</a>\
                                 </div>\
-                                </span>\
-                                <a href="#" class="m-portlet__nav-link btn m-btn m-btn--hover-success m-btn--icon m-btn--icon-only m-btn--pill" title="View">\
+                            </span>\
+                            <a href="#" class="m-portlet__nav-link btn m-btn m-btn--hover-success m-btn--icon m-btn--icon-only m-btn--pill" title="View">\
                                 <i class="la la-comments"></i>\
-                                </a>';
+                            </a>';
                 },
             },
         ],
